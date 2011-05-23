@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="hello">Hello World, IamHomeTest02!</string>
+	<string name="app_name">Call me when you reach home.</string>
+
+	
+	<string name="InputDestinationAddress">Please input a destination address</string>
+	<string name="InputPhoneNumber">Please input phone number to call back</string>
+	<string name="InputSMS">Please input a message what you want to call back.</string>
+	
+
+	<string name="ToastStart">You need to go home right now.</string>
+	
+	<string name="UnsupportWifi">"Can't connect Wifi currently.\n Using data network may be charged lots of coats."</string>
+	<string name="UnsupportConnectivity">Please make enable Wifi or data network.</string>
+	<string name="UnsupportGPS">Please make enable GPS.</string>
+	<string name="UnsupportVersion">Did you pay for it? huh?</string>
+
+	
+	<string name="AlertNotificationName">Proximity Alert</string>
+	<string name="AlertNotificationMsg">Completed sending a message.</string>
+	
+	<string name="VibratorNotificationName">Wrong GPS!</string>
+	<string name="VibratorNotificationMsg">Cannot catch a signal for GPS</string>	
+	
+	<string name="NotValidAddress">Not valid address</string>
+	<string name="NoLocation">No location found.</string>
+	<string name="CurrentLocation">Where are you now?</string>
+	<string name="MessageSMS">Successfully sent</string>
+	
+	<string name="DialogTitle">Destination address?</string>
+	
+	<string name="Yes">Yes</string>
+	<string name="No">No</string>
+	
+	<string name="Latitude">Latitude</string>
+	<string name="Longitude">Longitude</string>
+	<string name="FoundAddress">Found Address</string>
+	
+	<string name="StartButton">Start</string>
+	<string name="EndButton">End</string>
+	<string name="FormatButton">Find destination</string>
+	<string name="NextPageButton">"Next page"</string>
+	<string name="PreviousPageButton">Previous page</string>
+</resources>
