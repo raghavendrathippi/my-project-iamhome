@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="hello">Hello World, IamHomeTest02!</string>
+	<string name="app_name">집에가면 연락해~</string>
+
+	<string name="InputDestinationAddress">목적지의 주소를 입력해주세요.</string>
+	<string name="InputPhoneNumber">수신 받을 전화번호를 입력해주세요.</string>
+	<string name="InputSMS">수신 받을 메세지를 입력해 주세요.</string>
+
+	<string name="ToastStart">집에가면 연락해~ 시작합니다!</string>
+	
+	<string name="UnsupportWifi">Wifi에 접속 할 수 없습니다.\n 데이터 통신은 과도한 요금이 발생될 수 도 있습니다.</string>
+	<string name="UnsupportConnectivity">Wifi 또는 데이터 통신을 켜주세요!</string>
+	<string name="UnsupportGPS">GPS를 켜주세요!</string>
+	<string name="UnsupportVersion">돈 주고 유료버전 사!</string>
+
+	
+	<string name="AlertNotificationName">집에 가면 연락해~~</string>
+	<string name="AlertNotificationMsg">미션 성공! 메세지를 성공적으로 보냈습니다.</string>
+
+	<string name="VibratorNotificationName">GPS 이상!</string>
+	<string name="VibratorNotificationMsg">GPS 신호를 잡을 수 없어요~</string>
+	
+	<string name="NotValidAddress">유효하지 않은 주소입니다.</string>
+	<string name="NoLocation">현재 위치를 찾을 수 없습니다.</string>
+	<string name="CurrentLocation">지금 현재 위치는?</string>
+	<string name="MessageSMS">메세지를 성공적으로 전송하였습니다.</string>
+	
+	<string name="DialogTitle">목적지의 주소는?</string>
+	
+	<string name="Yes">예</string>
+	<string name="No">아니오</string>
+
+	<string name="Latitude">위도</string>
+	<string name="Longitude">경도</string>
+	<string name="FoundAddress">검색된 위치</string>
+	
+	<string name="StartButton">시작</string>
+	<string name="EndButton">종료</string>
+	<string name="FormatButton">목적지 검색</string>
+	<string name="NextPageButton">다음 페이지</string>
+	<string name="PreviousPageButton">이전 페이지</string>
+</resources>

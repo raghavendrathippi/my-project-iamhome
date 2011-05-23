@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+    <color name="black">#000</color>
+    <color name="red">#F00</color>
+    <color name="white">#FFFFFF</color>
+    
+    <color name="bg_GPS">#333333</color>
+    
+    <color name="test1">#FFE8D2</color>
+    <color name="test2">#D2E8FF</color>
+    <color name="test3">#4186AF</color>
+    
+    <color name="before_touch">#EEEEEE</color>
+    <color name="after_touch">#333333</color>
+
+    <!--  saturn sdk color -->
+    <color name="colorGroupNormalBackground">#1A1A1A</color>
+    <color name="colorGroupTouchBackground">#FF5A00</color>
+    <color name="colorTextItem">#FFFFFF</color>
+    <color name="colorPopupTitle">#78CC1F</color>
+    <color name="colorPopupDescription">#FFFFFF</color>
+    <color name="colorPopupNameText">#7188D3</color>
+    <color name="colorPopupListNormal">#8CCAFF</color>
+    <color name="colorPopupListTouch">#FFFFFF</color>
+    <color name="colorPopupListDimmed">#464646</color>	
+    <color name="colorPopupListBackGround">#222222</color>
+    <color name="colorPopupEditTextLabel">#707070</color>
+    <color name="colorPopupTextViewLabel">#FFFFFF</color>
+    <color name="colorPopupTextInfo">#8CC9FF</color>
+    <color name="colorPopupButton">#FFFFFF</color>
+    <color name="colorNumberPicker">#222222</color>
+    <color name="colorButtonDimmed">#666666</color>
+</resources>

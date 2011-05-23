@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent" 
+  android:orientation="vertical">
+  <LinearLayout
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:layout_marginTop="20dip"
+	android:layout_marginBottom="20dip">
+	
+	<ImageView 
+		android:id="@+id/Pointer01" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:src="@drawable/black_pointer"
+		android:layout_weight="1"/>
+		
+	<ImageView 
+		android:id="@+id/Pointer02" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:src="@drawable/accept"
+		android:layout_weight="1"/>
+		
+	<ImageView 
+		android:id="@+id/Pointer03" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:src="@drawable/black_pointer"
+		android:layout_weight="1"/>
+</LinearLayout>
+  
+<TextView 
+	android:text="@string/InputPhoneNumber" 
+	android:id="@+id/InputPhoneNumber" 
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content"></TextView>
+	
+<EditText 
+	android:id="@+id/ReceiverPhoneNumber" 
+	android:layout_width="match_parent" 
+	android:layout_height="wrap_content" 
+	android:inputType="phone"></EditText>
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content" 
+		android:layout_gravity="bottom">
+		
+		<Button
+			android:id="@+id/PreviousPageto01"
+			android:text="@string/PreviousPageButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="left"></Button>
+		<Button
+			android:id="@+id/NextPageto03"
+			android:text="@string/NextPageButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="right"></Button>
+	</LinearLayout>
+	
+</LinearLayout>
