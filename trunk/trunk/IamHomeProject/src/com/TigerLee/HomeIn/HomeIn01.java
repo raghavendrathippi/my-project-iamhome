@@ -100,14 +100,14 @@ public class HomeIn01 extends Activity {
         mGeocodingButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//mGeocodedAddress = getGeocodedAddress(mDestinationAddress.getText().toString());
-				List<Address> mListAddress = getCoordinatesFromAddress(mDestinationAddress.getText().toString());
+				mGeocodedAddress = getGeocodedAddress(mDestinationAddress.getText().toString());
+				//List<Address> mListAddress = getCoordinatesFromAddress(mDestinationAddress.getText().toString());
 				
-				//if(mGeocodedAddress != null){
-				if(!mListAddress.isEmpty()){
+				if(mGeocodedAddress != null){
+				//if(!mListAddress.isEmpty()){
 					String mTitle = getString(R.string.DialogTitle);
 					
-					mGeocodedAddress = mListAddress.get(0);
+					//mGeocodedAddress = mListAddress.get(0);
 					
 					String mMessage = getString(R.string.Latitude) 
 					+ mGeocodedAddress.getLatitude()
@@ -306,12 +306,13 @@ public class HomeIn01 extends Activity {
 	/*
      * If you are testing wih a emulator, you can use these methods.
      * Please enable NativeGeocoder Class.
-     * 
+     *
+     */
      
 	public Address getGeocodedAddress(String address){
-   	 //return NativeGeocoder.getAddress(NativeGeocoder.getLocationInfo(address));
+		return NativeGeocoder.getAddress(NativeGeocoder.getLocationInfo(address, Constants.NAVER_API));
    }
-	 */
+	 
 	
 	
 	
