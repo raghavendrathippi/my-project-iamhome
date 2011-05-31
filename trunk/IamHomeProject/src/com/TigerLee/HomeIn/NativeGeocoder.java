@@ -4,6 +4,7 @@ import java.io.IOException;
 
 
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.Locale;
 
 import org.apache.http.HttpEntity;
@@ -26,17 +27,40 @@ import android.location.Address;
 
 public class NativeGeocoder {
 	
-	//Static String for Google Maps API.
+	//Static String for Google, Naver, Daum Maps API.
 	public static String GoogleMapAPI = "http://maps.google.com/maps/api/geocode/json?address=";
 	
-	public static int END = -1;
+	public static String DaumMapKey = "1176f6b78db03f01382ee44afe2f82b98b8b899d";
+	public static String DaumMapAPI = "http://apis.daum.net/maps/addr2coord?apikey=" + DaumMapKey;
 	
-	public static JSONObject getLocationInfo(String address) {
-
+	// EXAMPLE : http://map.naver.com/api/geocode.php?key=8c36c72309be8ab6abd5d527cb472e0f&encoding=utf-8&coord=tm128&query=blahblah
+	public static String NaverMapKey = "key=8c36c72309be8ab6abd5d527cb472e0f";
+	public static String NaverEcodingType = "encoding=utf-8";
+	public static String NaverCoordType = "coord=tm128";
+	public static String NaverMapAPI = "http://map.naver.com/api/geocode.php" 
+		+ "?" + NaverMapKey 
+		+ "&" + NaverEcodingType
+		+ "&" + NaverCoordType;
+	
+	public static String getLocationInfo(String address, int whichAPI) {
+		
 		//All space in address should be removed to create URI.
 		address = address.replace(" ", "+");
 		
-		HttpGet mHttpGet = new HttpGet(GoogleMapAPI + address + "ka&sensor=false");
+		HttpGet mHttpGet = null;
+		
+		switch (whichAPI) {
+		case Constants.GOOGLE_API:
+			mHttpGet = new HttpGet(GoogleMapAPI + address + "ka&sensor=false");
+			break;
+		case Constants.DAUM_API:
+			mHttpGet = new HttpGet(DaumMapAPI + "&q="+address+ "&output=json");
+			break;
+		case Constants.NAVER_API:
+			mHttpGet = new HttpGet(NaverMapAPI + "&query="+address);
+			break;
+		}		
+		
 		HttpClient mHttpClient = new DefaultHttpClient();
 		HttpResponse mHttpResponse;
 		StringBuilder mStringBuilder = new StringBuilder();
@@ -46,26 +70,33 @@ public class NativeGeocoder {
 			HttpEntity mHttpEntity = mHttpResponse.getEntity();
 			InputStream mInputStream = mHttpEntity.getContent();
 			int mReadByte;
-			while ((mReadByte = mInputStream.read()) != END) {
+			while ((mReadByte = mInputStream.read()) != -1) {
 				mStringBuilder.append((char) mReadByte);
 			}
 		} catch (ClientProtocolException e) {
+			
 		} catch (IOException e) {
+			
 		}
-
+		return mStringBuilder.toString();		
+	}
+	
+	public static JSONObject getJsonObject(String mAddressBuilder){
 		JSONObject mJsonObject = new JSONObject();
 		try {
-			mJsonObject = new JSONObject(mStringBuilder.toString());
+			mJsonObject = new JSONObject(mAddressBuilder);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return mJsonObject;
+		return mJsonObject;		
 	}
 	
+	
 	//public static Address getGeoPoint(JSONObject jsonObject) {
-	public static Address getAddress(JSONObject jsonObject) {
+	public static Address getAddress(String addressBuilder) {
+		JSONObject jsonObject = getJsonObject(addressBuilder);
+		
 		Address mAddress = new Address(Locale.getDefault());
 		
 		Double mLongitude = new Double(0);
