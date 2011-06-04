@@ -27,7 +27,7 @@
         </activity>
         
         <activity android:name=".MainMenu"/>
-        
+        <activity android:name=".GoogleMapPicker"/>
         <activity android:name=".HomeIn01"/>
         <activity android:name=".HomeIn02"/>
         <activity android:name=".HomeIn03"/>
