@@ -50,6 +50,11 @@
 	android:id="@+id/GeocodingButton" 
 	android:layout_width="wrap_content" 
 	android:layout_height="wrap_content"></Button>
+<Button 
+	android:text="@string/MapButton" 
+	android:id="@+id/MapButton" 
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content"></Button>
 	
 <TextView 
 	android:id="@+id/GeocodedLoacation" 

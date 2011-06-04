@@ -12,7 +12,7 @@
     		android:title="Set Minimum Distance"
     		android:summary="Minimum distance of movement necessary to update location"
     		android:key="mindistance"
-    		android:defaultValue="2"
+    		android:defaultValue="10"
     		android:entries="@array/minDistance"
     		android:entryValues="@array/minDistanceVals"/>
     </PreferenceCategory>
@@ -24,5 +24,14 @@
     		android:defaultValue="2"
     		android:entries="@array/proxRadius"
     		android:entryValues="@array/proxRadiusVals"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Default API" android:key="defaultapi">
+    	<ListPreference
+    		android:title="Set priority of api services"
+    		android:summary="Preference of priority"
+    		android:key="preferapi"
+    		android:defaultValue="2"
+    		android:entries="@array/defaultapi"
+    		android:entryValues="@array/apiVals"/>
     </PreferenceCategory>
 </PreferenceScreen>
