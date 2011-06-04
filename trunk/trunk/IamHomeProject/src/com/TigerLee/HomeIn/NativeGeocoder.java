@@ -101,23 +101,34 @@ public class NativeGeocoder {
 		
 		Double mLongitude = new Double(0);
 		Double mLatitude = new Double(0);
+		
+		Double mDaumLong = new Double(0);
+		Double mDaumLat = new Double(0);
+		
 		String mFormattedAddress = null;
 				
 		try {
-
 			mFormattedAddress = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
 			.getString("formatted_address");
-			
+	
+			//mDaumLong = ((JSONArray)jsonObject.get("item")).getJSONObject(0).getDouble("lng");
+		
 			mLongitude = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
 				.getJSONObject("geometry").getJSONObject("location")
 				.getDouble("lng");
 
+			//mDaumLat = ((JSONArray)jsonObject.get("channel")).getJSONObject(0)
+			//.getJSONObject("item").getDouble("lat");
+			
 			mLatitude = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
 				.getJSONObject("geometry").getJSONObject("location")
 				.getDouble("lat");
 			
 
 		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch(ClassCastException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
