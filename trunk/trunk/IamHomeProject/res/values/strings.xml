@@ -40,6 +40,9 @@
 	<string name="StartButton">Start</string>
 	<string name="EndButton">End</string>
 	<string name="FormatButton">Find destination</string>
+	<string name="MapButton">Check destination with GoogleMap</string>
 	<string name="NextPageButton">"Next page"</string>
 	<string name="PreviousPageButton">Previous page</string>
+	
+	
 </resources>

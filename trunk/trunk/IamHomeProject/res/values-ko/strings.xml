@@ -38,6 +38,7 @@
 	<string name="StartButton">시작</string>
 	<string name="EndButton">종료</string>
 	<string name="FormatButton">목적지 검색</string>
+	<string name="MapButton">목적지 맵으로 확인!</string>
 	<string name="NextPageButton">다음 페이지</string>
 	<string name="PreviousPageButton">이전 페이지</string>
 </resources>
