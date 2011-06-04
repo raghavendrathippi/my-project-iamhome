@@ -136,6 +136,24 @@ public class HomeIn01 extends Activity {
 			}
 		});
         
+        Button mMapButton = (Button) findViewById(R.id.MapButton);
+        mMapButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				if(mGeocodedAddress == null){
+					return;
+				}else{
+					GoogleMapPage();
+				}
+				
+				
+			}
+		});
+        
         Button mNextPageButton = (Button) findViewById(R.id.NextPageto02);
         mNextPageButton.setOnClickListener(new OnClickListener() {
 			
@@ -274,6 +292,17 @@ public class HomeIn01 extends Activity {
 		overridePendingTransition(R.anim.hold, R.anim.fade);
 	}	
 	
+	public void GoogleMapPage(){
+		Intent intent = new Intent();
+		intent.setClass(this, GoogleMapPicker.class);
+		
+		intent.putExtra("LONGITUDE", mGeocodedAddress.getLongitude());
+		intent.putExtra("LATITUDE", mGeocodedAddress.getLatitude());
+		
+		startActivity(intent);
+		overridePendingTransition(R.anim.hold, R.anim.fade);
+	}	
+	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
@@ -310,7 +339,7 @@ public class HomeIn01 extends Activity {
      */
      
 	public Address getGeocodedAddress(String address){
-		return NativeGeocoder.getAddress(NativeGeocoder.getLocationInfo(address, Constants.NAVER_API));
+		return NativeGeocoder.getAddress(NativeGeocoder.getLocationInfo(address, Constants.GOOGLE_API));
    }
 	 
 	
