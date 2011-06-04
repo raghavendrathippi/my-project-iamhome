@@ -17,7 +17,8 @@ public class SharedPreference{
 		"FormattedAddress", 
 		"PhoneNumber",
 		"TextMessage",
-		"Result"
+		"Result",
+		"DefualtAPI"
 	};
 	
 	private Context mContext;
@@ -58,6 +59,7 @@ public class SharedPreference{
 				NAME_PREFERENCE[3], null));
 		mAddress.setPhone(mPreferences.getString(
 				NAME_PREFERENCE[4], null));
+		
 		Log.v(TAG, "getPreferenceAddress() - " + mAddress.getPhone()+";");
 		return mAddress;
 	}
@@ -109,6 +111,13 @@ public class SharedPreference{
 		SharedPreferences.Editor mEditor = mPreferences.edit();
 		mEditor.putBoolean(NAME_PREFERENCE[6], result);
         mEditor.commit();
+	}
+	
+	public boolean getPreferenceDefualtAPI() {
+		// get SharedData to save in preference xml
+		SharedPreferences mPreferences = mContext.getSharedPreferences(
+				PREFERENCE_NAME, PREFERENCE_MODE);
+		return mPreferences.getBoolean(NAME_PREFERENCE[7], false);
 	}
 	
 }
