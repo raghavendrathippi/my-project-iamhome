@@ -30,7 +30,7 @@ public class ProximityAlertService extends Service {
 	private Location mLocation;
 	private LocationManager mLocationManager;
 
-	private static String TREASURE_PROXIMITY_ALERT = "com.KimLee.IamHome.ProximityAlertService";
+	private static String TREASURE_PROXIMITY_ALERT = "com.TigerLee.HomeIn.ProximityAlertService";
 
 
 	// To obtain notifications as frequently as possible, set both parameters to 0. 
@@ -118,7 +118,7 @@ public class ProximityAlertService extends Service {
 
 		Intent intent = new Intent(TREASURE_PROXIMITY_ALERT);
 		PendingIntent proximityIntent = PendingIntent.getBroadcast(
-				this, -1, intent, 0);
+				this, 0, intent, 0);
 
 		locationManager.addProximityAlert(
 				mAddress.getLatitude(), 
