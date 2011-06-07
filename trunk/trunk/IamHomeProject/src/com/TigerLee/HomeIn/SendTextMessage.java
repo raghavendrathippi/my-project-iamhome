@@ -33,7 +33,7 @@ public class SendTextMessage extends Activity {
 		
 		// Get a Message from EditText.
 		if(mPhoneNumber != null){
-			Log.v(TAG, "PhoneNum: " +mPhoneNumber +"TextMSG: "+mTextMessage);
+			if(Constants.D) Log.v(TAG, "PhoneNum: " +mPhoneNumber +"TextMSG: "+mTextMessage);
 			mSmsManager.sendTextMessage(mPhoneNumber, 
 					null, 
 					mTextMessage, 
@@ -50,7 +50,7 @@ public class SendTextMessage extends Activity {
         mPhoneNumber = mSharedPreference.getPreferenceAddress().getPhone();
         mTextMessage = mSharedPreference.getPreferenceMessage();
         //IsSended = mSharedPreference.getPreferenceResult();
-        Log.v(TAG, "PhoneNum : " + mPhoneNumber 
+        if(Constants.D) Log.v(TAG, "PhoneNum : " + mPhoneNumber 
         		+ " TextMessage : " + mTextMessage 
         		+" Sended" + IsSended);
 	}

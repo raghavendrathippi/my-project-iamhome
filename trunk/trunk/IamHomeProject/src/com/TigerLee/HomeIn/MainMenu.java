@@ -17,8 +17,6 @@ public class MainMenu extends Activity {
 	private static final int HOME = 0;
 	private static final int SCHOOL = 1;
 	
-	private boolean V = true;
-	
 	private static final String TAG = "MainMenu";
 	
 	@Override
@@ -34,7 +32,7 @@ public class MainMenu extends Activity {
 		mHomeButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(V) Log.v(TAG, "Click - Next Page Home");
+				if(Constants.D)  Log.v(TAG, "Click - Next Page Home");
 				NextPage(HOME);
 			}
 		});/*
@@ -54,7 +52,7 @@ public class MainMenu extends Activity {
 		mSchoolButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(V) Log.v(TAG, "Click - Next Page School");
+				if(Constants.D)  Log.v(TAG, "Click - Next Page School");
 				NextPage(SCHOOL);
 			}
 		});/*

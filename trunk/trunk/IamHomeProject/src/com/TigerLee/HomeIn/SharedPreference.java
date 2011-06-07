@@ -60,7 +60,7 @@ public class SharedPreference{
 		mAddress.setPhone(mPreferences.getString(
 				NAME_PREFERENCE[4], null));
 		
-		Log.v(TAG, "getPreferenceAddress() - " + mAddress.getPhone()+";");
+		if(Constants.D) Log.v(TAG, "getPreferenceAddress() - " + mAddress.getPhone()+";");
 		return mAddress;
 	}
 	public void setPreferenceAddress(Address address){
@@ -76,7 +76,7 @@ public class SharedPreference{
         mEditor.putString(NAME_PREFERENCE[3], address.getAddressLine(1));
         mEditor.putString(NAME_PREFERENCE[4], address.getPhone());
 
-        Log.v(TAG, "setPreferenceAddress() - " + address.getPhone()+";");
+        if(Constants.D) Log.v(TAG, "setPreferenceAddress() - " + address.getPhone()+";");
         mEditor.commit();
 	}
 

@@ -71,7 +71,7 @@ public class HomeIn03 extends Activity {
 		
 		Intent mServiceIntent = new Intent(this,ProximityAlertService.class);
         startService(mServiceIntent);
-        Log.v(TAG,"Start Proximity Service");
+        if(Constants.D) Log.v(TAG,"Start Proximity Service");
         mStart = true;
 	}
 	

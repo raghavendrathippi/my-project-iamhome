@@ -43,7 +43,6 @@ public class HomeIn01 extends Activity {
 	private static int MAX_RESULT = 1;
 
 	private static final String TAG = "HomeIn01";
-	private boolean V = true;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +66,7 @@ public class HomeIn01 extends Activity {
 			
 			@Override
 			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-				// TODO Auto-generated method stub
+				// TOD	O Auto-generated method stub
 				if(keyCode == KeyEvent.KEYCODE_SEARCH)
 					return false;
 				return false;
@@ -121,7 +120,7 @@ public class HomeIn01 extends Activity {
 					for(int i = 0; i < mGeocodedAddress.getMaxAddressLineIndex(); i++){
 						asd = asd + mGeocodedAddress.getAddressLine(i);
 					}
-					Log.v(TAG, "Lat: " + mGeocodedAddress.getLatitude() +
+					if(Constants.D) Log.v(TAG, "Lat: " + mGeocodedAddress.getLatitude() +
 							"Lng :" + mGeocodedAddress.getLongitude() + 
 							" Addr :"+ asd);
 					
@@ -141,16 +140,11 @@ public class HomeIn01 extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				
-				
 				if(mGeocodedAddress == null){
 					return;
 				}else{
 					GoogleMapPage();
 				}
-				
-				
 			}
 		});
         
@@ -320,12 +314,12 @@ public class HomeIn01 extends Activity {
 	public List<Address> getCoordinatesFromAddress(String address){
 		
 		Geocoder mGeocoder = new Geocoder(this, Locale.getDefault());
-		if(V) Log.v(TAG, "Locale : " + Locale.getDefault());
+		if(Constants.D) Log.v(TAG, "Locale : " + Locale.getDefault());
 		try {
 			return mGeocoder.getFromLocationName(address, MAX_RESULT);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			if(V) Log.v(TAG, "Exception from getting coordinates from an address: " + e.getLocalizedMessage());
+			if(Constants.D) Log.v(TAG, "Exception from getting coordinates from an address: " + e.getLocalizedMessage());
 			e.printStackTrace();
 		}
 		return null;

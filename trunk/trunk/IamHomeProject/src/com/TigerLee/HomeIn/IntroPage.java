@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 public class IntroPage extends Activity {
 
-	private boolean V = true;
 	private static String TAG = "INTRO";
 	
 	public int mCurrentState;
@@ -38,7 +37,7 @@ public class IntroPage extends Activity {
 			super.handleMessage(msg);
 			switch (msg.what){
 			case TIMEOUT:
-				if(V) Log.v(TAG, "Timeout - finish intro activity");
+				if(Constants.D)  Log.v(TAG, "Timeout - finish intro activity");
 				NextPage();
 				return;
 			}
@@ -83,7 +82,7 @@ public class IntroPage extends Activity {
 			Log.e(TAG, getString(R.string.UnsupportGPS));
 			mCurrentState = DISABLED_GPS;
 			if(!ConnectivityInformation.IsWifiAvailable(this)){//Not support Wifi
-				Log.e(TAG, getString(R.string.UnsupportWifi));
+				if(Constants.D) Log.e(TAG, getString(R.string.UnsupportWifi));
 				mCurrentState = DISABLED_WIFI;
 			}else if(!ConnectivityInformation.IsDataNetworkAvailable(this) && 
 					!ConnectivityInformation.IsWifiAvailable(this)){//Not support data network
@@ -131,7 +130,7 @@ public class IntroPage extends Activity {
 		}
 		
 		// Terminate intro activity
-		if(V) Log.v(TAG, "Terminate intro activity");
+		if(Constants.D)  Log.v(TAG, "Terminate intro activity");
 		finish();
 		
 	}

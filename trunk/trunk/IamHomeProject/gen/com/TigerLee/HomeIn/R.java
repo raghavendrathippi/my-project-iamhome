@@ -13,6 +13,8 @@ public final class R {
         public static final int hold=0x7f040001;
     }
     public static final class array {
+        public static final int apiVals=0x7f070007;
+        public static final int defaultapi=0x7f070006;
         public static final int minDistance=0x7f070002;
         public static final int minDistanceVals=0x7f070003;
         public static final int minTimeIncs=0x7f070000;
@@ -67,48 +69,51 @@ public final class R {
         public static final int intro_home=0x7f02000c;
         public static final int intro_pantech=0x7f02000d;
         public static final int intro_safe=0x7f02000e;
-        public static final int message=0x7f02000f;
-        public static final int popup_btn_r12_all_n=0x7f020010;
-        public static final int popup_btn_r12_all_s=0x7f020011;
-        public static final int popup_line_olivegreen=0x7f020012;
-        public static final int schoolbus=0x7f020013;
-        public static final int second_not_select=0x7f020014;
-        public static final int second_select=0x7f020015;
-        public static final int success=0x7f020016;
-        public static final int tap_arrow=0x7f020017;
-        public static final int third_not_select=0x7f020018;
-        public static final int third_select=0x7f020019;
-        public static final int wifi_icon=0x7f02001a;
+        public static final int marker=0x7f02000f;
+        public static final int message=0x7f020010;
+        public static final int popup_btn_r12_all_n=0x7f020011;
+        public static final int popup_btn_r12_all_s=0x7f020012;
+        public static final int popup_line_olivegreen=0x7f020013;
+        public static final int schoolbus=0x7f020014;
+        public static final int second_not_select=0x7f020015;
+        public static final int second_select=0x7f020016;
+        public static final int success=0x7f020017;
+        public static final int tap_arrow=0x7f020018;
+        public static final int third_not_select=0x7f020019;
+        public static final int third_select=0x7f02001a;
+        public static final int wifi_icon=0x7f02001b;
     }
     public static final class id {
         public static final int CurrentLoacation=0x7f0a0007;
         public static final int DestinationAddress=0x7f0a0008;
         public static final int DisabledConnectivity=0x7f0a0000;
         public static final int GPSSettingButton=0x7f0a0002;
-        public static final int GeocodedLoacation=0x7f0a000a;
+        public static final int GeocodedLoacation=0x7f0a000b;
         public static final int GeocodingButton=0x7f0a0009;
-        public static final int HomeButton=0x7f0a0017;
-        public static final int InputPhoneNumber=0x7f0a000c;
-        public static final int IntroPage=0x7f0a0014;
-        public static final int MainImage=0x7f0a0016;
+        public static final int HomeButton=0x7f0a0018;
+        public static final int InputPhoneNumber=0x7f0a000d;
+        public static final int IntroPage=0x7f0a0015;
+        public static final int MainImage=0x7f0a0017;
+        public static final int MapButton=0x7f0a000a;
         public static final int MessageCONNECTIVITY=0x7f0a0001;
         public static final int MessageGPS=0x7f0a0003;
-        public static final int NextPageto02=0x7f0a000b;
-        public static final int NextPageto03=0x7f0a000f;
+        public static final int NextPageto02=0x7f0a000c;
+        public static final int NextPageto03=0x7f0a0010;
         public static final int Pointer01=0x7f0a0004;
         public static final int Pointer02=0x7f0a0005;
         public static final int Pointer03=0x7f0a0006;
-        public static final int PreviousPageto01=0x7f0a000e;
-        public static final int PreviousPageto02=0x7f0a0013;
-        public static final int ReceiverPhoneNumber=0x7f0a000d;
-        public static final int SchoolButton=0x7f0a0019;
-        public static final int SendSMS=0x7f0a001a;
-        public static final int StartService=0x7f0a0012;
-        public static final int Success=0x7f0a001b;
-        public static final int TextMessageEditText=0x7f0a0011;
-        public static final int TextMessageTextView=0x7f0a0010;
-        public static final int TextView01=0x7f0a0015;
-        public static final int titleDivider=0x7f0a0018;
+        public static final int PreviousPageto01=0x7f0a000f;
+        public static final int PreviousPageto02=0x7f0a0014;
+        public static final int ReceiverPhoneNumber=0x7f0a000e;
+        public static final int SchoolButton=0x7f0a001a;
+        public static final int SendSMS=0x7f0a001c;
+        public static final int StartService=0x7f0a0013;
+        public static final int Success=0x7f0a001d;
+        public static final int TextMessageEditText=0x7f0a0012;
+        public static final int TextMessageTextView=0x7f0a0011;
+        public static final int TextView01=0x7f0a0016;
+        public static final int mapview=0x7f0a001b;
+        public static final int titleDivider=0x7f0a0019;
     }
     public static final class layout {
         public static final int disabled_connectivity=0x7f030000;
@@ -118,7 +123,8 @@ public final class R {
         public static final int homein03=0x7f030004;
         public static final int intro=0x7f030005;
         public static final int mainmenu=0x7f030006;
-        public static final int sms=0x7f030007;
+        public static final int mappicker=0x7f030007;
+        public static final int sms=0x7f030008;
     }
     public static final class string {
         public static final int AlertNotificationMsg=0x7f08000b;
@@ -133,12 +139,13 @@ public final class R {
         public static final int InputSMS=0x7f080004;
         public static final int Latitude=0x7f080015;
         public static final int Longitude=0x7f080016;
+        public static final int MapButton=0x7f08001b;
         public static final int MessageSMS=0x7f080011;
-        public static final int NextPageButton=0x7f08001b;
+        public static final int NextPageButton=0x7f08001c;
         public static final int No=0x7f080014;
         public static final int NoLocation=0x7f08000f;
         public static final int NotValidAddress=0x7f08000e;
-        public static final int PreviousPageButton=0x7f08001c;
+        public static final int PreviousPageButton=0x7f08001d;
         public static final int StartButton=0x7f080018;
         public static final int ToastStart=0x7f080005;
         public static final int UnsupportConnectivity=0x7f080007;

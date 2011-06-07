@@ -29,7 +29,6 @@ public class ConnectivityInformation {
 	public static int DATANETWORK_SERVICE = ConnectivityManager.TYPE_MOBILE;
 
 	
-	private static final Boolean V = true;
 	private static final String TAG = "ConnectivityInfo";
 
 	// Checking turned on and connected Wifi
