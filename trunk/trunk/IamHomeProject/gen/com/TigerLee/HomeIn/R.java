@@ -13,45 +13,82 @@ public final class R {
         public static final int hold=0x7f040001;
     }
     public static final class array {
-        public static final int apiVals=0x7f070007;
-        public static final int defaultapi=0x7f070006;
-        public static final int minDistance=0x7f070002;
-        public static final int minDistanceVals=0x7f070003;
-        public static final int minTimeIncs=0x7f070000;
-        public static final int minTimeVals=0x7f070001;
-        public static final int proxRadius=0x7f070004;
-        public static final int proxRadiusVals=0x7f070005;
+        /**  부산 
+         */
+        public static final int BusanKor=0x7f060009;
+        /**  충북 
+         */
+        public static final int ChoongBookKor=0x7f060010;
+        /**  충남 
+         */
+        public static final int ChoongNamKor=0x7f06000f;
+        /** 대구  
+         */
+        public static final int DaeguKor=0x7f060007;
+        /**  대전 
+         */
+        public static final int DaejeonKor=0x7f060008;
+        public static final int GangKor=0x7f060002;
+        public static final int GwangJuKor=0x7f060006;
+        public static final int GyeongBookKor=0x7f060005;
+        public static final int GyeongKiKor=0x7f060003;
+        /**  경남
+         */
+        public static final int GyeongNamKor=0x7f060004;
+        /**  인천 
+         */
+        public static final int IncheonKor=0x7f06000b;
+        /**  제주 
+         */
+        public static final int JejuKor=0x7f06000e;
+        /**  전북 
+         */
+        public static final int JeonBookKor=0x7f06000d;
+        /**  전남 
+         */
+        public static final int JeonNamKor=0x7f06000c;
+        public static final int SeoulKor=0x7f060001;
+        public static final int UlsanKor=0x7f06000a;
+        public static final int apiVals=0x7f060018;
+        public static final int defaultapi=0x7f060017;
+        public static final int minDistance=0x7f060013;
+        public static final int minDistanceVals=0x7f060014;
+        public static final int minTimeIncs=0x7f060011;
+        public static final int minTimeVals=0x7f060012;
+        public static final int proxRadius=0x7f060015;
+        public static final int proxRadiusVals=0x7f060016;
+        public static final int sidoKor=0x7f060000;
     }
     public static final class attr {
     }
     public static final class color {
-        public static final int after_touch=0x7f060008;
-        public static final int before_touch=0x7f060007;
-        public static final int bg_GPS=0x7f060003;
-        public static final int black=0x7f060000;
-        public static final int colorButtonDimmed=0x7f060018;
+        public static final int after_touch=0x7f070008;
+        public static final int before_touch=0x7f070007;
+        public static final int bg_GPS=0x7f070003;
+        public static final int black=0x7f070000;
+        public static final int colorButtonDimmed=0x7f070018;
         /**   saturn sdk color 
          */
-        public static final int colorGroupNormalBackground=0x7f060009;
-        public static final int colorGroupTouchBackground=0x7f06000a;
-        public static final int colorNumberPicker=0x7f060017;
-        public static final int colorPopupButton=0x7f060016;
-        public static final int colorPopupDescription=0x7f06000d;
-        public static final int colorPopupEditTextLabel=0x7f060013;
-        public static final int colorPopupListBackGround=0x7f060012;
-        public static final int colorPopupListDimmed=0x7f060011;
-        public static final int colorPopupListNormal=0x7f06000f;
-        public static final int colorPopupListTouch=0x7f060010;
-        public static final int colorPopupNameText=0x7f06000e;
-        public static final int colorPopupTextInfo=0x7f060015;
-        public static final int colorPopupTextViewLabel=0x7f060014;
-        public static final int colorPopupTitle=0x7f06000c;
-        public static final int colorTextItem=0x7f06000b;
-        public static final int red=0x7f060001;
-        public static final int test1=0x7f060004;
-        public static final int test2=0x7f060005;
-        public static final int test3=0x7f060006;
-        public static final int white=0x7f060002;
+        public static final int colorGroupNormalBackground=0x7f070009;
+        public static final int colorGroupTouchBackground=0x7f07000a;
+        public static final int colorNumberPicker=0x7f070017;
+        public static final int colorPopupButton=0x7f070016;
+        public static final int colorPopupDescription=0x7f07000d;
+        public static final int colorPopupEditTextLabel=0x7f070013;
+        public static final int colorPopupListBackGround=0x7f070012;
+        public static final int colorPopupListDimmed=0x7f070011;
+        public static final int colorPopupListNormal=0x7f07000f;
+        public static final int colorPopupListTouch=0x7f070010;
+        public static final int colorPopupNameText=0x7f07000e;
+        public static final int colorPopupTextInfo=0x7f070015;
+        public static final int colorPopupTextViewLabel=0x7f070014;
+        public static final int colorPopupTitle=0x7f07000c;
+        public static final int colorTextItem=0x7f07000b;
+        public static final int red=0x7f070001;
+        public static final int test1=0x7f070004;
+        public static final int test2=0x7f070005;
+        public static final int test3=0x7f070006;
+        public static final int white=0x7f070002;
     }
     public static final class drawable {
         public static final int accept=0x7f020000;
