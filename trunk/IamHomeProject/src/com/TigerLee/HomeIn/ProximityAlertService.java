@@ -34,21 +34,15 @@ public class ProximityAlertService extends Service {
 	private LocationListener mGPSLocationListener;
 	
 	private Location mCurrentBestLocation;
+	
 	private Location mGPSCurrentLocation;
 	private Location mGPSPreviousLocation;
+	
 	private Location mNetworkCurrentLocation;
 	private Location mNetworkPreviousLocation;
+	
 	private String mPreviousProvider;
-	
-	
 
-	
-	// To obtain notifications as frequently as possible, set both parameters to 0. 
-	private static final long TWO_KILOMETER = 2000; // in Meters
-	
-	// In particular, values under 60000ms are not recommended. 
-	private static final long TEN_MINUTE = 1000 * 60 * 10; // in Milliseconds
-	
 	private static final int TIME_FOR_VIBRATOR = 500;
 
 	private static final int NOTIFICATION_ID = 1000;
@@ -87,35 +81,31 @@ public class ProximityAlertService extends Service {
 		SharedPreference mSharedPreference = new SharedPreference(this);
 		mAddress = mSharedPreference.getPreferenceAddress();
 		
-		setProximityAlert(mLocationManager);
-		registerIntentFilter();
+		if(Constants.D) Log.v(TAG, "Destination Latitude: " + mAddress.getLatitude());
+		if(Constants.D) Log.v(TAG, "Destination Longitude: " + mAddress.getLongitude());
+		 
 		
-		
+		//setProximityAlert(mLocationManager);
+		//registerIntentFilter();
 	}
-
 	@Override
 	public void onStart(Intent intent, int startId) {
 		// TODO Auto-generated method stub
 		super.onStart(intent, startId);
 	}
-	
-
 	@Override
 	public IBinder onBind(Intent arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		return Service.START_STICKY;
-	}
-	
+	}	
 	private void handleNetworkLocationListener(){		
 		mNetworkLocationListener = new LocationListener() {			
 			@Override
 			public void onStatusChanged(String provider, int status, Bundle extras) {
-				// TODO Auto-generated method stub
 				if(status == LocationProvider.OUT_OF_SERVICE){
 					//setNotification(getString(R.string.VibratorNotificationName),
 					//		getString(R.string.VibratorNotificationMsg));
@@ -123,12 +113,10 @@ public class ProximityAlertService extends Service {
 				if(status == LocationProvider.TEMPORARILY_UNAVAILABLE){
 					//TODO
 				}
-			}
-			
+			}			
 			@Override
 			public void onProviderEnabled(String provider) {
-			}
-			
+			}			
 			@Override
 			public void onProviderDisabled(String provider) {
 				//Notify a user by using a vibrator.
@@ -136,14 +124,12 @@ public class ProximityAlertService extends Service {
 				vibe.vibrate(TIME_FOR_VIBRATOR);
 				setNotification(getString(R.string.VibratorNotificationName),
 						getString(R.string.VibratorNotificationMsg));
-			}
-			
+			}			
 			@Override
 			public void onLocationChanged(Location location) {
 				mNetworkCurrentLocation = location;
 			}
-		};
-		
+		};	
 		mGPSLocationListener = new LocationListener() {
 			@Override
 			public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -151,7 +137,6 @@ public class ProximityAlertService extends Service {
 			@Override
 			public void onProviderEnabled(String provider) {
 			}
-			
 			@Override
 			public void onProviderDisabled(String provider) {
 				//Notify a user by using a vibrator.
@@ -163,6 +148,18 @@ public class ProximityAlertService extends Service {
 			@Override
 			public void onLocationChanged(Location location) {
 				mGPSCurrentLocation = location;
+				Double mDistance = GPSInformation.distance(
+						mGPSCurrentLocation.getLatitude(), 
+						mGPSCurrentLocation.getLongitude(), 
+						mAddress.getLatitude(), 
+						mAddress.getLongitude());
+				mDistance = Math.abs(mDistance);
+				if(Constants.D) Log.v(TAG, "Distance to destination: " + mDistance);
+						
+				if(mDistance < Constants.DISTANCE){
+					destroyService();
+				}
+				
 			}
 		};
 		//Register a listener for location manager. 
@@ -172,8 +169,7 @@ public class ProximityAlertService extends Service {
 		mLocationManager.requestLocationUpdates(
 				LocationManager.GPS_PROVIDER, 0, 0, mGPSLocationListener);
 	}
-
-	
+	/*
 	private void setProximityAlert(LocationManager locationManager) {
 		// Test latitude, longitude
 		// Coordinates of Pantech Building : 37.519793,126.924609
@@ -189,22 +185,25 @@ public class ProximityAlertService extends Service {
 				Constants.PROXY_ALERT_EXPIRATION,
 				proximityIntent);
 	}
+	
 	private void registerIntentFilter() {
 		IntentFilter mIntentfilter = new IntentFilter(Constants.TREASURE_PROXIMITY_ALERT);
 		registerReceiver(mProximityAlertReceiver, mIntentfilter);
 		if(Constants.D) Log.v(TAG, "Register Receiver");
 	}
+	*/
 	@Override
 	public void onDestroy() {
-		mLocationManager.removeProximityAlert(PendingIntent.getBroadcast(
-				this, 0, new Intent(Constants.TREASURE_PROXIMITY_ALERT), 0));
-		unregisterReceiver(mProximityAlertReceiver);
+		//mLocationManager.removeProximityAlert(PendingIntent.getBroadcast(
+		//		this, 0, new Intent(Constants.TREASURE_PROXIMITY_ALERT), 0));
+		//unregisterReceiver(mProximityAlertReceiver);
 		mLocationManager.removeUpdates(mNetworkLocationListener);
 		mLocationManager.removeUpdates(mGPSLocationListener);
-		if(Constants.D) Log.v(TAG, "Unregister Receiver");
+		//if(Constants.D) Log.v(TAG, "Unregister Receiver");
 		super.onDestroy();
 	}	
 	// BroadcastReceiver for ProximityAlertReceiver
+	/*
 	private final BroadcastReceiver mProximityAlertReceiver = new BroadcastReceiver() {
 		private static final String TAG = "ProximityAlertReceiver";
 		@Override
@@ -214,30 +213,22 @@ public class ProximityAlertService extends Service {
 			String mKey = LocationManager.KEY_PROXIMITY_ENTERING;
 			Boolean mIsEntering = intent.getBooleanExtra(mKey, false);
 			if (mIsEntering) {
-				if(Constants.D) Log.v(TAG, "IamHome!");
-				// Stop ProximityAlertService
-				setNotification(getString(R.string.AlertNotificationName), 
-						getString(R.string.AlertNotificationMsg));
-				stopSelf();
-				// Start an Activity for sending a message.
-				Intent sendingMsgIntent = new Intent(context,
-						SendTextMessage.class);
-				sendingMsgIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(sendingMsgIntent);
+				
 			} else {
 				//TODO something for an opposite action.
 				if(Constants.D) Log.v(TAG, "Exiting Home! " + mIsEntering);
-			}			/*
-			 * Generating a notification message when reaching home. 1. Get a
-			 * notification instance & a pending intent 2. Call
-			 * createNotification() - set custom notification. 3. set a message
-			 * then notify.
-			 */
+			}			
 			
 
 		}
 	};
-	
+	*/
+	/*
+	 * Generating a notification message when reaching home. 1. Get a
+	 * notification instance & a pending intent 2. Call
+	 * createNotification() - set custom notification. 3. set a message
+	 * then notify.
+	 */
 	private Notification createNotification() {
 
 		Notification notification = new Notification();
@@ -289,13 +280,23 @@ public class ProximityAlertService extends Service {
 		}		
 		mGPSPreviousLocation = location;
 		mPreviousProvider = LocationManager.GPS_PROVIDER;
-					
 		if(mPreviousProvider.equals(LocationManager.GPS_PROVIDER)){
 			
 		}
 		mNetworkPreviousLocation = location;
 		mPreviousProvider = LocationManager.NETWORK_PROVIDER;
-	
 		return location;
+	}
+	public void destroyService(){
+		if(Constants.D) Log.v(TAG, "IamHome!");
+		// Stop ProximityAlertService
+		setNotification(getString(R.string.AlertNotificationName), 
+				getString(R.string.AlertNotificationMsg));
+		stopSelf();
+		// Start an Activity for sending a message.
+		Intent sendingMsgIntent = new Intent(this,
+				SendTextMessage.class);
+		sendingMsgIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(sendingMsgIntent);
 	}
 }

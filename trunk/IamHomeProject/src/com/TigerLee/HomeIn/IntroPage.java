@@ -8,9 +8,6 @@ import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class IntroPage extends Activity {
