@@ -1,15 +1,8 @@
 package com.TigerLee.HomeIn;
 
 import android.content.Context;
-import android.content.Intent;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.provider.Settings;
-import android.util.Log;
-import android.widget.Toast;
 
 /*
  * This class is for checking Connectivity state like Wifi and data network.

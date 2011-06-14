@@ -333,7 +333,7 @@ public class HomeIn01 extends Activity {
      */
      
 	public Address getGeocodedAddress(String address){
-		return NativeGeocoder.getAddress(NativeGeocoder.getLocationInfo(address, Constants.GOOGLE_API));
+		return NativeGeocoder.getGeocodedAddress(address);
    }
 	 
 	

@@ -1,10 +1,7 @@
 package com.TigerLee.HomeIn;
 
 import java.io.IOException;
-
-
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.Locale;
 
 import org.apache.http.HttpEntity;
@@ -13,22 +10,19 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.location.Address;
-/*
- * This class is for Geocoding with Google. 
- * Emulator does not work Geocode class. (Actual device works very well)  
- * See Issue 8816:	service not available. - http://code.google.com/p/android/issues/detail?id=8816#makechanges
- * Therefore, we need to create this NativeGeocoder class for geocoding.   
- */
+import android.util.Log;
 
 public class NativeGeocoder {
 	
+	public static Address mAddress;
+	
 	//Static String for Google, Naver, Daum Maps API.
-	public static String GoogleMapAPI = "http://maps.google.com/maps/api/geocode/json?address=";
+	public static String GoogleMapAPI = "http://maps.google.com/maps/api/geocode/xml?address=";
 	
 	public static String DaumMapKey = "1176f6b78db03f01382ee44afe2f82b98b8b899d";
 	public static String DaumMapAPI = "http://apis.daum.net/maps/addr2coord?apikey=" + DaumMapKey;
@@ -36,35 +30,68 @@ public class NativeGeocoder {
 	// EXAMPLE : http://map.naver.com/api/geocode.php?key=8c36c72309be8ab6abd5d527cb472e0f&encoding=utf-8&coord=tm128&query=blahblah
 	public static String NaverMapKey = "key=8c36c72309be8ab6abd5d527cb472e0f";
 	public static String NaverEcodingType = "encoding=utf-8";
-	public static String NaverCoordType = "coord=tm128";
+	public static String NaverCoordType = "coord=latlng";
 	public static String NaverMapAPI = "http://map.naver.com/api/geocode.php" 
 		+ "?" + NaverMapKey 
 		+ "&" + NaverEcodingType
 		+ "&" + NaverCoordType;
 	
-	public static String getLocationInfo(String address, int whichAPI) {
+	private static final String TAG = "NativeGeocoder";
+	
+	public static Address getGeocodedAddress(String address) {
+		boolean isResultOK = false;
+		String mURI;
+		mAddress = new Address(Locale.getDefault());
 		
-		//All space in address should be removed to create URI.
+		//All space & enter in address fields should be removed to create URI.
 		address = address.replace(" ", "+");
-		
-		HttpGet mHttpGet = null;
-		
-		switch (whichAPI) {
-		case Constants.GOOGLE_API:
-			mHttpGet = new HttpGet(GoogleMapAPI + address + "ka&sensor=false");
-			break;
-		case Constants.DAUM_API:
-			mHttpGet = new HttpGet(DaumMapAPI + "&q="+address+ "&output=json");
-			break;
-		case Constants.NAVER_API:
-			mHttpGet = new HttpGet(NaverMapAPI + "&query="+address);
-			break;
-		}		
+		address = address.replace("\n", "+");
 		
 		HttpClient mHttpClient = new DefaultHttpClient();
 		HttpResponse mHttpResponse;
-		StringBuilder mStringBuilder = new StringBuilder();
-
+		HttpGet mHttpGet = null;
+		HttpEntity mHttpEntity;
+		InputStream mInputStream;
+		try{
+			mURI = DaumMapAPI + "&q="+address+ "&output=xml";
+			mHttpGet = new HttpGet(mURI);
+			mHttpResponse = mHttpClient.execute(mHttpGet);
+			mHttpEntity = mHttpResponse.getEntity();
+			mInputStream = mHttpEntity.getContent();
+			isResultOK = Geocoding(mInputStream, Constants.DAUM_LNG_TAG, Constants.DAUM_LAT_TAG, Constants.DAUM_ADDRESS_TAG);
+			if(isResultOK){
+				if(Constants.D) Log.v(TAG, "DAUM OK");
+				return mAddress;
+			}
+			mURI = NaverMapAPI + "&query="+address;
+			mHttpGet = new HttpGet(mURI);
+			mHttpResponse = mHttpClient.execute(mHttpGet);
+			mHttpEntity = mHttpResponse.getEntity();
+			mInputStream = mHttpEntity.getContent();
+			isResultOK = Geocoding(mInputStream, Constants.NAVER_LNG_TAG, Constants.NAVER_LAT_TAG, Constants.NAVER_ADDRESS_TAG);
+			if(isResultOK){
+				if(Constants.D) Log.v(TAG, "NAVER OK");
+				return mAddress;
+			}
+			mURI =GoogleMapAPI + address + "&ka&sensor=false";
+			mHttpGet = new HttpGet(mURI);
+			mHttpResponse = mHttpClient.execute(mHttpGet);
+			mHttpEntity = mHttpResponse.getEntity();
+			mInputStream = mHttpEntity.getContent();
+			isResultOK = Geocoding(mInputStream, Constants.GOOGLE_LNG_TAG, Constants.GOOGLE_LAT_TAG, Constants.GOOGLE_ADDRESS_TAG);
+			if(isResultOK){
+				if(Constants.D) Log.v(TAG, "GOOGLE OK");
+				return mAddress;
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+		/*
 		try {
 			mHttpResponse = mHttpClient.execute(mHttpGet);
 			HttpEntity mHttpEntity = mHttpResponse.getEntity();
@@ -78,49 +105,109 @@ public class NativeGeocoder {
 		} catch (IOException e) {
 			
 		}
-		return mStringBuilder.toString();		
+		return mStringBuilder.toString();
+		*/		
 	}
 	
-	public static JSONObject getJsonObject(String mAddressBuilder){
+	public static boolean Geocoding(InputStream inputStream, String LNG_TAG, String LAT_TAG, String ADDRESS_TAG){
+		
+		Double mLongitude = null;
+		Double mLatitude = null;
+		String mFormattedAddress = null;
+		
+		XmlPullParserFactory mXmlPullParserFactory;
+		try {
+			mXmlPullParserFactory = XmlPullParserFactory.newInstance();
+			XmlPullParser mXmlPullParser = mXmlPullParserFactory.newPullParser();
+			mXmlPullParser.setInput(inputStream, null);
+			int mEventType = mXmlPullParser.getEventType();
+			int mIndexTotal = 0;
+			String tag;
+			boolean isTitleLng = false;   
+			boolean isTitleLat = false;
+			boolean isTitleAddress = false;
+			while (mEventType != XmlPullParser.END_DOCUMENT ){
+				switch(mEventType){
+					case XmlPullParser.TEXT:
+						if (isTitleAddress) {
+							mFormattedAddress = mXmlPullParser.getText();
+							mIndexTotal++;
+						}
+						if (isTitleLng) {
+							mLongitude = Double.valueOf(mXmlPullParser.getText());
+							mIndexTotal++;
+						}
+						if(isTitleLat){
+							mLatitude = Double.valueOf(mXmlPullParser.getText());
+							mIndexTotal++;
+						}						
+						break;
+					case XmlPullParser.END_TAG:		
+						tag = mXmlPullParser.getName();
+						if (tag.compareTo(LNG_TAG) == 0 || tag.compareTo(LAT_TAG) == 0 || tag.compareTo(ADDRESS_TAG) == 0) {
+							isTitleAddress = false;
+							isTitleLng = false;
+							isTitleLat = false;
+							if(mIndexTotal == 3){
+								mAddress.setLongitude(mLongitude);
+								mAddress.setLatitude(mLatitude);
+								mAddress.setAddressLine(1, mFormattedAddress);
+								return true;
+							}
+						}
+						break;
+					case XmlPullParser.START_TAG:
+						tag = mXmlPullParser.getName();
+						if (tag.compareTo(ADDRESS_TAG) == 0){
+							isTitleAddress = true;
+						}
+						if (tag.compareTo(LNG_TAG) == 0){
+							isTitleLng = true;
+						}
+						if(tag.compareTo(LAT_TAG) == 0) {
+							isTitleLat = true;
+						}
+						break;
+				}
+				mEventType = mXmlPullParser.next();
+			}
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
+	/*
+	public static Address getAddressWithGoogleAPI(String mAddressBuilder){
 		JSONObject mJsonObject = new JSONObject();
 		try {
 			mJsonObject = new JSONObject(mAddressBuilder);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-		return mJsonObject;		
-	}
-	
-	
-	//public static Address getGeoPoint(JSONObject jsonObject) {
-	public static Address getAddress(String addressBuilder) {
-		JSONObject jsonObject = getJsonObject(addressBuilder);
-		
-		Address mAddress = new Address(Locale.getDefault());
-		
 		Double mLongitude = new Double(0);
 		Double mLatitude = new Double(0);
-		
-		Double mDaumLong = new Double(0);
-		Double mDaumLat = new Double(0);
-		
 		String mFormattedAddress = null;
 				
 		try {
-			mFormattedAddress = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
+			mFormattedAddress = ((JSONArray)mJsonObject.get("results")).getJSONObject(0)
 			.getString("formatted_address");
 	
 			//mDaumLong = ((JSONArray)jsonObject.get("item")).getJSONObject(0).getDouble("lng");
 		
-			mLongitude = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
+			mLongitude = ((JSONArray)mJsonObject.get("results")).getJSONObject(0)
 				.getJSONObject("geometry").getJSONObject("location")
 				.getDouble("lng");
 
 			//mDaumLat = ((JSONArray)jsonObject.get("channel")).getJSONObject(0)
 			//.getJSONObject("item").getDouble("lat");
 			
-			mLatitude = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
+			mLatitude = ((JSONArray)mJsonObject.get("results")).getJSONObject(0)
 				.getJSONObject("geometry").getJSONObject("location")
 				.getDouble("lat");
 			
@@ -132,13 +219,10 @@ public class NativeGeocoder {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		mAddress.setLongitude(mLongitude);
 		mAddress.setLatitude(mLatitude);
 		mAddress.setAddressLine(1, mFormattedAddress);
-		
-		
-		return mAddress;
-	}	
-
+		return mAddress;	
+	}
+	*/
 }
