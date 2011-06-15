@@ -29,11 +29,14 @@
         </activity>
         
         <activity android:name=".MainMenu"/>
+        <activity android:name=".HomeIn01"/>        
         <activity android:name=".GoogleMapPicker"/>
-        <activity android:name=".HomeIn01"/>
+        <activity android:name=".CustomDialogActivity"
+        	android:theme="@style/Theme.CustomDialog"/>
         <activity android:name=".HomeIn02"/>
         <activity android:name=".HomeIn03"/>
         <activity android:name=".SendTextMessage"/>
+        
         <service 
        		android:enabled="true" 
        		android:name=".ProximityAlertService"/>

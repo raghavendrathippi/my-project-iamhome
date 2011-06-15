@@ -49,7 +49,9 @@ public class GoogleMapPicker extends MapActivity {
 	protected void onCreate(Bundle icicle) {
 		// TODO Auto-generated method stub
 		super.onCreate(icicle);
-		
+		Intent mDialogIntent = new Intent();
+		mDialogIntent.setClass(this, CustomDialogActivity.class);
+		startActivity(mDialogIntent);
 		Log.v(TAG, "onCreate()");
 		
 		setContentView(R.layout.mappicker);
@@ -69,6 +71,7 @@ public class GoogleMapPicker extends MapActivity {
 		
 		Double mLatitude = intent.getDoubleExtra("LATITUDE", 0.0) * 1E6;
 		Double mLongitude = intent.getDoubleExtra("LONGITUDE", 0.0) * 1E6;
+		String mFormattedAddress = intent.getStringExtra("ADDRESS");
 		
 		if(Constants.D) Log.v(TAG, "Received Point(Double):" + mLatitude + mLongitude);
 		

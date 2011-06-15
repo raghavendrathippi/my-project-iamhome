@@ -6,6 +6,8 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
@@ -31,8 +33,10 @@ public class HomeIn01 extends Activity {
     /** Called when the activity is first created. */
 	
 	private Location mLocation;
-	public Address mGeocodedAddress;
+	public Address mGeocodedAddress = null;
 	private Context mContext = this;
+	
+	private static final int PROGRESS_DIALOG = 1;
 	public int mDownX = 0;
 	
 	public Cursor mCursor;
@@ -51,45 +55,13 @@ public class HomeIn01 extends Activity {
         setContentView(R.layout.homein01);
         
         // Get LocationMager & Current Location.
-		LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		
-		String mProvider = GPSInformation.getProviderGPS(this);
-		
+		LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);		
+		String mProvider = GPSInformation.getProviderGPS(this);		
 		mLocation = mLocationManager.getLastKnownLocation(mProvider);
 		
 		// Write your current position to a textView.
         getCurrentLocation(mLocation);
-        new AlertDialog.Builder(this)
-        .setTitle("Alerting")
-        .setMessage("")
-        .setOnKeyListener(new OnKeyListener() {
-			
-			@Override
-			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-				// TOD	O Auto-generated method stub
-				if(keyCode == KeyEvent.KEYCODE_SEARCH)
-					return false;
-				return false;
-			}
-		})
-        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int which) {
-            
-        }
-        })
-        .setCancelable(false)
-        .show();
-        /*
-         * Database which has stored an address data in Korea is not available currently.
-         * 
         
-        String[] mColumnArray = {"sido"};
-        
-        mCursor = getRAWAddressList("select distinct sido from korea;", null);
-        for(int i = 0; i < mCursor.getColumnCount(); i++){
-        	Log.v(TAG,mCursor.getColumnName(i));
-        }
-         */
         
         //Transform Address to Coordinates
         final EditText mDestinationAddress = (EditText) findViewById(R.id.DestinationAddress);
@@ -99,15 +71,16 @@ public class HomeIn01 extends Activity {
         mGeocodingButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				//Create Progress Dialog
+				showDialog(PROGRESS_DIALOG);
 				mGeocodedAddress = getGeocodedAddress(mDestinationAddress.getText().toString());
 				//List<Address> mListAddress = getCoordinatesFromAddress(mDestinationAddress.getText().toString());
 				
+				//Remove Progress dialog
+				removeDialog(PROGRESS_DIALOG);
 				if(mGeocodedAddress != null){
-				//if(!mListAddress.isEmpty()){
 					String mTitle = getString(R.string.DialogTitle);
-					
-					//mGeocodedAddress = mListAddress.get(0);
-					
+					//mGeocodedAddress = mListAddress.get(0);				
 					String mMessage = getString(R.string.Latitude) 
 					+ mGeocodedAddress.getLatitude()
 					+ "\n"
@@ -123,18 +96,16 @@ public class HomeIn01 extends Activity {
 					if(Constants.D) Log.v(TAG, "Lat: " + mGeocodedAddress.getLatitude() +
 							"Lng :" + mGeocodedAddress.getLongitude() + 
 							" Addr :"+ asd);
-					
-					
-					createAlertDialog(mTitle, mMessage);
+					//createAlertDialog(mTitle, mMessage);
 				}else{
 					//Not available to geocode an address.
 					Toast.makeText(HomeIn01.this, 
 							getString(R.string.NotValidAddress), 
 							Toast.LENGTH_LONG).show();
 				}
+				GoogleMapPage();
 			}
 		});
-        
         Button mMapButton = (Button) findViewById(R.id.MapButton);
         mMapButton.setOnClickListener(new OnClickListener() {
 			
@@ -143,7 +114,7 @@ public class HomeIn01 extends Activity {
 				if(mGeocodedAddress == null){
 					return;
 				}else{
-					GoogleMapPage();
+					//GoogleMapPage();
 				}
 			}
 		});
@@ -177,7 +148,20 @@ public class HomeIn01 extends Activity {
 		return mDatabaseAdapter.rawQuery(sql, selectionCondition);
 	}
    */
-    
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+			case PROGRESS_DIALOG:
+				ProgressDialog dialog = new ProgressDialog(this);
+	            dialog.setMessage("Please wait while loading...");
+	            dialog.setIndeterminate(true);
+	            dialog.setCancelable(false);
+	            return dialog;
+		}
+		return null;
+	}
+	
+	
 	private void getCurrentLocation(Location location) {
 		String mLocationString = getString(R.string.NoLocation);
 		
@@ -292,9 +276,8 @@ public class HomeIn01 extends Activity {
 		
 		intent.putExtra("LONGITUDE", mGeocodedAddress.getLongitude());
 		intent.putExtra("LATITUDE", mGeocodedAddress.getLatitude());
-		
+		intent.putExtra("ADDRESS", mGeocodedAddress.getAddressLine(1));
 		startActivity(intent);
-		overridePendingTransition(R.anim.hold, R.anim.fade);
 	}	
 	
 	@Override

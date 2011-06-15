@@ -44,5 +44,9 @@
 	<string name="NextPageButton">"Next page"</string>
 	<string name="PreviousPageButton">Previous page</string>
 	
+	<string name="custom_dialog_activity_text">Please make sure your destination.
+	Marker will be placed at searched address.
+	Please make long tap at your correct destination.</string>
+	
 	
 </resources>
