@@ -41,4 +41,7 @@
 	<string name="MapButton">목적지 맵으로 확인!</string>
 	<string name="NextPageButton">다음 페이지</string>
 	<string name="PreviousPageButton">이전 페이지</string>
+	
+	<string name="custom_dialog_activity_text">검색된 결과에 따라 목적지가 표시됩니다. 현재 목적지가
+	다르다면 	원하는 목적지에서 길게 눌러주시면 목적지가 변하게 됩니다.</string>
 </resources>
