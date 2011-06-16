@@ -1,4 +1,4 @@
-package com.TigerLee.HomeIn;
+package com.TigerLee.HomeIn.activity;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class MapItemizedOverlay extends ItemizedOverlay{
 
 	
 	public MapItemizedOverlay(Drawable defaultMarker) {
-		super(boundCenterBottom(defaultMarker)	);
+		super(boundCenterBottom(defaultMarker));
 		// TODO Auto-generated constructor stub
 	}
 
@@ -31,6 +31,6 @@ public class MapItemizedOverlay extends ItemizedOverlay{
 	public void addOverlay(OverlayItem overlay) { 
 	     mOverlays.add(overlay); 
 	     populate(); 
-	 }
+	}
 
 }

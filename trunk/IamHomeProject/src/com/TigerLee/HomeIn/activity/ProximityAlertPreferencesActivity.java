@@ -1,4 +1,6 @@
-package com.TigerLee.HomeIn;
+package com.TigerLee.HomeIn.activity;
+
+import com.TigerLee.HomeIn.R;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

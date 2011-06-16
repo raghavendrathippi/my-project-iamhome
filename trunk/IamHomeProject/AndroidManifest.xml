@@ -21,25 +21,25 @@
     	
       <uses-library android:name="com.google.android.maps"/>
       
-		<activity android:name=".IntroPage">
+		<activity android:name=".activity.IntroPage">
 			<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         
-        <activity android:name=".MainMenu"/>
-        <activity android:name=".HomeIn01"/>        
-        <activity android:name=".GoogleMapPicker"/>
-        <activity android:name=".CustomDialogActivity"
+        <activity android:name=".activity.MainMenu"/>
+        <activity android:name=".activity.HomeIn01"/>        
+        <activity android:name=".activity.GoogleMapPicker"/>
+        <activity android:name=".activity.CustomDialogActivity"
         	android:theme="@style/Theme.CustomDialog"/>
-        <activity android:name=".HomeIn02"/>
-        <activity android:name=".HomeIn03"/>
-        <activity android:name=".SendTextMessage"/>
+        <activity android:name=".activity.HomeIn02"/>
+        <activity android:name=".activity.HomeIn03"/>
+        <activity android:name=".activity.SendTextMessage"/>
         
         <service 
        		android:enabled="true" 
-       		android:name=".ProximityAlertService"/>
+       		android:name=".service.ProximityAlertService"/>
        
     </application>
 

@@ -1,4 +1,4 @@
-package com.TigerLee.HomeIn;
+package com.TigerLee.HomeIn.util;
 
 import android.content.ContentValues;
 import android.content.Context;

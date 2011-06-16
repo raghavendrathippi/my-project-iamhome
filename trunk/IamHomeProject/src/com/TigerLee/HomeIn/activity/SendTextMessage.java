@@ -1,4 +1,8 @@
-package com.TigerLee.HomeIn;
+package com.TigerLee.HomeIn.activity;
+
+import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.util.Constants;
+import com.TigerLee.HomeIn.util.SharedPreference;
 
 import android.app.Activity;
 import android.app.PendingIntent;

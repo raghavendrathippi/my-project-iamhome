@@ -47,6 +47,9 @@
 	<string name="custom_dialog_activity_text">Please make sure your destination.
 	Marker will be placed at searched address.
 	Please make long tap at your correct destination.</string>
+	<string name="LoadingMsg">"Please wait while loading..."</string>
+	<string name="ConfirmMsg">"Are you sure to set here as destination address?"</string>
+	
 	
 	
 </resources>

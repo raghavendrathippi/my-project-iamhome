@@ -1,6 +1,7 @@
-package com.TigerLee.HomeIn;
+package com.TigerLee.HomeIn.util;
 
 import java.util.Locale;
+
 
 import android.app.Activity;
 import android.content.Context;

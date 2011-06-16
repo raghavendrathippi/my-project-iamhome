@@ -1,6 +1,12 @@
-package com.TigerLee.HomeIn;
+package com.TigerLee.HomeIn.service;
 
 import java.util.Locale;
+
+import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.activity.SendTextMessage;
+import com.TigerLee.HomeIn.util.Constants;
+import com.TigerLee.HomeIn.util.GPSInformation;
+import com.TigerLee.HomeIn.util.SharedPreference;
 
 import android.app.Notification;
 import android.app.NotificationManager;
