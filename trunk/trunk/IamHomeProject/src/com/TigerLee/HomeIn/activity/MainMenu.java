@@ -1,4 +1,8 @@
-package com.TigerLee.HomeIn;
+package com.TigerLee.HomeIn.activity;
+
+import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.util.Constants;
+import com.TigerLee.HomeIn.util.GPSInformation;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package com.TigerLee.HomeIn;
+package com.TigerLee.HomeIn.util;
 
 public class Constants {
 	
@@ -15,6 +15,11 @@ public class Constants {
 	public static final String GOOGLE_ADDRESS_TAG = "formatted_address";
 	
 	public static final double DISTANCE = 10; // in Meters
+	
+	public static final int DESTROY_ACTIVITY = 0;
+	public static int FIVE_SECOND = 1000 * 5;
+
+	public static final int MAX_RESULT_GEOCODING = 1;
 	
 	public static boolean D = true;
 

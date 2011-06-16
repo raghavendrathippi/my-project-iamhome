@@ -1,7 +1,8 @@
-package com.TigerLee.HomeIn;
+package com.TigerLee.HomeIn.Geocoder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.http.HttpEntity;
@@ -14,7 +15,11 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import com.TigerLee.HomeIn.util.Constants;
+
 import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.util.Log;
 
 public class NativeGeocoder {
@@ -225,4 +230,5 @@ public class NativeGeocoder {
 		return mAddress;	
 	}
 	*/
+	
 }

@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package com.TigerLee.HomeIn;
+package com.TigerLee.HomeIn.activity;
 
 // Need the following import to get access to the app resources, since this
 // class is in a sub-package.
 
+import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.util.Constants;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 
 /**
  * <h3>Dialog Activity</h3>
@@ -36,8 +40,7 @@ public class CustomDialogActivity extends Activity {
      * call {@link android.app.Activity#setContentView setContentView()} to
      * describe what is to be displayed in the screen.
      */
-	protected static final int DESTROY_ACTIVITY = 0;
-	private static int TWO_SECOND = 1000 * 2;
+	
 	
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +51,19 @@ public class CustomDialogActivity extends Activity {
         // view layout definition, which is being set here as
         // the content of our screen.
         setContentView(R.layout.custom_dialog_activity);
-        mHandler.sendMessageDelayed(mHandler.obtainMessage(DESTROY_ACTIVITY), TWO_SECOND);
+        mHandler.sendMessageDelayed(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY), Constants.FIVE_SECOND);
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// Skip back key when showing intro activity
+		if(keyCode == KeyEvent.KEYCODE_BACK)
+			return false;
+		return super.onKeyDown(keyCode, event);
     }
     private Handler mHandler = new Handler(){
     	public void handleMessage(android.os.Message msg) {
     		switch (msg.what) {
-			case DESTROY_ACTIVITY:
+			case Constants.DESTROY_ACTIVITY:
 				finish();
 				break;
 			default:

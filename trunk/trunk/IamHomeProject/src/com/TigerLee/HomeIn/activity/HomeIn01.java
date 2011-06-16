@@ -1,8 +1,4 @@
-package com.TigerLee.HomeIn;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+package com.TigerLee.HomeIn.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,14 +6,14 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -28,26 +24,46 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.Geocoder.NativeGeocoder;
+import com.TigerLee.HomeIn.util.Constants;
+import com.TigerLee.HomeIn.util.GPSInformation;
+import com.TigerLee.HomeIn.util.SharedPreference;
+
 
 public class HomeIn01 extends Activity {
     /** Called when the activity is first created. */
 	
 	private Location mLocation;
 	public Address mGeocodedAddress = null;
-	private Context mContext = this;
-	
-	private static final int PROGRESS_DIALOG = 1;
 	public int mDownX = 0;
+	
 	
 	public Cursor mCursor;
 	
 	public TextView mGeocodedLoacation;
 	
-	//Maximum result of addresses after transferring geocoding
-	private static int MAX_RESULT = 1;
-
-	private static final String TAG = "HomeIn01";
+	private Context mContext = this;
+	private static final int PROGRESS_DIALOG = 1;
+	private static final int MAP_REQUEST = 0;
 	
+	private static final String TAG = "HomeIn01";
+	private Handler mHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			switch(msg.what){	
+				case Constants.DESTROY_ACTIVITY:
+					//Remove Progress dialog
+					removeDialog(PROGRESS_DIALOG);
+					break;
+				default:
+					break;
+			}
+			
+			super.handleMessage(msg);
+		}
+		
+	};
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,12 +89,12 @@ public class HomeIn01 extends Activity {
 			public void onClick(View v) {
 				//Create Progress Dialog
 				showDialog(PROGRESS_DIALOG);
-				mGeocodedAddress = getGeocodedAddress(mDestinationAddress.getText().toString());
+				
+				mGeocodedAddress = NativeGeocoder.getGeocodedAddress(mDestinationAddress.getText().toString());
 				//List<Address> mListAddress = getCoordinatesFromAddress(mDestinationAddress.getText().toString());
 				
-				//Remove Progress dialog
-				removeDialog(PROGRESS_DIALOG);
-				if(mGeocodedAddress != null){
+				
+				if(mGeocodedAddress != null){					
 					String mTitle = getString(R.string.DialogTitle);
 					//mGeocodedAddress = mListAddress.get(0);				
 					String mMessage = getString(R.string.Latitude) 
@@ -96,14 +112,16 @@ public class HomeIn01 extends Activity {
 					if(Constants.D) Log.v(TAG, "Lat: " + mGeocodedAddress.getLatitude() +
 							"Lng :" + mGeocodedAddress.getLongitude() + 
 							" Addr :"+ asd);
+					mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
+					GoogleMapPage();
 					//createAlertDialog(mTitle, mMessage);
 				}else{
 					//Not available to geocode an address.
-					Toast.makeText(HomeIn01.this, 
-							getString(R.string.NotValidAddress), 
+					mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
+					Toast.makeText(HomeIn01.this, getString(R.string.NotValidAddress), 
 							Toast.LENGTH_LONG).show();
 				}
-				GoogleMapPage();
+				
 			}
 		});
         Button mMapButton = (Button) findViewById(R.id.MapButton);
@@ -153,7 +171,7 @@ public class HomeIn01 extends Activity {
 		switch (id) {
 			case PROGRESS_DIALOG:
 				ProgressDialog dialog = new ProgressDialog(this);
-	            dialog.setMessage("Please wait while loading...");
+	            dialog.setMessage(getString(R.string.LoadingMsg));
 	            dialog.setIndeterminate(true);
 	            dialog.setCancelable(false);
 	            return dialog;
@@ -201,21 +219,6 @@ public class HomeIn01 extends Activity {
 		*/
 	}
 	
-    public List<Address> getAddressFromCoordaniates(Location location){
-    	
-    	Geocoder mGeocoder = new Geocoder(this, Locale.getDefault());
-    	
-    	try{
-    		return mGeocoder.getFromLocation(
-    				mLocation.getLatitude(), 
-    				mLocation.getLongitude(), 
-    				MAX_RESULT);
-    		
-    	}catch(IOException e){
-    		e.printStackTrace();
-    	}
-    	return null;
-    }
     
 	public void createAlertDialog(String title, final String message){
 		AlertDialog mAlertDialog = new AlertDialog.Builder(this)
@@ -263,7 +266,8 @@ public class HomeIn01 extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 	
-	public void NextPage(){
+	
+    public void NextPage(){
 		Intent intent = new Intent();
 		intent.setClass(this, HomeIn02.class);
 		startActivity(intent);
@@ -273,53 +277,28 @@ public class HomeIn01 extends Activity {
 	public void GoogleMapPage(){
 		Intent intent = new Intent();
 		intent.setClass(this, GoogleMapPicker.class);
-		
 		intent.putExtra("LONGITUDE", mGeocodedAddress.getLongitude());
 		intent.putExtra("LATITUDE", mGeocodedAddress.getLatitude());
 		intent.putExtra("ADDRESS", mGeocodedAddress.getAddressLine(1));
-		startActivity(intent);
-	}	
+		startActivityForResult(intent, MAP_REQUEST);
+	}
 	
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	// TODO Auto-generated method stub
+    	if(resultCode == RESULT_OK){
+    		if(requestCode == MAP_REQUEST){
+    			Intent intent = getIntent();
+    			intent.getDoubleExtra("LONGITUDE", mGeocodedAddress.getLongitude());
+    			intent.getDoubleExtra("LATITUDE", mGeocodedAddress.getLatitude());
+    		}
+    	}
+    	super.onActivityResult(requestCode, resultCode, data);
+    }	
+    
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-	}
-	
-	
-		
-	
-	/*
-     * If you are not going to use a emulator, you can use these methods.
-     * There are bugs to use Geocoder class for the emulator, therefore it is only available in actual device.
-     *
-     */
-	public List<Address> getCoordinatesFromAddress(String address){
-		
-		Geocoder mGeocoder = new Geocoder(this, Locale.getDefault());
-		if(Constants.D) Log.v(TAG, "Locale : " + Locale.getDefault());
-		try {
-			return mGeocoder.getFromLocationName(address, MAX_RESULT);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			if(Constants.D) Log.v(TAG, "Exception from getting coordinates from an address: " + e.getLocalizedMessage());
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	
-	/*
-     * If you are testing wih a emulator, you can use these methods.
-     * Please enable NativeGeocoder Class.
-     *
-     */
-     
-	public Address getGeocodedAddress(String address){
-		return NativeGeocoder.getGeocodedAddress(address);
-   }
-	 
-	
-	
-	
+	}	
 }

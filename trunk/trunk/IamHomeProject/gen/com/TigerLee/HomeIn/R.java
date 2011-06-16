@@ -169,6 +169,7 @@ public final class R {
     public static final class string {
         public static final int AlertNotificationMsg=0x7f08000b;
         public static final int AlertNotificationName=0x7f08000a;
+        public static final int ConfirmMsg=0x7f080020;
         public static final int CurrentLocation=0x7f080010;
         public static final int DialogTitle=0x7f080012;
         public static final int EndButton=0x7f080019;
@@ -178,6 +179,7 @@ public final class R {
         public static final int InputPhoneNumber=0x7f080003;
         public static final int InputSMS=0x7f080004;
         public static final int Latitude=0x7f080015;
+        public static final int LoadingMsg=0x7f08001f;
         public static final int Longitude=0x7f080016;
         public static final int MapButton=0x7f08001b;
         public static final int MessageSMS=0x7f080011;

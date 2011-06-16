@@ -1,4 +1,5 @@
-package com.TigerLee.HomeIn;
+package com.TigerLee.HomeIn.util;
+
 
 import android.content.Context;
 import android.location.Criteria;
@@ -44,8 +45,7 @@ public class GPSInformation {
 		
 		
 		// Cannot catch a signal from GPS.
-		if (mLocation == null) {
-			
+		if (mLocation == null) {			
 			if(Constants.D)  Log.v(TAG, "Cannot get a signal from GPS.");
 			mCriteria.setAccuracy(Criteria.ACCURACY_COARSE);
 			mCriteria.setPowerRequirement(Criteria.POWER_HIGH);
