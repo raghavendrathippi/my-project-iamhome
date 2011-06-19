@@ -34,26 +34,13 @@
 		android:layout_weight="1"/>
 </LinearLayout>
 
-<TextView 
-	android:id="@+id/TextMessageTextView" 
-	android:text="@string/InputSMS"
-	android:layout_width="match_parent" 
-	android:layout_height="wrap_content"></TextView>
+
 	
-<EditText 
-	android:id="@+id/TextMessageEditText" 
-	android:layout_width="match_parent" 
-	android:layout_height="wrap_content"></EditText>
-	
-<Button 
-	android:id="@+id/StartService"
-	android:text="@string/StartButton"
-	android:layout_width="match_parent" 
-	android:layout_height="wrap_content"/>
+
 	
 <Button 
 	android:id="@+id/PreviousPageto02"
-	android:text="@string/PreviousPageButton"
+	android:text="@string/bt_PreviousPage"
 	android:layout_width="wrap_content" 
 	android:layout_height="wrap_content"/>
 </LinearLayout>

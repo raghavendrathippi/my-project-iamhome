@@ -1,8 +1,6 @@
 package com.TigerLee.HomeIn.activity;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,16 +9,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Toast;
 
 import com.TigerLee.HomeIn.R;
@@ -75,9 +67,9 @@ public class GoogleMapPicker extends MapActivity {
 		// Generate a Geopoint from intent
 		Intent intent = getIntent();
 		
-		Double mLatitude = intent.getDoubleExtra("LATITUDE", 0.0) * 1E6;
-		Double mLongitude = intent.getDoubleExtra("LONGITUDE", 0.0) * 1E6;
-		String mFormattedAddress = intent.getStringExtra("ADDRESS");
+		Double mLatitude = intent.getDoubleExtra(Constants.EXTRA_LATITUDE, 0.0) * 1E6;
+		Double mLongitude = intent.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0.0) * 1E6;
+		String mFormattedAddress = intent.getStringExtra(Constants.EXTRA_ADDRESS);
 		
 		if(Constants.D) Log.v(TAG, "Received Point(Double):" + mLatitude + mLongitude);
 		
@@ -220,8 +212,8 @@ public class GoogleMapPicker extends MapActivity {
 	protected void onDestroy() {
 		if(mIsChangedAddress){
 			Intent intent = getIntent();
-			intent.putExtra("LATITUDE", mLastGeoPoint.getLatitudeE6() / 1E6);
-			intent.putExtra("LONGITUDE", mLastGeoPoint.getLongitudeE6() / 1E6);
+			intent.putExtra(Constants.EXTRA_LATITUDE, mLastGeoPoint.getLatitudeE6() / 1E6);
+			intent.putExtra(Constants.EXTRA_LONGITUDE, mLastGeoPoint.getLongitudeE6() / 1E6);
 			
 			setResult(RESULT_OK,intent);
 		}else{

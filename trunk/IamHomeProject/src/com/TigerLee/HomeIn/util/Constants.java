@@ -1,6 +1,15 @@
 package com.TigerLee.HomeIn.util;
 
+import android.graphics.Typeface;
+
 public class Constants {
+	
+	public static final String EXTRA_ADDRESS = "ADDRESS";
+	public static final String EXTRA_PHONENUM = "PHONENUM";
+	public static final String EXTRA_TEXTMSG = "TEXTMSG";
+	public static final String EXTRA_LONGITUDE = "LONGITUDE";
+	public static final String EXTRA_LATITUDE = "LATITUDE";
+	
 	
 	public static final String DAUM_LNG_TAG = "lng";
 	public static final String DAUM_LAT_TAG = "lat";
@@ -20,6 +29,7 @@ public class Constants {
 	public static int FIVE_SECOND = 1000 * 5;
 
 	public static final int MAX_RESULT_GEOCODING = 1;
+	
 	
 	public static boolean D = true;
 

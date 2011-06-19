@@ -19,13 +19,13 @@ package com.TigerLee.HomeIn.activity;
 // Need the following import to get access to the app resources, since this
 // class is in a sub-package.
 
-import com.TigerLee.HomeIn.R;
-import com.TigerLee.HomeIn.util.Constants;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+
+import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.util.Constants;
 
 /**
  * <h3>Dialog Activity</h3>
@@ -51,6 +51,12 @@ public class CustomDialogActivity extends Activity {
         // view layout definition, which is being set here as
         // the content of our screen.
         setContentView(R.layout.custom_dialog_activity);
+        /*
+        Typeface mTypefaceTypeface = Typeface.createFromAsset(getAssets(), "fonts/NanumGothic.otf");
+        TextView mTextView = (TextView) findViewById(R.id.text);
+        
+        mTextView.setTypeface(mTypefaceTypeface);
+        */
         mHandler.sendMessageDelayed(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY), Constants.FIVE_SECOND);
     }
     @Override

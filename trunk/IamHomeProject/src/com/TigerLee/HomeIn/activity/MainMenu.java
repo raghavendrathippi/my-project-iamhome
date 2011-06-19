@@ -86,6 +86,8 @@ public class MainMenu extends Activity {
 			startActivity(intent);
 			return;
 		case SCHOOL:
+			intent.setClass(this, TabMenuActivity.class);
+			startActivity(intent);
 			Toast.makeText(this, getString(R.string.UnsupportVersion), Toast.LENGTH_LONG).show();
 			return;
 		}
