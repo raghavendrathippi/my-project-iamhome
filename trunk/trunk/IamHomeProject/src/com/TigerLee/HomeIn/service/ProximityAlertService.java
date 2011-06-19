@@ -48,6 +48,8 @@ public class ProximityAlertService extends Service {
 	private Location mNetworkPreviousLocation;
 	
 	private String mPreviousProvider;
+	private String mTextMsg;
+	private String mPhoneNum;
 
 	private static final int TIME_FOR_VIBRATOR = 500;
 
@@ -66,34 +68,19 @@ public class ProximityAlertService extends Service {
 		
 		mLocation = mLocationManager.getLastKnownLocation(mProvider);
 		
-		// Do not support GPS.
+		// Not support GPS.
 		if(!mLocationManager.isProviderEnabled(mProvider)){
-			//showDisabledGPSPage();
 			if(Constants.D) Log.e(TAG, "Not support GPS - kill service!");
 			stopSelf();
 		}
-		
 		if(mLocation == null){
 			Toast.makeText(this, getString(R.string.UnsupportGPS),
 					Toast.LENGTH_SHORT).show();
 			stopSelf();
-		}	
-		
-		handleNetworkLocationListener();
-
-		
-		
-		mAddress = new Address(Locale.getDefault());
-		SharedPreference mSharedPreference = new SharedPreference(this);
-		mAddress = mSharedPreference.getPreferenceAddress();
-		
-		if(Constants.D) Log.v(TAG, "Destination Latitude: " + mAddress.getLatitude());
-		if(Constants.D) Log.v(TAG, "Destination Longitude: " + mAddress.getLongitude());
-		 
-		
+		}
 		//setProximityAlert(mLocationManager);
 		//registerIntentFilter();
-	}
+	}	
 	@Override
 	public void onStart(Intent intent, int startId) {
 		// TODO Auto-generated method stub
@@ -106,8 +93,28 @@ public class ProximityAlertService extends Service {
 	}
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		this.mAddress = new Address(Locale.getDefault());
+		//
+		getAddress(intent);
+		if(Constants.D) Log.v(TAG, "Destination Latitude: " + mAddress.getLatitude());
+		if(Constants.D) Log.v(TAG, "Destination Longitude: " + mAddress.getLongitude());
+		//
+		handleNetworkLocationListener();
 		return Service.START_STICKY;
-	}	
+	}
+	public void getAddress(Intent intent){		
+		Double mLatitude = intent.getDoubleExtra(Constants.EXTRA_LATITUDE, 0.0);
+		this.mAddress.setLatitude(mLatitude);
+		
+		Double mLongitude = intent.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0.0);
+		this.mAddress.setLongitude(mLongitude);
+		
+		String mFormattedAddress = intent.getStringExtra(Constants.EXTRA_ADDRESS);
+		this.mAddress.setAddressLine(1, mFormattedAddress);
+		
+		this.mTextMsg = intent.getStringExtra(Constants.EXTRA_TEXTMSG);
+		this.mPhoneNum = intent.getStringExtra(Constants.EXTRA_PHONENUM);
+	}
 	private void handleNetworkLocationListener(){		
 		mNetworkLocationListener = new LocationListener() {			
 			@Override
@@ -300,9 +307,10 @@ public class ProximityAlertService extends Service {
 				getString(R.string.AlertNotificationMsg));
 		stopSelf();
 		// Start an Activity for sending a message.
-		Intent sendingMsgIntent = new Intent(this,
-				SendTextMessage.class);
-		sendingMsgIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(sendingMsgIntent);
+		Intent intent = new Intent(this, SendTextMessage.class);
+		intent.putExtra(Constants.EXTRA_PHONENUM, mPhoneNum);
+		intent.putExtra(Constants.EXTRA_TEXTMSG, mTextMsg);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
 	}
 }

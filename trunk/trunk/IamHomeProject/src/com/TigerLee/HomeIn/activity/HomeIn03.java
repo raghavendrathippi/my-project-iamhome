@@ -32,7 +32,7 @@ public class HomeIn03 extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.homein03);
 		
-		
+		/*
 		mStartService = (Button) findViewById(R.id.StartService);
 		mStartService.setOnClickListener(new OnClickListener() {
 			
@@ -51,7 +51,8 @@ public class HomeIn03 extends Activity {
 				}
 		        
 			}
-		}); 
+		});
+		*/ 
 		
 		mPreviousPage = (Button) findViewById(R.id.PreviousPageto02);
 		mPreviousPage.setOnClickListener(new OnClickListener() {

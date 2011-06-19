@@ -1,72 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent" 
   android:orientation="vertical">
- <LinearLayout
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:orientation="horizontal"
-	android:layout_marginTop="20dip"
-	android:layout_marginBottom="20dip"
-	android:layout_gravity="center">
-	
-	<ImageView 
-		android:id="@+id/Pointer01" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:src="@drawable/accept"
-		android:layout_weight="1"/>
-		
-	<ImageView 
-		android:id="@+id/Pointer02" 
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content"
-		android:src="@drawable/black_pointer"
-		android:layout_weight="1"/>
-		
-	<ImageView 
-		android:id="@+id/Pointer03" 
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content"
-		android:src="@drawable/black_pointer"
-		android:layout_weight="1"/>
-</LinearLayout>
-		
-
-<TextView 
+  <TextView 
 	android:id="@+id/CurrentLoacation" 
 	android:layout_width="wrap_content" 
 	android:layout_height="wrap_content" 
-	android:text="@string/InputDestinationAddress"></TextView>
-	
-<EditText  
-	android:id="@+id/DestinationAddress" 
-	android:layout_width="match_parent" 
-	android:layout_height="wrap_content"></EditText>
-<Button 
-	android:text="@string/FormatButton" 
-	android:id="@+id/GeocodingButton" 
-	android:layout_width="wrap_content" 
-	android:layout_height="wrap_content"></Button>
-<Button 
-	android:text="@string/MapButton" 
-	android:id="@+id/MapButton" 
-	android:layout_width="wrap_content" 
-	android:layout_height="wrap_content"></Button>
-	
-<TextView 
+	android:text="@string/InputDestinationAddress"/>
+  <LinearLayout
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal">
+	<EditText  
+		android:id="@+id/DestinationAddress" 
+		android:layout_height="wrap_content" android:layout_width="150dip"></EditText>
+	<Button 
+		android:text="@string/bt_FindDestination" 
+		android:id="@+id/bt_GeocodingButton" 
+		android:layout_height="wrap_content" 
+		android:layout_width="wrap_content"></Button>
+  </LinearLayout>
+  <TextView 
 	android:id="@+id/GeocodedLoacation" 
 	android:layout_width="wrap_content" 
-	android:layout_height="wrap_content"></TextView>
+	android:layout_height="wrap_content"/>
+	<TextView 
+		android:text="@string/InputPhoneNumber" 
+		android:id="@+id/InputPhoneNumber" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"></TextView>
 	
-<Button 
-	android:text="@string/NextPageButton" 
-	android:id="@+id/NextPageto02" 
-	android:layout_width="wrap_content" 
-	android:layout_height="wrap_content"
-	android:gravity="bottom"></Button>
-	
-
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<EditText 
+			android:id="@+id/ReceiverPhoneNumber" 
+			android:layout_height="wrap_content" 
+			android:inputType="phone" android:layout_width="150dip"></EditText>
+		<Button 
+			android:text="@string/bt_pickAddress" 
+			android:id="@+id/bt_pickAddress" 
+			android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+		
+  </LinearLayout>
+  <TextView 
+		android:id="@+id/TextMessageTextView" 
+		android:text="@string/InputSMS"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content"></TextView>
+	<EditText 
+		android:id="@+id/TextMessageEditText" 
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content"></EditText>	
+	<Button 
+		android:id="@+id/bt_StartService"
+		android:text="@string/bt_Start"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content"/>
 </LinearLayout>

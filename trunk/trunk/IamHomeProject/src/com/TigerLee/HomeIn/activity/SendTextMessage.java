@@ -2,7 +2,6 @@ package com.TigerLee.HomeIn.activity;
 
 import com.TigerLee.HomeIn.R;
 import com.TigerLee.HomeIn.util.Constants;
-import com.TigerLee.HomeIn.util.SharedPreference;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -25,7 +24,14 @@ public class SendTextMessage extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sms);
-		getSharedPreference();
+		
+		Intent intent = getIntent();
+		mPhoneNumber = intent.getStringExtra(Constants.EXTRA_PHONENUM);
+		mTextMessage = intent.getStringExtra(Constants.EXTRA_TEXTMSG);
+		if(Constants.D) Log.v(TAG, "PhoneNum : " + mPhoneNumber 
+        		+ " TextMessage : " + mTextMessage 
+        		+" Sended" + IsSended);
+		
 		if(IsSended == false){
 			sendSMS();
 		}
@@ -44,26 +50,7 @@ public class SendTextMessage extends Activity {
 					mPendingIntent, 
 					null);
 		}
-		setResult(true);
+		IsSended = true;
 		
 	}
-	public void getSharedPreference(){
-		//Get SharedData 
-        SharedPreference mSharedPreference = new SharedPreference(this);
-        
-        mPhoneNumber = mSharedPreference.getPreferenceAddress().getPhone();
-        mTextMessage = mSharedPreference.getPreferenceMessage();
-        //IsSended = mSharedPreference.getPreferenceResult();
-        if(Constants.D) Log.v(TAG, "PhoneNum : " + mPhoneNumber 
-        		+ " TextMessage : " + mTextMessage 
-        		+" Sended" + IsSended);
-	}
-
-	private void setResult(boolean result) {
-		SharedPreference mSharedPreference = new SharedPreference(this);
-		mSharedPreference.setPreferenceResult(result);
-	}
-	
-	
-
 }

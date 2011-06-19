@@ -48,6 +48,7 @@ public class IntroPage extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Verify a current state of this device.
+		setContentView(R.layout.intro);
 		setCurrentState();
 		// Set content view according to the current state. 
 		setLayout();
@@ -85,7 +86,6 @@ public class IntroPage extends Activity {
 			finish();
 			break;
 		default:
-			setContentView(R.layout.intro);
 			mTimeHandler.sendMessageDelayed(mTimeHandler.obtainMessage(TIMEOUT), HOLDING_TIME);
 		}
 	}
@@ -96,7 +96,7 @@ public class IntroPage extends Activity {
 	public void NextPage(){
 		// Call main activity
 		Intent intent = new Intent();
-		intent.setClass(this, MainMenu.class);
+		intent.setClass(this, HomeActivity.class);
 		startActivity(intent);
 		// show a warning message that it could be charing lots costs.
 		if(mCurrentState == DISABLED_WIFI){

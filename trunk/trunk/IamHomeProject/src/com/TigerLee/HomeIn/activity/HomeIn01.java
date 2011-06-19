@@ -14,6 +14,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -26,28 +28,34 @@ import android.widget.Toast;
 
 import com.TigerLee.HomeIn.R;
 import com.TigerLee.HomeIn.Geocoder.NativeGeocoder;
+import com.TigerLee.HomeIn.service.ProximityAlertService;
 import com.TigerLee.HomeIn.util.Constants;
 import com.TigerLee.HomeIn.util.GPSInformation;
-import com.TigerLee.HomeIn.util.SharedPreference;
 
 
-public class HomeIn01 extends Activity {
+public class HomeIn01 extends DashboardActivity implements OnClickListener{
     /** Called when the activity is first created. */
+	private Context mContext = this;
 	
 	private Location mLocation;
 	public Address mGeocodedAddress = null;
+	public Boolean mIsStartServce = false;
 	public int mDownX = 0;
-	
-	
-	public Cursor mCursor;
+		
+	public Button mButton_Geocoding;
+	public Button mButton_StartService;
+	public Button mButton_PickAddress;
 	
 	public TextView mGeocodedLoacation;
 	
-	private Context mContext = this;
 	private static final int PROGRESS_DIALOG = 1;
 	private static final int MAP_REQUEST = 0;
+	private static final int ADDRESS_REQUEST = 1;
 	
 	private static final String TAG = "HomeIn01";
+
+	
+	
 	private Handler mHandler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
@@ -59,11 +67,10 @@ public class HomeIn01 extends Activity {
 				default:
 					break;
 			}
-			
 			super.handleMessage(msg);
 		}
-		
 	};
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,81 +85,31 @@ public class HomeIn01 extends Activity {
 		// Write your current position to a textView.
         getCurrentLocation(mLocation);
         
+        mButton_Geocoding = (Button)findViewById(R.id.bt_GeocodingButton);
+        mButton_Geocoding.setOnClickListener(this);
         
-        //Transform Address to Coordinates
-        final EditText mDestinationAddress = (EditText) findViewById(R.id.DestinationAddress);
-        mGeocodedLoacation = (TextView) findViewById(R.id.GeocodedLoacation);
+        mButton_StartService = (Button)findViewById(R.id.bt_StartService);
+        mButton_StartService.setOnClickListener(this);
         
-        final Button mGeocodingButton = (Button)findViewById(R.id.GeocodingButton);
-        mGeocodingButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//Create Progress Dialog
-				showDialog(PROGRESS_DIALOG);
-				
-				mGeocodedAddress = NativeGeocoder.getGeocodedAddress(mDestinationAddress.getText().toString());
-				//List<Address> mListAddress = getCoordinatesFromAddress(mDestinationAddress.getText().toString());
-				
-				
-				if(mGeocodedAddress != null){					
-					String mTitle = getString(R.string.DialogTitle);
-					//mGeocodedAddress = mListAddress.get(0);				
-					String mMessage = getString(R.string.Latitude) 
-					+ mGeocodedAddress.getLatitude()
-					+ "\n"
-					+ getString(R.string.Longitude) 
-					+ mGeocodedAddress.getLongitude()
-					+ "\n"
-					+ getString(R.string.FoundAddress) 
-					+ mGeocodedAddress.getAddressLine(1);
-					String asd  = null;
-					for(int i = 0; i < mGeocodedAddress.getMaxAddressLineIndex(); i++){
-						asd = asd + mGeocodedAddress.getAddressLine(i);
-					}
-					if(Constants.D) Log.v(TAG, "Lat: " + mGeocodedAddress.getLatitude() +
-							"Lng :" + mGeocodedAddress.getLongitude() + 
-							" Addr :"+ asd);
-					mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
-					GoogleMapPage();
-					//createAlertDialog(mTitle, mMessage);
-				}else{
-					//Not available to geocode an address.
-					mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
-					Toast.makeText(HomeIn01.this, getString(R.string.NotValidAddress), 
-							Toast.LENGTH_LONG).show();
-				}
-				
-			}
-		});
-        Button mMapButton = (Button) findViewById(R.id.MapButton);
-        mMapButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				if(mGeocodedAddress == null){
-					return;
-				}else{
-					//GoogleMapPage();
-				}
-			}
-		});
+        mButton_PickAddress = (Button)findViewById(R.id.bt_pickAddress);
+        mButton_PickAddress.setOnClickListener(this);
         
-        Button mNextPageButton = (Button) findViewById(R.id.NextPageto02);
-        mNextPageButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-				//Save share data in a preference.
-				SharedPreference mSharedPreference = new SharedPreference(mContext);
-				if(mGeocodedAddress!=null)
-					mSharedPreference.setPreferenceAddress(mGeocodedAddress);
-				NextPage();
-			}
-		});
 	}
 
+	private void getCurrentLocation(Location location) {
+		String mLocationString = getString(R.string.NoLocation);
+		if (location != null) {
+			double lat = location.getLatitude();
+			double lng = location.getLongitude();
+			mLocationString = getString(R.string.Latitude) 
+			+ lat
+			+ "\n"
+			+ getString(R.string.Longitude) 
+			+ lng;
+		}
+		TextView mCurrentLocation = (TextView)findViewById(R.id.CurrentLoacation);
+		mCurrentLocation.setText(getString(R.string.CurrentLocation)+ "\n" + mLocationString);
+	}
 	/*
 	 * THIS IS NOT AVAILABLE CURRENTLY.
 	public Cursor getAddressList(String[] columnName, String selectionCondition){
@@ -166,6 +123,103 @@ public class HomeIn01 extends Activity {
 		return mDatabaseAdapter.rawQuery(sql, selectionCondition);
 	}
    */
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(event.getAction() == KeyEvent.ACTION_DOWN){
+			if(mIsStartServce){
+				if(keyCode == KeyEvent.KEYCODE_BACK){
+					return false;
+				}
+			}
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if(resultCode == RESULT_OK){
+    		if(requestCode == MAP_REQUEST){
+    			mGeocodedAddress.setLongitude(data.getDoubleExtra("LONGITUDE", mGeocodedAddress.getLongitude()));
+    			mGeocodedAddress.setLatitude(data.getDoubleExtra("LATITUDE", mGeocodedAddress.getLatitude()));
+    		}
+    		if(requestCode == ADDRESS_REQUEST){
+    			Cursor cursor = getContentResolver().query(data.getData(), 
+    					new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, 
+    				ContactsContract.CommonDataKinds.Phone.NUMBER}, null, null, null);
+    			cursor.moveToFirst();
+    			if(Constants.D){
+    				Log.v(TAG, "NAME : " + cursor.getString(0));
+        			Log.v(TAG, "PHONENUM : " + cursor.getString(1));    				
+    			}
+    			
+                cursor.close();
+    			
+    		
+    		}
+    	}
+    	super.onActivityResult(requestCode, resultCode, data);
+    }	
+    
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+	
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.bt_GeocodingButton:
+			//Create Progress Dialog
+			showDialog(PROGRESS_DIALOG);
+			
+			//Transform Address to Coordinates
+	        EditText mDestinationAddress = (EditText) findViewById(R.id.DestinationAddress);
+	        mGeocodedLoacation = (TextView) findViewById(R.id.GeocodedLoacation);	        
+			mGeocodedAddress = NativeGeocoder.getGeocodedAddress(mDestinationAddress.getText().toString());			
+			
+			if(mGeocodedAddress != null){					
+				if(Constants.D){
+					String address  = null;
+					for(int i = 0; i < mGeocodedAddress.getMaxAddressLineIndex(); i++){
+						address = address + mGeocodedAddress.getAddressLine(i);
+					}
+					 Log.i(TAG, "Lat: " + mGeocodedAddress.getLatitude() +
+							"Lng :" + mGeocodedAddress.getLongitude() + 
+							" Addr :"+ address);
+				}
+				mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
+				GoogleMapPage();
+				//createAlertDialog(mTitle, mMessage);
+			}else{
+				//Not available to geocode with the address.
+				mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
+				Toast.makeText(HomeIn01.this, getString(R.string.NotValidAddress), 
+						Toast.LENGTH_LONG).show();
+			}
+			break;
+
+		case R.id.bt_StartService:
+			EditText mReceiverPhoneNumber = (EditText) findViewById(R.id.ReceiverPhoneNumber);
+			String mPhoneNumber = mReceiverPhoneNumber.getText().toString();
+			
+			EditText mTextMessageEditText = (EditText) findViewById(R.id.TextMessageEditText);
+			String mTextMessage = mTextMessageEditText.getText().toString();
+			
+			if(mGeocodedAddress!=null && mPhoneNumber!= null && mTextMessage != null){
+				startProximityService(mPhoneNumber, mTextMessage);
+				mIsStartServce =true;
+			}
+			break;
+		case R.id.bt_pickAddress:
+			startActivityForResult(new Intent(Intent.ACTION_PICK, Phone.CONTENT_URI), ADDRESS_REQUEST);
+		default:
+			break;
+		}		
+	}
+	
+	//Show Progress Dialog
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
@@ -179,69 +233,32 @@ public class HomeIn01 extends Activity {
 		return null;
 	}
 	
-	
-	private void getCurrentLocation(Location location) {
-		String mLocationString = getString(R.string.NoLocation);
-		
-		TextView mCurrentLocation = (TextView)findViewById(R.id.CurrentLoacation);
-
-		if (location != null) {
-			double lat = location.getLatitude();
-			double lng = location.getLongitude();
-			mLocationString = getString(R.string.Latitude) 
-			+ lat
-			+ "\n"
-			+ getString(R.string.Longitude) 
-			+ lng;/*
-			+ "\n"
-			+ getAddressFromCoordaniates(location).get(MAX_RESULT).getAddressLine(1);*/
-		}
-		mCurrentLocation.setText(getString(R.string.CurrentLocation)+ "\n" + mLocationString);
-		
-		
-		/*
-		List<Address> addresses = null;
-	   	addresses = reverseGeocoding(location);
-	   	StringBuilder stringBuilder = new StringBuilder();
-	   	
-	   	//2. Reverse Geocoding.
-		if(addresses.size()>0){
-		   	Address address = addresses.get(0);
-		   	for(int i = 0 ; i < address.getMaxAddressLineIndex(); i++){
-		   		stringBuilder.append(address.getAddressLine(i)).append("\n");
-		   		stringBuilder.append(address.getLocality()).append("\n");
-		   		stringBuilder.append(address.getPostalCode()).append("\n");
-		   		stringBuilder.append(address.getCountryName());
-		   	}
-		   	mDefaultAddress = stringBuilder.toString();
-		}
-		mTestText.append("Your Address is:\n" + mDefaultAddress);
-		*/
+	public void GoogleMapPage(){
+		Intent intent = new Intent();
+		intent.setClass(this, GoogleMapPicker.class);
+		intent.putExtra(Constants.EXTRA_LONGITUDE, mGeocodedAddress.getLongitude());
+		intent.putExtra(Constants.EXTRA_LATITUDE, mGeocodedAddress.getLatitude());
+		intent.putExtra(Constants.EXTRA_ADDRESS, mGeocodedAddress.getAddressLine(1));
+		startActivityForResult(intent, MAP_REQUEST);
 	}
 	
-    
-	public void createAlertDialog(String title, final String message){
-		AlertDialog mAlertDialog = new AlertDialog.Builder(this)
-		.setTitle(title)
-		.setMessage(message)
-		.setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				mGeocodedLoacation.setText(message);
-				return;
-			}
-		}).setNegativeButton(getString(R.string.No), new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Clear all text in Edittext, TextView
-				return;
-			}
-		}).show();
+	private void startProximityService(String phonenum, String textmsg){
+				
+		Intent intent = new Intent(this,ProximityAlertService.class);
+		intent.putExtra(Constants.EXTRA_LONGITUDE, mGeocodedAddress.getLongitude());
+		intent.putExtra(Constants.EXTRA_LATITUDE, mGeocodedAddress.getLatitude());
+		intent.putExtra(Constants.EXTRA_ADDRESS, mGeocodedAddress.getAddressLine(1));
+		intent.putExtra(Constants.EXTRA_PHONENUM, phonenum);
+		intent.putExtra(Constants.EXTRA_TEXTMSG, textmsg);
+        startService(intent);
+        
+        Toast.makeText(this, getString(R.string.ToastStart), Toast.LENGTH_LONG).show();
+		//Invisible start Service button
+		mButton_StartService.setVisibility(View.INVISIBLE);
+		
+        if(Constants.D) Log.v(TAG,"Start Proximity Service");
+        mIsStartServce = true;
 	}
-
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {// Moving a page with touching.
 		if(event.getAction() == MotionEvent.ACTION_DOWN){
@@ -249,56 +266,14 @@ public class HomeIn01 extends Activity {
 		}
 		if(event.getAction() == MotionEvent.ACTION_UP){
 			if(mDownX - (int) event.getX() > 10){
-				NextPage();								
+				//NextPage();								
 			}
+			if((int) event.getX() - mDownX > 10){
+				//PreviousPage();
+			}
+			
 		}
 		return super.onTouchEvent(event);
 	}
 	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(event.getAction() == KeyEvent.ACTION_DOWN){
-			if(keyCode == KeyEvent.KEYCODE_ENTER){
-				//Remove Enter Key because the key cause an error for an address.
-				return false;
-			}
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-	
-	
-    public void NextPage(){
-		Intent intent = new Intent();
-		intent.setClass(this, HomeIn02.class);
-		startActivity(intent);
-		overridePendingTransition(R.anim.hold, R.anim.fade);
-	}	
-	
-	public void GoogleMapPage(){
-		Intent intent = new Intent();
-		intent.setClass(this, GoogleMapPicker.class);
-		intent.putExtra("LONGITUDE", mGeocodedAddress.getLongitude());
-		intent.putExtra("LATITUDE", mGeocodedAddress.getLatitude());
-		intent.putExtra("ADDRESS", mGeocodedAddress.getAddressLine(1));
-		startActivityForResult(intent, MAP_REQUEST);
-	}
-	
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	// TODO Auto-generated method stub
-    	if(resultCode == RESULT_OK){
-    		if(requestCode == MAP_REQUEST){
-    			Intent intent = getIntent();
-    			intent.getDoubleExtra("LONGITUDE", mGeocodedAddress.getLongitude());
-    			intent.getDoubleExtra("LATITUDE", mGeocodedAddress.getLatitude());
-    		}
-    	}
-    	super.onActivityResult(requestCode, resultCode, data);
-    }	
-    
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}	
 }
