@@ -299,15 +299,18 @@ containing a value of this type.
         public static final int home_btn_feature4=0x7f09000b;
         public static final int mapview=0x7f090028;
         public static final int margin_bottom=0x7f09000c;
-        public static final int tabsImage=0x7f09002e;
-        public static final int tabsLayout=0x7f09002d;
+        public static final int profile_image1=0x7f09002e;
+        public static final int profile_text1=0x7f09002f;
+        public static final int profile_text2=0x7f090030;
+        public static final int profile_text3=0x7f090031;
+        public static final int tabsImage=0x7f09002d;
+        public static final int tabsLayout=0x7f09002c;
         public static final int text=0x7f09000d;
         public static final int titleDivider=0x7f090026;
         public static final int title_container=0x7f090000;
         public static final int title_logo=0x7f090001;
         public static final int title_text=0x7f090002;
         public static final int view1=0x7f09002b;
-        public static final int view2=0x7f09002c;
     }
     public static final class layout {
         public static final int activity_about=0x7f030000;
@@ -324,6 +327,7 @@ containing a value of this type.
         public static final int sms=0x7f03000b;
         public static final int tabmenu=0x7f03000c;
         public static final int tabs_bg=0x7f03000d;
+        public static final int userprofile=0x7f03000e;
     }
     public static final class string {
         public static final int AlertNotificationMsg=0x7f0a0012;
@@ -360,6 +364,10 @@ containing a value of this type.
         public static final int bt_pickAddress=0x7f0a0002;
         public static final int custom_dialog_activity_text=0x7f0a001f;
         public static final int hello=0x7f0a0000;
+        public static final int pref_Sum_minDistance=0x7f0a002e;
+        public static final int pref_Sum_minFrequency=0x7f0a002d;
+        public static final int pref_TItle_minDistance=0x7f0a002c;
+        public static final int pref_Title_minFrequency=0x7f0a002b;
         public static final int title_about=0x7f0a0022;
         public static final int title_feature1=0x7f0a0025;
         public static final int title_feature2=0x7f0a0026;
@@ -399,7 +407,7 @@ containing a value of this type.
         public static final int TitleBarText=0x7f0b0013;
     }
     public static final class xml {
-        public static final int preferencedata=0x7f050000;
+        public static final int preferendata=0x7f050000;
         public static final int settings=0x7f050001;
     }
     public static final class styleable {

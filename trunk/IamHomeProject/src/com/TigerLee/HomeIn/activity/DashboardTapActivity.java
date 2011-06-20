@@ -194,10 +194,10 @@ public void onClickFeature (View v)
            startActivity (new Intent(getApplicationContext(), TabMenuActivity.class));
            break;
       case R.id.home_btn_feature2 :
-           startActivity (new Intent(getApplicationContext(), HomeIn02.class));
+           //startActivity (new Intent(getApplicationContext(), HomeIn02.class));
            break;
       case R.id.home_btn_feature3 :
-           startActivity (new Intent(getApplicationContext(), HomeIn03.class));
+           //startActivity (new Intent(getApplicationContext(), HomeIn03.class));
            break;
       case R.id.home_btn_feature4 :
            //startActivity (new Intent(getApplicationContext(), F4Activity.class));

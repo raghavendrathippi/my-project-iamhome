@@ -2,36 +2,18 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="Location Update Frequency" android:key="locupdate">
     	<ListPreference
-    		android:title="Set Minimum Frequency"
-    		android:summary="How often to update location"
-    		android:key="mintimeinc"
-    		android:defaultValue="2000"
+    		android:title="@string/pref_Title_minFrequency"
+    		android:summary="@string/pref_Sum_minFrequency"
+    		android:key="MINIMUN_FREQUENCY"
+    		android:defaultValue="1"
     		android:entries="@array/minTimeIncs"
     		android:entryValues="@array/minTimeVals" />
     	<ListPreference
-    		android:title="Set Minimum Distance"
-    		android:summary="Minimum distance of movement necessary to update location"
-    		android:key="mindistance"
+    		android:title="@string/pref_TItle_minDistance"
+    		android:summary="@string/pref_Sum_minDistance"
+    		android:key="MINIMUN_DISTANCE"
     		android:defaultValue="10"
     		android:entries="@array/minDistance"
     		android:entryValues="@array/minDistanceVals"/>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="Proximity Radius" android:key="locupdatefreq">
-    	<ListPreference
-    		android:title="Set Proximity Radius"
-    		android:summary="Proximity radius necessary to trigger alert"
-    		android:key="proxradius"
-    		android:defaultValue="2"
-    		android:entries="@array/proxRadius"
-    		android:entryValues="@array/proxRadiusVals"/>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="Default API" android:key="defaultapi">
-    	<ListPreference
-    		android:title="Set priority of api services"
-    		android:summary="Preference of priority"
-    		android:key="preferapi"
-    		android:defaultValue="2"
-    		android:entries="@array/defaultapi"
-    		android:entryValues="@array/apiVals"/>
-    </PreferenceCategory>
+    </PreferenceCategory>   
 </PreferenceScreen>

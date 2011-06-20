@@ -23,6 +23,10 @@ public class Constants {
 	public static final String GOOGLE_LAT_TAG = "lat";
 	public static final String GOOGLE_ADDRESS_TAG = "formatted_address";
 	
+	public static final Double SEOUL_LAT = 37.566535;
+	public static final Double SEOUL_LNG = 126.9779692;
+
+	
 	public static final double DISTANCE = 10; // in Meters
 	
 	public static final int DESTROY_ACTIVITY = 0;

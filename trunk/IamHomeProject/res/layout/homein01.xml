@@ -16,12 +16,12 @@
 	android:orientation="horizontal">
 	<EditText  
 		android:id="@+id/DestinationAddress" 
-		android:layout_height="wrap_content" android:layout_width="150dip"></EditText>
+		android:layout_height="wrap_content" android:layout_width="180dip"></EditText>
 	<Button 
 		android:text="@string/bt_FindDestination" 
 		android:id="@+id/bt_GeocodingButton" 
 		android:layout_height="wrap_content" 
-		android:layout_width="wrap_content"></Button>
+		android:layout_width="match_parent"></Button>
   </LinearLayout>
   <TextView 
 	android:id="@+id/GeocodedLoacation" 
@@ -40,11 +40,11 @@
 		<EditText 
 			android:id="@+id/ReceiverPhoneNumber" 
 			android:layout_height="wrap_content" 
-			android:inputType="phone" android:layout_width="150dip"></EditText>
+			android:inputType="phone" android:layout_width="180dip"></EditText>
 		<Button 
 			android:text="@string/bt_pickAddress" 
 			android:id="@+id/bt_pickAddress" 
-			android:layout_height="wrap_content" android:layout_width="wrap_content"></Button>
+			android:layout_height="wrap_content" android:layout_width="match_parent"></Button>
 		
   </LinearLayout>
   <TextView 
