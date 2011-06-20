@@ -44,14 +44,13 @@ protected void onCreate(Bundle savedInstanceState)
 {
     super.onCreate(savedInstanceState);
 
-    
     setContentView (R.layout.activity_about);
     setTitleFromActivityLabel (R.id.title_text);
 }
-private void setupText(){
+private String setupText(){
 	Intent intent = getIntent();
 	String text = intent.getStringExtra("");
-	
+	return text;
 }
     
 } // end class

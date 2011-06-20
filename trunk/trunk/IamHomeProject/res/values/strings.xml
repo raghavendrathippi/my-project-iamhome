@@ -61,5 +61,12 @@
     <string name="title_feature4">My profile</string>
     <string name="title_feature5">Settings</string>
     <string name="title_feature6">Feature 6</string>
+    
+    <string name="pref_Title_minFrequency">Set Minimum Frequency</string>
+    <string name="pref_TItle_minDistance">Set Minimum Distance</string>
+    
+    <string name="pref_Sum_minFrequency">How often to update location</string>
+    <string name="pref_Sum_minDistance">Minimum distance to destination from user</string>
+	
 	
 </resources>

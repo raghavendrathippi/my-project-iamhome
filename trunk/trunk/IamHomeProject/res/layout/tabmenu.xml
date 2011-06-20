@@ -34,11 +34,12 @@
                                 android:layout_width="fill_parent" android:layout_height="wrap_content"
                                 android:layout_marginLeft="0dip" android:layout_marginRight="0dip"
                                 android:layout_alignParentBottom="true" />
-                        <View android:id="@+id/view1" android:layout_width="fill_parent" android:layout_height="1dip" android:background="@drawable/popup_line_olivegreen"/>
                         <FrameLayout android:id="@android:id/tabcontent"
                                 android:layout_width="fill_parent" android:layout_height="fill_parent"
                                 android:layout_above="@android:id/tabs" />
-                        <View android:id="@+id/view2" android:layout_width="fill_parent" android:layout_height="1dip" android:background="@drawable/popup_line_olivegreen"/>
+                        <View android:id="@+id/view1" android:layout_width="fill_parent" android:layout_height="1dip" 
+                        android:layout_above="@android:id/tabcontent" android:background="@drawable/tab_divider"/>
+                        
                 </RelativeLayout>
         </TabHost>
 

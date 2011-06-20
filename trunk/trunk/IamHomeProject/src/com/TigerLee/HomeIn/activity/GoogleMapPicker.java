@@ -69,6 +69,10 @@ public class GoogleMapPicker extends MapActivity {
 		
 		Double mLatitude = intent.getDoubleExtra(Constants.EXTRA_LATITUDE, 0.0) * 1E6;
 		Double mLongitude = intent.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0.0) * 1E6;
+		if(mLatitude == 0.0 && mLongitude == 0.0){
+			mLatitude = Constants.SEOUL_LAT * 1E6;
+			mLongitude = Constants.SEOUL_LNG * 1E6;
+		}		
 		String mFormattedAddress = intent.getStringExtra(Constants.EXTRA_ADDRESS);
 		
 		if(Constants.D) Log.v(TAG, "Received Point(Double):" + mLatitude + mLongitude);
