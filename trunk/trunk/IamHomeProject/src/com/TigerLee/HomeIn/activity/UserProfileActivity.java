@@ -15,7 +15,7 @@ public class UserProfileActivity extends DashboardActivity{
 		TelephonyManager telephony = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 		TextView mTextView1 = (TextView) findViewById(R.id.profile_text1);
 		if(telephony != null){
-			mTextView1.setText(telephony.getLine1Number()); 
+			mTextView1.setText("전화번호: " + telephony.getLine1Number()); 
 		}
 		
 	}

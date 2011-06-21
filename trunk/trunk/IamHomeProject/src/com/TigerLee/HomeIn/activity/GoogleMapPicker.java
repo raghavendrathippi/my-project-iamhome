@@ -36,7 +36,7 @@ public class GoogleMapPicker extends MapActivity {
 	private long mStartTouchTime;
 	
 	private static final int DEFAULT_ZOOM = 16;
-	private static final int DURATION_LONGCLICK = 700;
+	private static final int DURATION_LONGCLICK = 1500;
 	private static final int CONFIRM_DIALOG = 1;
 	
 	private static final String TAG = "MapActivity";
@@ -122,7 +122,7 @@ public class GoogleMapPicker extends MapActivity {
 						mIsPressed = false;
 				        // Propagate your own event
 				    	GeoPoint mGeoPoint = mMapView.getProjection().fromPixels((int) event.getX(), (int)event.getY());
-				    	dispatchLongClickEvent(mGeoPoint);
+				    	//dispatchLongClickEvent(mGeoPoint);
 					}
 				}
 				break; 
@@ -134,7 +134,7 @@ public class GoogleMapPicker extends MapActivity {
 	public void dispatchLongClickEvent(GeoPoint mGeoPoint){
 		if(Constants.D) Log.v(TAG, "dispatchLongClickEvent()");
 		Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		vibe.vibrate(500);
+		vibe.vibrate(200);
 		double mLatitude = mGeoPoint.getLatitudeE6() / 1E6;
 		double mLongitude = mGeoPoint.getLongitudeE6() / 1E6;
 	    if(Constants.D) Log.v(TAG, "Location - " + mLatitude + mLongitude);
