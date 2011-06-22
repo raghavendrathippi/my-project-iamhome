@@ -38,4 +38,5 @@ public class Constants {
 	public static boolean D = true;
 
 
+	public static String testString = "test?";
 }

@@ -365,10 +365,10 @@ containing a value of this type.
         public static final int bt_pickAddress=0x7f0a0002;
         public static final int custom_dialog_activity_text=0x7f0a001f;
         public static final int hello=0x7f0a0000;
-        public static final int pref_Sum_minDistance=0x7f0a002e;
-        public static final int pref_Sum_minFrequency=0x7f0a002d;
-        public static final int pref_TItle_minDistance=0x7f0a002c;
-        public static final int pref_Title_minFrequency=0x7f0a002b;
+        public static final int pref_Sum_minDistance=0x7f0a002f;
+        public static final int pref_Sum_minFrequency=0x7f0a002e;
+        public static final int pref_TItle_minDistance=0x7f0a002d;
+        public static final int pref_Title_minFrequency=0x7f0a002c;
         public static final int title_about=0x7f0a0022;
         public static final int title_feature1=0x7f0a0025;
         public static final int title_feature2=0x7f0a0026;
@@ -378,6 +378,7 @@ containing a value of this type.
         public static final int title_feature6=0x7f0a002a;
         public static final int title_home=0x7f0a0023;
         public static final int title_search=0x7f0a0024;
+        public static final int title_selectContacts=0x7f0a002b;
     }
     public static final class style {
         public static final int Button=0x7f0b0004;
