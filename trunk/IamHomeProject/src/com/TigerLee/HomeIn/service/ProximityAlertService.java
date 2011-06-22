@@ -103,17 +103,17 @@ public class ProximityAlertService extends Service {
 		return Service.START_STICKY;
 	}
 	public void getAddress(Intent intent){		
-		Double mLatitude = intent.getDoubleExtra(Constants.EXTRA_LATITUDE, 0.0);
+		Double mLatitude = Constants.USER_DESTINATION_LAT;
 		this.mAddress.setLatitude(mLatitude);
 		
-		Double mLongitude = intent.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0.0);
+		Double mLongitude = Constants.USER_DESTINATION_LNG;
 		this.mAddress.setLongitude(mLongitude);
 		
-		String mFormattedAddress = intent.getStringExtra(Constants.EXTRA_ADDRESS);
+		String mFormattedAddress = Constants.USER_DESTINATION_ADDRESS;
 		this.mAddress.setAddressLine(1, mFormattedAddress);
 		
-		this.mTextMsg = intent.getStringExtra(Constants.EXTRA_TEXTMSG);
-		this.mPhoneNum = intent.getStringExtra(Constants.EXTRA_PHONENUM);
+		this.mTextMsg = Constants.EXTRA_TEXTMSG;
+		this.mPhoneNum = Constants.EXTRA_PHONENUM;
 	}
 	private void handleNetworkLocationListener(){		
 		mNetworkLocationListener = new LocationListener() {			
@@ -161,6 +161,10 @@ public class ProximityAlertService extends Service {
 			@Override
 			public void onLocationChanged(Location location) {
 				mGPSCurrentLocation = location;
+				if(Constants.isRunningHomeIn){
+					Constants.USER_CURRENT_LAT = mGPSCurrentLocation.getLatitude();
+					Constants.USER_CURRENT_LNG = mGPSCurrentLocation.getLongitude();
+				}
 				Double mDistance = GPSInformation.distance(
 						mGPSCurrentLocation.getLatitude(), 
 						mGPSCurrentLocation.getLongitude(), 
@@ -168,11 +172,9 @@ public class ProximityAlertService extends Service {
 						mAddress.getLongitude());
 				mDistance = Math.abs(mDistance);
 				if(Constants.D) Log.v(TAG, "Distance to destination: " + mDistance);
-						
 				if(mDistance < Constants.DISTANCE){
 					destroyService();
 				}
-				
 			}
 		};
 		//Register a listener for location manager. 
@@ -306,10 +308,9 @@ public class ProximityAlertService extends Service {
 		setNotification(getString(R.string.AlertNotificationName), 
 				getString(R.string.AlertNotificationMsg));
 		stopSelf();
+		Constants.isRunningHomeIn = false;
 		// Start an Activity for sending a message.
 		Intent intent = new Intent(this, SendTextMessage.class);
-		intent.putExtra(Constants.EXTRA_PHONENUM, mPhoneNum);
-		intent.putExtra(Constants.EXTRA_TEXTMSG, mTextMsg);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}

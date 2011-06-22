@@ -44,6 +44,10 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 	public Boolean mIsStartServce = false;
 	public int mDownX = 0;
 		
+	public EditText mDestinationAddress;
+	public EditText mReceiverPhoneNumber;
+	public EditText mTextMessageEditText;
+	
 	public Button mButton_Geocoding;
 	public Button mButton_StartService;
 	public Button mButton_PickAddress;
@@ -63,7 +67,7 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 		public void handleMessage(Message msg) {
 			switch(msg.what){	
 				case Constants.DESTROY_ACTIVITY:
-					//Remove Progress dialog
+					//Remove Progress dialog which is created for loading page.
 					removeDialog(PROGRESS_DIALOG);
 					break;
 				default:
@@ -72,7 +76,6 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 			super.handleMessage(msg);
 		}
 	};
-	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +90,14 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 		// Write your current position to a textView.
         getCurrentLocation(mLocation);
         
+		
+        mDestinationAddress = (EditText) findViewById(R.id.DestinationAddress);
+        if(Constants.USER_DESTINATION_ADDRESS != null){
+        	mDestinationAddress.setText(Constants.USER_DESTINATION_ADDRESS); 
+        }
+        mReceiverPhoneNumber = (EditText) findViewById(R.id.ReceiverPhoneNumber);
+    	mTextMessageEditText = (EditText) findViewById(R.id.TextMessageEditText);
+    	
         mButton_Geocoding = (Button)findViewById(R.id.bt_GeocodingButton);
         mButton_Geocoding.setOnClickListener(this);
         
@@ -95,7 +106,6 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
         
         mButton_PickAddress = (Button)findViewById(R.id.bt_pickAddress);
         mButton_PickAddress.setOnClickListener(this);
-        
 	}
 
 	private void getCurrentLocation(Location location) {
@@ -103,6 +113,10 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 		if (location != null) {
 			double lat = location.getLatitude();
 			double lng = location.getLongitude();
+			if(!Constants.isRunningHomeIn){
+				Constants.USER_CURRENT_LAT = lat;
+				Constants.USER_CURRENT_LNG = lng;
+			}
 			mLocationString = getString(R.string.Latitude) 
 			+ lat
 			+ "\n"
@@ -129,7 +143,7 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if(event.getAction() == KeyEvent.ACTION_DOWN){
-			if(mIsStartServce){
+			if(Constants.isRunningHomeIn){
 				if(keyCode == KeyEvent.KEYCODE_BACK){
 					return false;
 				}
@@ -138,17 +152,13 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 		return super.onKeyDown(keyCode, event);
 	}
 	
-	
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if(resultCode == RESULT_OK){
     		if(requestCode == MAP_REQUEST){
-    			mGeocodedAddress.setLongitude(data.getDoubleExtra("LONGITUDE", mGeocodedAddress.getLongitude()));
-    			mGeocodedAddress.setLatitude(data.getDoubleExtra("LATITUDE", mGeocodedAddress.getLatitude()));
     		}
     		if(requestCode == ADDRESS_REQUEST){
     			String mDefaultContactUri = data.getData().toString();
-                // 20110425, @HoryunLee, _BLUETOOTH_, _ATT_, Get an user name from a ContactUri)
                 if (mDefaultContactUri != null) {
                 	Cursor cursor = null;
                 	try {
@@ -157,9 +167,6 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
                 			ContactsContract.CommonDataKinds.Phone.NUMBER},
                 			null, null,null);
                 		if (cursor.moveToFirst()) {
-                			//Broadcom Code - it does not work because of contact
-                			String displayName =data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
-                			EditText mReceiverPhoneNumber = (EditText) findViewById(R.id.ReceiverPhoneNumber);
                 			mReceiverPhoneNumber.setText(cursor.getString(0));                			
                 		}
                 	} catch (Throwable t) {
@@ -170,17 +177,6 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
                 		cursor = null;
                 	}
                 }
-                /*
-    			Cursor cursor = getContentResolver().query(data.getData(), 
-    					new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, 
-    				ContactsContract.CommonDataKinds.Phone.NUMBER}, null, null, null);
-    			cursor.moveToFirst();
-    			if(Constants.D){
-    				Log.v(TAG, "NAME : " + cursor.getString(0));
-        			Log.v(TAG, "PHONENUM : " + cursor.getString(1));    				
-    			}
-                cursor.close();
-                */
     		}
     	}
     	super.onActivityResult(requestCode, resultCode, data);
@@ -198,8 +194,7 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 			//Create Progress Dialog
 			showDialog(PROGRESS_DIALOG);
 			
-			//Transform Address to Coordinates
-	        EditText mDestinationAddress = (EditText) findViewById(R.id.DestinationAddress);
+			//Transform Address to Coordinates	        
 	        mGeocodedLoacation = (TextView) findViewById(R.id.GeocodedLoacation);	        
 			mGeocodedAddress = NativeGeocoder.getGeocodedAddress(mDestinationAddress.getText().toString());			
 			
@@ -209,9 +204,15 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 					for(int i = 0; i < mGeocodedAddress.getMaxAddressLineIndex(); i++){
 						address = address + mGeocodedAddress.getAddressLine(i);
 					}
-					 Log.i(TAG, "Lat: " + mGeocodedAddress.getLatitude() +
-							"Lng :" + mGeocodedAddress.getLongitude() + 
-							" Addr :"+ address);
+					if(!Constants.isRunningHomeIn){
+						Constants.USER_CURRENT_ADDRESS = address;
+						Constants.USER_DESTINATION_LAT = mGeocodedAddress.getLatitude();
+						Constants.USER_DESTINATION_LNG = mGeocodedAddress.getLongitude();
+					}
+					if(Constants.D) 
+						Log.i(TAG, "Lat: " + Constants.USER_DESTINATION_LAT +
+							"Lng :" + Constants.USER_DESTINATION_LNG + 
+							" Addr :"+ Constants.USER_CURRENT_ADDRESS);
 				}
 				mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
 				GoogleMapPage();
@@ -225,15 +226,14 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 			break;
 
 		case R.id.bt_StartService:
-			EditText mReceiverPhoneNumber = (EditText) findViewById(R.id.ReceiverPhoneNumber);
 			String mPhoneNumber = mReceiverPhoneNumber.getText().toString();
-			
-			EditText mTextMessageEditText = (EditText) findViewById(R.id.TextMessageEditText);
 			String mTextMessage = mTextMessageEditText.getText().toString();
-			
 			if(mGeocodedAddress!=null && mPhoneNumber!= null && mTextMessage != null){
-				startProximityService(mPhoneNumber, mTextMessage);
-				mIsStartServce =true;
+				if(!Constants.isRunningHomeIn){
+					Constants.EXTRA_PHONENUM = mPhoneNumber;
+					Constants.EXTRA_TEXTMSG = mTextMessage;
+					startProximityService();
+				}
 			}
 			break;
 		case R.id.bt_pickAddress:
@@ -266,28 +266,18 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 	public void GoogleMapPage(){
 		Intent intent = new Intent();
 		intent.setClass(this, GoogleMapPicker.class);
-		intent.putExtra(Constants.EXTRA_LONGITUDE, mGeocodedAddress.getLongitude());
-		intent.putExtra(Constants.EXTRA_LATITUDE, mGeocodedAddress.getLatitude());
-		intent.putExtra(Constants.EXTRA_ADDRESS, mGeocodedAddress.getAddressLine(1));
 		startActivityForResult(intent, MAP_REQUEST);
 	}
 	
-	private void startProximityService(String phonenum, String textmsg){
+	private void startProximityService(){
 				
 		Intent intent = new Intent(this,ProximityAlertService.class);
-		intent.putExtra(Constants.EXTRA_LONGITUDE, mGeocodedAddress.getLongitude());
-		intent.putExtra(Constants.EXTRA_LATITUDE, mGeocodedAddress.getLatitude());
-		intent.putExtra(Constants.EXTRA_ADDRESS, mGeocodedAddress.getAddressLine(1));
-		intent.putExtra(Constants.EXTRA_PHONENUM, phonenum);
-		intent.putExtra(Constants.EXTRA_TEXTMSG, textmsg);
-        startService(intent);
-        
+		startService(intent);
+		Constants.isRunningHomeIn = true;
         Toast.makeText(this, getString(R.string.ToastStart), Toast.LENGTH_LONG).show();
 		//Invisible start Service button
-		mButton_StartService.setVisibility(View.INVISIBLE);
-		
+		mButton_StartService.setVisibility(View.INVISIBLE);		
         if(Constants.D) Log.v(TAG,"Start Proximity Service");
-        mIsStartServce = true;
 	}
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {// Moving a page with touching.
@@ -301,9 +291,7 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 			if((int) event.getX() - mDownX > 10){
 				//PreviousPage();
 			}
-			
 		}
 		return super.onTouchEvent(event);
 	}
-	
 }

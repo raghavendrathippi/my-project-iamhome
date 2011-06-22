@@ -1,14 +1,14 @@
 package com.TigerLee.HomeIn.activity;
 
-import com.TigerLee.HomeIn.R;
-import com.TigerLee.HomeIn.util.Constants;
-
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
+
+import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.util.Constants;
 
 public class SendTextMessage extends Activity {
 
@@ -25,9 +25,8 @@ public class SendTextMessage extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sms);
 		
-		Intent intent = getIntent();
-		mPhoneNumber = intent.getStringExtra(Constants.EXTRA_PHONENUM);
-		mTextMessage = intent.getStringExtra(Constants.EXTRA_TEXTMSG);
+		mPhoneNumber = Constants.EXTRA_PHONENUM;
+		mTextMessage = Constants.EXTRA_TEXTMSG;
 		if(Constants.D) Log.v(TAG, "PhoneNum : " + mPhoneNumber 
         		+ " TextMessage : " + mTextMessage 
         		+" Sended" + IsSended);

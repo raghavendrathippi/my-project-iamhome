@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.util.Constants;
 
 /**
  * This is the base class for activities in the dashboard application.
@@ -167,6 +168,16 @@ public void onClickSearch (View v)
     //startActivity (new Intent(getApplicationContext(), SearchActivity.class));
 }
 
+/**
+ * Set message to show in About Activity
+ * 
+ * @param msg String
+ * @return void
+ */
+public void setAboutMsg (String about)
+{
+	Constants.ABOUT_ACTIVITY_STRING = about;
+}
 /**
  * Handle the click on the About button.
  * 
