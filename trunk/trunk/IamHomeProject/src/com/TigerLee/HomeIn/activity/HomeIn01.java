@@ -11,11 +11,13 @@ import android.database.Cursor;
 import android.location.Address;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.Contacts;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -145,6 +147,30 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
     			mGeocodedAddress.setLatitude(data.getDoubleExtra("LATITUDE", mGeocodedAddress.getLatitude()));
     		}
     		if(requestCode == ADDRESS_REQUEST){
+    			String mDefaultContactUri = data.getData().toString();
+                // 20110425, @HoryunLee, _BLUETOOTH_, _ATT_, Get an user name from a ContactUri)
+                if (mDefaultContactUri != null) {
+                	Cursor cursor = null;
+                	try {
+                		cursor = getContentResolver().query(Uri.parse(mDefaultContactUri),
+                			new String[] {
+                			ContactsContract.CommonDataKinds.Phone.NUMBER},
+                			null, null,null);
+                		if (cursor.moveToFirst()) {
+                			//Broadcom Code - it does not work because of contact
+                			String displayName =data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
+                			EditText mReceiverPhoneNumber = (EditText) findViewById(R.id.ReceiverPhoneNumber);
+                			mReceiverPhoneNumber.setText(cursor.getString(0));                			
+                		}
+                	} catch (Throwable t) {
+                		Log.e(TAG, "Unable to get default contact display name",t);
+                	}
+                	if (cursor != null) {
+                		cursor.close();
+                		cursor = null;
+                	}
+                }
+                /*
     			Cursor cursor = getContentResolver().query(data.getData(), 
     					new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, 
     				ContactsContract.CommonDataKinds.Phone.NUMBER}, null, null, null);
@@ -153,10 +179,8 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
     				Log.v(TAG, "NAME : " + cursor.getString(0));
         			Log.v(TAG, "PHONENUM : " + cursor.getString(1));    				
     			}
-    			
                 cursor.close();
-    			
-    		
+                */
     		}
     	}
     	super.onActivityResult(requestCode, resultCode, data);
@@ -213,7 +237,13 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 			}
 			break;
 		case R.id.bt_pickAddress:
-			startActivityForResult(new Intent(Intent.ACTION_PICK, Phone.CONTENT_URI), ADDRESS_REQUEST);
+			// 20110425, @HoryunLee, _BLUETOOTH_, _ATT_, Get selecting user name
+        	// ACTION_PICK -> ACTION_GET_CONTENT
+        	Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+
+        	// Contacts.CONTENT_TYPE -> "vnd.android.cursor.item/phone_v2"
+            i.setType("vnd.android.cursor.item/phone_v2");
+            startActivityForResult(i, ADDRESS_REQUEST);
 		default:
 			break;
 		}		

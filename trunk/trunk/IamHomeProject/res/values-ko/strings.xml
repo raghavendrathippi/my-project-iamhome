@@ -61,6 +61,7 @@
     <string name="title_feature4">내 정보</string>
     <string name="title_feature5">설정</string>
     <string name="title_feature6">Feature 6</string>
+    <string name="title_selectContacts">상대방의 전화번호를 선택하세요</string>
     
     <string name="pref_Title_minFrequency">업데이트 최소 주기</string>
     <string name="pref_TItle_minDistance">집까지 최소 거리</string>
