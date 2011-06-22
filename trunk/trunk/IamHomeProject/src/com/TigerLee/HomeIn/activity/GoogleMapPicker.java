@@ -35,6 +35,8 @@ public class GoogleMapPicker extends MapActivity {
 	private long mEndTouchTime;
 	private long mStartTouchTime;
 	
+	private String mChangedAddress = null;
+	
 	private static final int DEFAULT_ZOOM = 16;
 	private static final int DURATION_LONGCLICK = 1500;
 	private static final int CONFIRM_DIALOG = 1;
@@ -47,9 +49,11 @@ public class GoogleMapPicker extends MapActivity {
 	protected void onCreate(Bundle icicle) {
 		// TODO Auto-generated method stub
 		super.onCreate(icicle);
-		Intent mDialogIntent = new Intent();
-		mDialogIntent.setClass(this, CustomDialogActivity.class);
-		startActivity(mDialogIntent);
+		if(!Constants.isRunningHomeIn){
+			Intent mDialogIntent = new Intent();
+			mDialogIntent.setClass(this, CustomDialogActivity.class);
+			startActivity(mDialogIntent);
+		}
 		Log.v(TAG, "onCreate()");
 		
 		setContentView(R.layout.mappicker);
@@ -63,32 +67,40 @@ public class GoogleMapPicker extends MapActivity {
 		mMapController = mMapView.getController();
 		mMapController.setZoom(DEFAULT_ZOOM);
 		
+		Double mLatitude;
+		Double mLongitude;
+		String mFormattedAddress;
+		if(Constants.isRunningHomeIn){
+			mLatitude = Constants.USER_CURRENT_LAT;
+			mLongitude = Constants.USER_CURRENT_LNG;
+			mFormattedAddress = Constants.USER_CURRENT_ADDRESS;
+		}else{
+			mLatitude = Constants.USER_DESTINATION_LAT;
+			mLongitude = Constants.USER_DESTINATION_LNG;
+			mFormattedAddress = Constants.USER_DESTINATION_ADDRESS;
+		}
 		
-		// Generate a Geopoint from intent
-		Intent intent = getIntent();
-		
-		Double mLatitude = intent.getDoubleExtra(Constants.EXTRA_LATITUDE, 0.0) * 1E6;
-		Double mLongitude = intent.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0.0) * 1E6;
-		if(mLatitude == 0.0 && mLongitude == 0.0){
-			mLatitude = Constants.SEOUL_LAT * 1E6;
-			mLongitude = Constants.SEOUL_LNG * 1E6;
-		}		
-		String mFormattedAddress = intent.getStringExtra(Constants.EXTRA_ADDRESS);
-		
+		if(mLatitude == null && mLongitude == null){
+			mLatitude = Constants.DEFAULT_LAT * 1E6;
+			mLongitude = Constants.DEFAULT_LNG * 1E6;
+		}
 		if(Constants.D) Log.v(TAG, "Received Point(Double):" + mLatitude + mLongitude);
-		
-		GeoPoint mGeopoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
-		
+		mLatitude*=1E6;
+		mLongitude*=1E6;
 		//Animate geopoint / marker with touchEvent
+		GeoPoint mGeopoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
 		mapAnimateTo(mGeopoint);
-		
-		
 	}
 
 	public void mapAnimateTo(GeoPoint geopoint){
 		mMapController.animateTo(geopoint);
 		List<Overlay>  mMapOverlays = mMapView.getOverlays();
-        Drawable mMarkerDrawable = getResources().getDrawable(R.drawable.marker);        
+		Drawable mMarkerDrawable;
+		if(Constants.isRunningHomeIn){
+			mMarkerDrawable = getResources().getDrawable(R.drawable.marker_rounded_green);
+		}else{
+			mMarkerDrawable = getResources().getDrawable(R.drawable.marker);
+		}
         MapItemizedOverlay mMapItemizedOverlay = new MapItemizedOverlay(mMarkerDrawable);
         
         mMapItemizedOverlay.addOverlay(new OverlayItem(geopoint, null, null));
@@ -122,7 +134,7 @@ public class GoogleMapPicker extends MapActivity {
 						mIsPressed = false;
 				        // Propagate your own event
 				    	GeoPoint mGeoPoint = mMapView.getProjection().fromPixels((int) event.getX(), (int)event.getY());
-				    	//dispatchLongClickEvent(mGeoPoint);
+				    	dispatchLongClickEvent(mGeoPoint);
 					}
 				}
 				break; 
@@ -137,20 +149,18 @@ public class GoogleMapPicker extends MapActivity {
 		vibe.vibrate(200);
 		double mLatitude = mGeoPoint.getLatitudeE6() / 1E6;
 		double mLongitude = mGeoPoint.getLongitudeE6() / 1E6;
-	    if(Constants.D) Log.v(TAG, "Location - " + mLatitude + mLongitude);
-		
+	    if(Constants.D) Log.v(TAG, "Location - " + mLatitude + mLongitude);		
 		Address mClickedAddress = null;		
 		try {
 			List<Address> mListAddress = GoogleGeocoder.getAddressFromCoordaniates(getBaseContext(), mGeoPoint); 
-			mClickedAddress = mListAddress.get(0);		
+			mClickedAddress = mListAddress.get(0);	
+			mChangedAddress = mClickedAddress.getAddressLine(0);
 			mapAnimateTo(mGeoPoint);
-			showDialog(CONFIRM_DIALOG);
-			Toast.makeText(getBaseContext(), mClickedAddress.getAddressLine(0), Toast.LENGTH_SHORT).show();			
+			showDialog(CONFIRM_DIALOG);			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}
-		
+		}		
 		mLastGeoPoint = mGeoPoint;
 	}
 	@Override
@@ -215,11 +225,11 @@ public class GoogleMapPicker extends MapActivity {
 	@Override
 	protected void onDestroy() {
 		if(mIsChangedAddress){
-			Intent intent = getIntent();
-			intent.putExtra(Constants.EXTRA_LATITUDE, mLastGeoPoint.getLatitudeE6() / 1E6);
-			intent.putExtra(Constants.EXTRA_LONGITUDE, mLastGeoPoint.getLongitudeE6() / 1E6);
-			
-			setResult(RESULT_OK,intent);
+			if(!Constants.isRunningHomeIn){
+				Constants.USER_DESTINATION_ADDRESS = mChangedAddress;
+				Constants.USER_DESTINATION_LAT = mLastGeoPoint.getLatitudeE6() / 1E6;
+				Constants.USER_DESTINATION_LNG = mLastGeoPoint.getLongitudeE6() / 1E6;
+			}
 		}else{
 			setResult(RESULT_CANCELED);
 		}

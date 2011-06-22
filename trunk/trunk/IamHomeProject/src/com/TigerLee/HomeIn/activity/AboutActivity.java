@@ -18,7 +18,10 @@ package com.TigerLee.HomeIn.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.util.Constants;
 /**
  * This is the About activity in the dashboard application.
  * It displays some text and provides a way to get back to the home activity.
@@ -46,11 +49,6 @@ protected void onCreate(Bundle savedInstanceState)
 
     setContentView (R.layout.activity_about);
     setTitleFromActivityLabel (R.id.title_text);
-}
-private String setupText(){
-	Intent intent = getIntent();
-	String text = intent.getStringExtra("");
-	return text;
-}
     
+}   
 } // end class

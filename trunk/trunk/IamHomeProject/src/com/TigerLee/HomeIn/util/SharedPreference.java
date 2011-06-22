@@ -6,6 +6,7 @@ import java.util.Locale;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.location.Address;
 import android.util.Log;
 
@@ -65,18 +66,35 @@ public class SharedPreference{
 		//if(Constants.D) Log.v(TAG, "getPreferenceAddress() - " + mAddress.getPhone()+";");
 		return mPrefrenceData;
 	}
-	public void setPreferenceAddress(PrefrenceData prefrenceData){
-		
+	public Editor getSharedPreferences(){
 		//get SharedData to save in xml 
 		SharedPreferences mPreferences = mContext.getSharedPreferences(
 				PREFERENCE_NAME, PREFERENCE_MODE);
 		SharedPreferences.Editor mEditor = mPreferences.edit();
+		return mEditor;
         
-        mEditor.putString(NAME_PREFERENCE[0], prefrenceData.address);
-        mEditor.putString(NAME_PREFERENCE[1], prefrenceData.latitude.toString());
-        mEditor.putString(NAME_PREFERENCE[2], prefrenceData.longitude.toString());        
-        mEditor.putString(NAME_PREFERENCE[5], prefrenceData.isRunning+"");
-        mEditor.putString(NAME_PREFERENCE[6], prefrenceData.result+"");        
+	}
+	public void setLatitude(String latitude){
+		SharedPreferences.Editor mEditor =  getSharedPreferences();
+		mEditor.putString(NAME_PREFERENCE[1], latitude.toString());
+        mEditor.commit();
+	}
+
+	public void setLongitude(String longitude){
+		SharedPreferences.Editor mEditor =  getSharedPreferences();
+		mEditor.putString(NAME_PREFERENCE[2], longitude.toString());
+        mEditor.commit();
+	}
+
+	public void setIsRunning(String isRunning){
+		SharedPreferences.Editor mEditor =  getSharedPreferences();
+		mEditor.putString(NAME_PREFERENCE[5], isRunning+"");
+        mEditor.commit();
+	}
+
+	public void setResult(String result){
+		SharedPreferences.Editor mEditor =  getSharedPreferences();
+		mEditor.putString(NAME_PREFERENCE[6], result+"");
         mEditor.commit();
 	}
 }
