@@ -54,7 +54,7 @@ public class GoogleMapPicker extends MapActivity {
 			mDialogIntent.setClass(this, CustomDialogActivity.class);
 			startActivity(mDialogIntent);
 		}
-		Log.v(TAG, "onCreate()");
+		if(Constants.D) Log.v(TAG, "onCreate()");
 		
 		setContentView(R.layout.mappicker);
 		
@@ -85,8 +85,8 @@ public class GoogleMapPicker extends MapActivity {
 			mLongitude = Constants.DEFAULT_LNG * 1E6;
 		}
 		if(Constants.D) Log.v(TAG, "Received Point(Double):" + mLatitude + mLongitude);
-		mLatitude*=1E6;
-		mLongitude*=1E6;
+		mLatitude *= 1E6;
+		mLongitude *= 1E6;
 		//Animate geopoint / marker with touchEvent
 		GeoPoint mGeopoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
 		mapAnimateTo(mGeopoint);
@@ -106,7 +106,6 @@ public class GoogleMapPicker extends MapActivity {
         mMapItemizedOverlay.addOverlay(new OverlayItem(geopoint, null, null));
         mMapOverlays.clear();
         mMapOverlays.add(mMapItemizedOverlay);
-        
         
         mLastGeoPoint = geopoint;		
 	}

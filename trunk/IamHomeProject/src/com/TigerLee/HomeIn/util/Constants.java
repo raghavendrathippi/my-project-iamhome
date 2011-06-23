@@ -1,6 +1,7 @@
 package com.TigerLee.HomeIn.util;
 
 import android.graphics.Typeface;
+import android.util.Log;
 
 public class Constants {
 	public static String EXTRA_PHONENUM = null;
@@ -42,7 +43,20 @@ public class Constants {
 
 	public static final int MAX_RESULT_GEOCODING = 1;
 	
-	
-	
 	public static boolean D = true;
+	
+	public static void init(){
+		Log.i("Constants", "init()");
+		
+		EXTRA_PHONENUM = null;
+		EXTRA_TEXTMSG = null;
+		
+		USER_CURRENT_LAT = null;
+		USER_CURRENT_LNG = null;
+		USER_CURRENT_ADDRESS = null;
+		
+		USER_DESTINATION_LAT = null;
+		USER_DESTINATION_LNG = null;
+		USER_DESTINATION_ADDRESS = null;
+	}
 }

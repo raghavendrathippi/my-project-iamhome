@@ -37,13 +37,10 @@ public class SendTextMessage extends Activity {
 	}
 	private void sendSMS(){
 		PendingIntent mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(), 0);
-		
 		SmsManager mSmsManager = SmsManager.getDefault();
-		
-		// Get a Message from EditText.
-		if(mPhoneNumber != null){
-			if(Constants.D) Log.v(TAG, "PhoneNum: " +mPhoneNumber +"TextMSG: "+mTextMessage);
-			mSmsManager.sendTextMessage(mPhoneNumber, 
+		if(mPhoneNumber != null){			
+			mSmsManager.sendTextMessage(
+					mPhoneNumber, 
 					null, 
 					mTextMessage, 
 					mPendingIntent, 
