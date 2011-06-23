@@ -18,6 +18,7 @@ package com.TigerLee.HomeIn.activity;
 
 import android.os.Bundle;
 import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.util.Constants;
 
 /**
  * This is a simple activity that demonstrates the dashboard user interface pattern.
@@ -41,6 +42,9 @@ protected void onCreate(Bundle savedInstanceState)
 {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
+    if(!Constants.isRunningHomeIn && !Constants.isRunningHomeOut){
+		Constants.init();
+	}
 }
     
 /**

@@ -58,7 +58,6 @@ public class ProximityAlertService extends Service {
 
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
 		super.onCreate();
 
 		// Get LocationMager & Current Location.
@@ -94,15 +93,15 @@ public class ProximityAlertService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		this.mAddress = new Address(Locale.getDefault());
-		//
-		getAddress(intent);
+		
+		getAddress();
 		if(Constants.D) Log.v(TAG, "Destination Latitude: " + mAddress.getLatitude());
 		if(Constants.D) Log.v(TAG, "Destination Longitude: " + mAddress.getLongitude());
 		//
 		handleNetworkLocationListener();
 		return Service.START_STICKY;
 	}
-	public void getAddress(Intent intent){		
+	public void getAddress(){		
 		Double mLatitude = Constants.USER_DESTINATION_LAT;
 		this.mAddress.setLatitude(mLatitude);
 		
@@ -214,6 +213,17 @@ public class ProximityAlertService extends Service {
 		//unregisterReceiver(mProximityAlertReceiver);
 		mLocationManager.removeUpdates(mNetworkLocationListener);
 		mLocationManager.removeUpdates(mGPSLocationListener);
+		Log.v(TAG, "onDestory");
+		//Force closed by the user
+		if(Constants.isRunningHomeIn){
+			Constants.isRunningHomeIn = false;
+			Constants.EXTRA_TEXTMSG = getString(R.string.destroyServiceMsg);
+			setNotification(getString(R.string.AlertNotificationName), 
+					Constants.EXTRA_TEXTMSG);
+			Intent intent = new Intent(this, SendTextMessage.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+		}
 		//if(Constants.D) Log.v(TAG, "Unregister Receiver");
 		super.onDestroy();
 	}	

@@ -11,11 +11,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
-     
-    
-    
       
     <application 
     	android:icon="@drawable/icon" 
@@ -37,7 +35,6 @@
         <activity android:name=".activity.DashBoardActivity"/>
         <activity android:name=".activity.HomeActivity"/>
         <activity android:name=".activity.AboutActivity"/>
-        
         <activity android:name=".activity.MainMenu"/>
         <activity android:name=".activity.HomeIn01"/>        
         <activity android:name=".activity.GoogleMapPicker"/>
@@ -50,13 +47,18 @@
         <activity android:name=".activity.PreferencesActivity"/>
         <activity android:name=".activity.UserProfileActivity"/>
         
-        
-        
         <service 
        		android:enabled="true" 
        		android:name=".service.ProximityAlertService"/>
-       
+       		
+       	<receiver android:name="IamHomeBroadcastReceiver">
+    		<intent-filter>
+            	<action android:name="android.intent.action.ACTION_BOOT_COMPLETED"></action>
+             	<action android:name="android.intent.action.ACTION_BATTERY_LOW"></action>
+             	<action android:name="android.intent.action.ACTION_PACKAGE_REMOVED"></action>
+             	<action android:name="android.intent.action.ACTION_PACKAGE_RESTARTED"></action>
+    		</intent-filter>
+    	</receiver>
+    	
     </application>
-
-
 </manifest> 

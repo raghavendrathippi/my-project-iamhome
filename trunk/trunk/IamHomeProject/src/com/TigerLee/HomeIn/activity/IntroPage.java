@@ -47,13 +47,16 @@ public class IntroPage extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if(Constants.isRunningHomeIn || Constants.isRunningHomeOut){
+			makeToast(getString(R.string.toast_isRunning));
+			NextPage();
+		}
 		// Verify a current state of this device.
 		setContentView(R.layout.intro);
 		setCurrentState();
 		// Set content view according to the current state. 
 		setLayout();
 	}
-	
 	public void setCurrentState(){
 		if(!GPSInformation.IsTurnOnGPS(this)){//Not turned on GPS
 			makeToast(getString(R.string.UnsupportGPS));

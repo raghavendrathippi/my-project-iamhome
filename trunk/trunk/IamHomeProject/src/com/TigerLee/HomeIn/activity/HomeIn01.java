@@ -1,11 +1,8 @@
 package com.TigerLee.HomeIn.activity;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.location.Address;
@@ -16,8 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.provider.ContactsContract.Contacts;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -26,7 +21,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.TigerLee.HomeIn.R;
 import com.TigerLee.HomeIn.Geocoder.NativeGeocoder;
@@ -78,8 +72,7 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 	};
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
+        super.onCreate(savedInstanceState);        
         setContentView(R.layout.homein01);
         
         // Get LocationMager & Current Location.
@@ -88,8 +81,7 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 		mLocation = mLocationManager.getLastKnownLocation(mProvider);
 		
 		// Write your current position to a textView.
-        getCurrentLocation(mLocation);
-        
+        getCurrentLocation(mLocation);        
 		
         mDestinationAddress = (EditText) findViewById(R.id.DestinationAddress);
         if(Constants.USER_DESTINATION_ADDRESS != null){
@@ -98,14 +90,15 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
         mReceiverPhoneNumber = (EditText) findViewById(R.id.ReceiverPhoneNumber);
     	mTextMessageEditText = (EditText) findViewById(R.id.TextMessageEditText);
     	
-        mButton_Geocoding = (Button)findViewById(R.id.bt_GeocodingButton);
-        mButton_Geocoding.setOnClickListener(this);
-        
+    	mButton_Geocoding = (Button)findViewById(R.id.bt_GeocodingButton);
         mButton_StartService = (Button)findViewById(R.id.bt_StartService);
-        mButton_StartService.setOnClickListener(this);
-        
-        mButton_PickAddress = (Button)findViewById(R.id.bt_pickAddress);
-        mButton_PickAddress.setOnClickListener(this);
+        mButton_PickAddress = (Button)findViewById(R.id.bt_pickAddress);        
+		
+    	if(Constants.isRunningHomeIn){
+    		disableAllButton();
+    	}else{
+    		enableAllButton();
+    	}
 	}
 
 	private void getCurrentLocation(Location location) {
@@ -125,6 +118,17 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 		}
 		TextView mCurrentLocation = (TextView)findViewById(R.id.CurrentLoacation);
 		mCurrentLocation.setText(getString(R.string.CurrentLocation)+ "\n" + mLocationString);
+	}
+
+	private void enableAllButton(){
+		mButton_Geocoding.setOnClickListener(this);
+		mButton_PickAddress.setOnClickListener(this);
+        mButton_StartService.setOnClickListener(this);   
+	}
+	private void disableAllButton(){
+		mButton_Geocoding.setVisibility(View.INVISIBLE);
+		mButton_PickAddress.setVisibility(View.INVISIBLE);
+		mButton_StartService.setVisibility(View.INVISIBLE);
 	}
 	/*
 	 * THIS IS NOT AVAILABLE CURRENTLY.
@@ -220,8 +224,7 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 			}else{
 				//Not available to geocode with the address.
 				mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
-				Toast.makeText(HomeIn01.this, getString(R.string.NotValidAddress), 
-						Toast.LENGTH_LONG).show();
+				toast(getString(R.string.NotValidAddress));
 			}
 			break;
 
@@ -274,9 +277,10 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 		Intent intent = new Intent(this,ProximityAlertService.class);
 		startService(intent);
 		Constants.isRunningHomeIn = true;
-        Toast.makeText(this, getString(R.string.ToastStart), Toast.LENGTH_LONG).show();
+		toast(getString(R.string.ToastStart));        
 		//Invisible start Service button
-		mButton_StartService.setVisibility(View.INVISIBLE);		
+		disableAllButton();
+		GoogleMapPage();
         if(Constants.D) Log.v(TAG,"Start Proximity Service");
 	}
 	@Override
