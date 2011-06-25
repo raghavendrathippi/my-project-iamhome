@@ -29,7 +29,7 @@ public class SendTextMessage extends Activity {
 		mTextMessage = Constants.EXTRA_TEXTMSG;
 		if(Constants.D) Log.v(TAG, "PhoneNum : " + mPhoneNumber 
         		+ " TextMessage : " + mTextMessage 
-        		+" Sended" + IsSended);
+        		+" Sended : " + IsSended);
 		
 		if(IsSended == false){
 			sendSMS();
