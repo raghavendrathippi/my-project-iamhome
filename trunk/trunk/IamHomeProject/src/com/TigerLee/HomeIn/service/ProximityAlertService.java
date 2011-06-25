@@ -70,15 +70,22 @@ public class ProximityAlertService extends Service {
 		// Not support GPS.
 		if(!mLocationManager.isProviderEnabled(mProvider)){
 			if(Constants.D) Log.e(TAG, "Not support GPS - kill service!");
-			stopSelf();
+			//stopSelf();
 		}
 		if(mLocation == null){
 			Toast.makeText(this, getString(R.string.UnsupportGPS),
 					Toast.LENGTH_SHORT).show();
-			stopSelf();
+			//stopSelf();
 		}
 		//setProximityAlert(mLocationManager);
 		//registerIntentFilter();
+		this.mAddress = new Address(Locale.getDefault());
+		
+		getAddress();
+		if(Constants.D) Log.v(TAG, "Destination Latitude: " + mAddress.getLatitude());
+		if(Constants.D) Log.v(TAG, "Destination Longitude: " + mAddress.getLongitude());
+		//
+		handleNetworkLocationListener();
 	}	
 	@Override
 	public void onStart(Intent intent, int startId) {
@@ -92,13 +99,7 @@ public class ProximityAlertService extends Service {
 	}
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		this.mAddress = new Address(Locale.getDefault());
 		
-		getAddress();
-		if(Constants.D) Log.v(TAG, "Destination Latitude: " + mAddress.getLatitude());
-		if(Constants.D) Log.v(TAG, "Destination Longitude: " + mAddress.getLongitude());
-		//
-		handleNetworkLocationListener();
 		return Service.START_STICKY;
 	}
 	public void getAddress(){		
@@ -140,6 +141,20 @@ public class ProximityAlertService extends Service {
 			@Override
 			public void onLocationChanged(Location location) {
 				mNetworkCurrentLocation = location;
+				if(Constants.isRunningHomeIn){
+					Constants.USER_CURRENT_LAT = mNetworkCurrentLocation.getLatitude();
+					Constants.USER_CURRENT_LNG = mNetworkCurrentLocation.getLongitude();
+				}
+				Double mDistance = GPSInformation.distance(
+						mNetworkCurrentLocation.getLatitude(), 
+						mNetworkCurrentLocation.getLongitude(), 
+						mAddress.getLatitude(), 
+						mAddress.getLongitude());
+				mDistance = Math.abs(mDistance);
+				if(Constants.D) Log.v(TAG, "Distance to destination: " + mDistance);
+				if(mDistance < Constants.DISTANCE){
+					destroyService();
+				}
 			}
 		};	
 		mGPSLocationListener = new LocationListener() {

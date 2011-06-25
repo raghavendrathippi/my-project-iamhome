@@ -7,11 +7,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.gesture.GestureOverlayView;
+import android.gesture.GestureOverlayView.OnGestureListener;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
@@ -25,7 +28,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-public class GoogleMapPicker extends MapActivity {
+public class GoogleMapPicker extends MapActivity implements android.view.GestureDetector.OnGestureListener{
 	
 	public MapView mMapView;
 	public MapController mMapController;
@@ -34,7 +37,7 @@ public class GoogleMapPicker extends MapActivity {
 	
 	private long mEndTouchTime;
 	private long mStartTouchTime;
-	
+	private GestureDetector mGestureDetector;
 	private String mChangedAddress = null;
 	
 	private static final int DEFAULT_ZOOM = 16;
@@ -90,6 +93,9 @@ public class GoogleMapPicker extends MapActivity {
 		//Animate geopoint / marker with touchEvent
 		GeoPoint mGeopoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
 		mapAnimateTo(mGeopoint);
+		mGestureDetector =new GestureDetector(this);
+		
+		
 	}
 
 	public void mapAnimateTo(GeoPoint geopoint){
@@ -109,14 +115,14 @@ public class GoogleMapPicker extends MapActivity {
         
         mLastGeoPoint = geopoint;		
 	}
-	
-	
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
 		int action = event.getAction();
-		if(Constants.D) Log.v(TAG, "onTouchEvent()- " + action);
-		
+		if(Constants.D) Log.v(TAG, "dispatchTouchEvent()- " + action);
+		mGestureDetector.onTouchEvent(event);
+		return super.dispatchTouchEvent(event);
+		/*
 		switch (action) {
 			case (MotionEvent.ACTION_MOVE) : // Contact has moved across screen
 				break; 
@@ -126,26 +132,29 @@ public class GoogleMapPicker extends MapActivity {
 				// Record the start time
 				if(!mIsPressed){
 					mIsPressed = true;
-					mStartTouchTime = event.getEventTime();					
+					mStartTouchTime = event.getEventTime();
+					Log.v(TAG, "START: " + mStartTouchTime);
 				}else{					
 					mEndTouchTime = event.getEventTime();
+					Log.v(TAG, "END: " + mEndTouchTime);
 					if(mEndTouchTime - mStartTouchTime > DURATION_LONGCLICK){
-						mIsPressed = false;
-				        // Propagate your own event
+						// Propagate your own event
+						Log.v(TAG, "Long Click");
 				    	GeoPoint mGeoPoint = mMapView.getProjection().fromPixels((int) event.getX(), (int)event.getY());
 				    	dispatchLongClickEvent(mGeoPoint);
+				    	mIsPressed = false;
 					}
 				}
 				break; 
 		    case (MotionEvent.ACTION_UP) : // Touch screen touch ended 
 		    	break;
 		}
-		return super.dispatchTouchEvent(event);
+		return super.dispatchTouchEvent(event);*/
 	}
 	public void dispatchLongClickEvent(GeoPoint mGeoPoint){
 		if(Constants.D) Log.v(TAG, "dispatchLongClickEvent()");
 		Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		vibe.vibrate(200);
+		vibe.vibrate(80);
 		double mLatitude = mGeoPoint.getLatitudeE6() / 1E6;
 		double mLongitude = mGeoPoint.getLongitudeE6() / 1E6;
 	    if(Constants.D) Log.v(TAG, "Location - " + mLatitude + mLongitude);		
@@ -234,4 +243,46 @@ public class GoogleMapPicker extends MapActivity {
 		}
 		super.onDestroy();
 	}
+
+	@Override
+	public boolean onDown(MotionEvent e) {
+		// TODO Auto-generated method stub
+		if(Constants.D) Log.v(TAG, "onDown()");
+		return false;
+	}
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onLongPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		if(Constants.D) Log.v(TAG, "onLongPress()");
+		GeoPoint mGeoPoint = mMapView.getProjection().fromPixels((int) e.getX(), (int)e.getY());
+    	dispatchLongClickEvent(mGeoPoint);
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onShowPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 }

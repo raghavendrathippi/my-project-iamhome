@@ -160,6 +160,8 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if(resultCode == RESULT_OK){
     		if(requestCode == MAP_REQUEST){
+    			if(Constants.D) Log.v(TAG, "ResultOK-MapRequest");
+    			mDestinationAddress.setText(Constants.USER_DESTINATION_ADDRESS);
     		}
     		if(requestCode == ADDRESS_REQUEST){
     			String mDefaultContactUri = data.getData().toString();
@@ -185,7 +187,12 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
     	}
     	super.onActivityResult(requestCode, resultCode, data);
     }	
-    
+    @Override
+    protected void onResume() {
+    	// TODO Auto-generated method stub
+    	Log.v(TAG, "onResume");
+    	super.onResume();
+    }
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
