@@ -14,25 +14,24 @@
 	
 	<string name="toast_isRunning">집에가면 연락해 실행되고 있는 중 입니다.</string>
 	<string name="toast_isRunning_preference">현재 적용한 값은 다음 실행 시 부터 적용됩니다.</string>
+	<string name="toast_servicestart">집에가면 연락해~ 시작합니다!</string>
+	<string name="toast_unsupport_Wifi">Wifi에 접속 할 수 없습니다.\n 데이터 통신은 과도한 요금이 발생될 수 도 있습니다.</string>
+	<string name="toast_unsupport_Connectivity">Wifi 또는 데이터 통신을 켜주세요!</string>
+	<string name="toast_unsupport_GPS">GPS를 켜주세요!</string>
 	
 	<string name="InputDestinationAddress">목적지의 주소를 입력해주세요.</string>
 	<string name="InputPhoneNumber">수신 받을 전화번호를 입력해주세요.</string>
 	<string name="InputSMS">수신 받을 메세지를 입력해 주세요.</string>
-
-	<string name="ToastStart">집에가면 연락해~ 시작합니다!</string>
 	
-	<string name="UnsupportWifi">Wifi에 접속 할 수 없습니다.\n 데이터 통신은 과도한 요금이 발생될 수 도 있습니다.</string>
-	<string name="UnsupportConnectivity">Wifi 또는 데이터 통신을 켜주세요!</string>
-	<string name="UnsupportGPS">GPS를 켜주세요!</string>
-	<string name="UnsupportVersion">돈 주고 유료버전 사!</string>
-
+	<string name="noti_success_name">집에 가면 연락해</string>
+	<string name="noti_success_msg">미션 성공! 메세지를 성공적으로 보냈습니다.</string>
 	
-	<string name="AlertNotificationName">집에 가면 연락해~~</string>
-	<string name="AlertNotificationMsg">미션 성공! 메세지를 성공적으로 보냈습니다.</string>
-
-	<string name="VibratorNotificationName">GPS 이상!</string>
-	<string name="VibratorNotificationMsg">GPS 신호를 잡을 수 없어요~</string>
+	<string name="noti_disablegps_name">GPS 이상!</string>
+	<string name="noti_disablegps_msg">GPS 신호를 잡을 수 없어요~</string>
 	
+	<string name="noti_forceclose_name">강제 종료!</string>
+	<string name="noti_forceclose_msg">집에가면 연락해가 강제 종료 되었습니다.</string>	
+		
 	<string name="NotValidAddress">유효하지 않은 주소입니다.</string>
 	<string name="NoLocation">현재 위치를 찾을 수 없습니다.</string>
 	<string name="CurrentLocation">지금 현재 위치는?</string>
@@ -49,8 +48,9 @@
 	
 	
 	
-	<string name="custom_dialog_activity_text">검색된 결과에 따라 목적지가 표시됩니다. 현재 목적지가
+	<string name="text_notrunning_custom_activiy">검색된 결과에 따라 목적지가 표시됩니다. 현재 목적지가
 	다르다면 	원하는 목적지에서 길게 눌러주시면 목적지가 변하게 됩니다.</string>
+	<string name="text_running_custom_activiy">현재 위치를 지도에서 확인 해보세요!</string>
 	
 	<string name="LoadingMsg">"주소를 찾고 있습니다..."</string>
 	<string name="ConfirmMsg">"이곳을 목적지로 설정하시겠습니까?"</string>
@@ -72,5 +72,12 @@
     <string name="pref_Sum_minFrequency">GPS를 얼마나 자주 업데이트 할까요?</string>
     <string name="pref_Sum_minDistance">집까지 최소 거리는?</string>
     
-    <string name="destroyServiceMsg">집에가면 연락해가 강제 종료 되었습니다.</string>
+    <string name="pref_isRunning">현재 적용되는 값들은 다음 실행 시 부터 적용됩니다.</string>
+    
+    <string name="about_dashboard">Minimum distance to destination from user</string>
+    <string name="about_homein">Minimum distance to destination from user</string>
+    <string name="about_map">Minimum distance to destination from user</string>
+    <string name="about_homeout">Minimum distance to destination from user</string>
+    <string name="about_profile">Minimum distance to destination from user</string>
+    <string name="about_settings">Minimum distance to destination from user</string>
 </resources>

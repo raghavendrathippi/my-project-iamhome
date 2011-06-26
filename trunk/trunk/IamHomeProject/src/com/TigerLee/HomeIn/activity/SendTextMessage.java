@@ -24,11 +24,8 @@ public class SendTextMessage extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sms);
-		
-		mPhoneNumber = Constants.EXTRA_PHONENUM;
-		mTextMessage = Constants.EXTRA_TEXTMSG;
-		if(Constants.D) Log.v(TAG, "PhoneNum : " + mPhoneNumber 
-        		+ " TextMessage : " + mTextMessage 
+		if(Constants.D) Log.v(TAG, "PhoneNum : " + Constants.EXTRA_PHONENUM 
+        		+ " TextMessage : " + Constants.EXTRA_TEXT_MSG 
         		+" Sended : " + IsSended);
 		
 		if(IsSended == false){
@@ -40,13 +37,12 @@ public class SendTextMessage extends Activity {
 		SmsManager mSmsManager = SmsManager.getDefault();
 		if(mPhoneNumber != null){			
 			mSmsManager.sendTextMessage(
-					mPhoneNumber, 
+					Constants.EXTRA_PHONENUM, 
 					null, 
-					mTextMessage, 
+					Constants.EXTRA_TEXT_MSG, 
 					mPendingIntent, 
 					null);
 		}
-		IsSended = true;
-		
+		IsSended = true;		
 	}
 }
