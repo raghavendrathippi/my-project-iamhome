@@ -20,9 +20,11 @@ package com.TigerLee.HomeIn.activity;
 // class is in a sub-package.
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.widget.TextView;
 
 import com.TigerLee.HomeIn.R;
 import com.TigerLee.HomeIn.util.Constants;
@@ -53,11 +55,18 @@ public class CustomDialogActivity extends Activity {
         setContentView(R.layout.custom_dialog_activity);
         /*
         Typeface mTypefaceTypeface = Typeface.createFromAsset(getAssets(), "fonts/NanumGothic.otf");
-        TextView mTextView = (TextView) findViewById(R.id.text);
+        TextView mTextView = (TextView) findViewById(R.id.custom_dialog_text);
         
         mTextView.setTypeface(mTypefaceTypeface);
         */
+        getMessage();
         mHandler.sendMessageDelayed(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY), Constants.FIVE_SECOND);
+    }
+    public void getMessage(){
+    	TextView mTextView = (TextView) findViewById(R.id.custom_dialog_text);
+    	Intent intent = getIntent();
+    	String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+    	mTextView.setText(text);
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

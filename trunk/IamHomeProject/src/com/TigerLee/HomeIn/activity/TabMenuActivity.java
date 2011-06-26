@@ -11,6 +11,7 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.util.Constants;
 
 public class TabMenuActivity extends DashboardTapActivity {
 	 private TabHost mTabHost;
@@ -19,12 +20,14 @@ public class TabMenuActivity extends DashboardTapActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tabmenu);
-        
         mTabHost = getTabHost();
         mTabHost.getTabWidget().setDividerDrawable(R.drawable.popup_line_olivegreen);
-		setupTab(new TextView(this), "", R.drawable.tap_search, new Intent(this, HomeIn01.class));
-		setupTab(new TextView(this), "", R.drawable.tap_map, new Intent(this, GoogleMapPicker.class));
-		
+        if(Constants.isRunningHomeIn){
+        	setupTab(new TextView(this), "", R.drawable.tap_map, new Intent(this, GoogleMapPicker.class));
+        }else{
+        	setupTab(new TextView(this), "", R.drawable.tap_search, new Intent(this, HomeIn01.class));
+        	setupTab(new TextView(this), "", R.drawable.tap_map, new Intent(this, GoogleMapPicker.class));
+        }
 	}
 	private void setupTab(final View view, final String tag, int resID, Intent intent) {
 		View tabview = createTabImageView(mTabHost.getContext(), resID);

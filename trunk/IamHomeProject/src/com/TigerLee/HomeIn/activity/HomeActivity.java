@@ -19,6 +19,7 @@ package com.TigerLee.HomeIn.activity;
 import android.os.Bundle;
 import com.TigerLee.HomeIn.R;
 import com.TigerLee.HomeIn.util.Constants;
+import com.TigerLee.HomeIn.util.SharedPreference;
 
 /**
  * This is a simple activity that demonstrates the dashboard user interface pattern.
@@ -44,9 +45,22 @@ protected void onCreate(Bundle savedInstanceState)
     setContentView(R.layout.activity_home);
     if(!Constants.isRunningHomeIn && !Constants.isRunningHomeOut){
 		Constants.init();
+	}else{
+		setupConstants();
 	}
 }
     
+private void setupConstants() {
+	SharedPreference mSharedPreference = new SharedPreference(this);
+	String address = mSharedPreference.getAddress();
+	Double latitude = mSharedPreference.getLatitude();
+	Double longitude = 	mSharedPreference.getLongitude();
+	String userImage = mSharedPreference.getUserImage();
+	String userName = mSharedPreference.getUserName();
+	String result = mSharedPreference.getResult();
+	String running = mSharedPreference.getRunning();
+}
+
 /**
  * onDestroy
  * The final call you receive before your activity is destroyed. 

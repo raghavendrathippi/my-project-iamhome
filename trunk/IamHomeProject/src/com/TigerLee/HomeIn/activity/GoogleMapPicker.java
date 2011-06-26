@@ -50,17 +50,47 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 	
 	@Override
 	protected void onCreate(Bundle icicle) {
-		// TODO Auto-generated method stub
-		super.onCreate(icicle);
+		super.onCreate(icicle);		
+		setContentView(R.layout.mappicker);		
+		
+		setupMapView();
+		
+		Double mLatitude;
+		Double mLongitude;
+		String mFormattedAddress;
+		
 		if(!Constants.isRunningHomeIn){
-			Intent mDialogIntent = new Intent();
-			mDialogIntent.setClass(this, CustomDialogActivity.class);
-			startActivity(mDialogIntent);
+			mLatitude = Constants.USER_DESTINATION_LAT;
+			mLongitude = Constants.USER_DESTINATION_LNG;
+			mFormattedAddress = Constants.USER_DESTINATION_ADDRESS;
+		}else{
+			mLatitude = Constants.USER_CURRENT_LAT;
+			mLongitude = Constants.USER_CURRENT_LNG;
+			mFormattedAddress = Constants.USER_CURRENT_ADDRESS;
 		}
-		if(Constants.D) Log.v(TAG, "onCreate()");
+		if(Constants.D) Log.v(TAG, "Received Point(Double):" + mLatitude + mLongitude);
 		
-		setContentView(R.layout.mappicker);
-		
+		if(mLatitude == null && mLongitude == null){
+			mLatitude = Constants.DEFAULT_LAT;
+			mLongitude = Constants.DEFAULT_LNG;
+			if(Constants.isRunningHomeIn){
+				Toast.makeText(this, getString(R.string.NoLocation), Toast.LENGTH_LONG).show();
+				finish();
+			}else{
+				showCustomDialog();
+			}
+		}else{
+			showCustomDialog();
+		}
+		mLatitude *= 1E6;
+		mLongitude *= 1E6;
+		//Animate geopoint / marker with touchEvent
+		GeoPoint mGeopoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());		
+		mapAnimateTo(mGeopoint);
+		mGestureDetector =new GestureDetector(this);			
+	}
+	
+	public void setupMapView(){
 		// Setup your Mapview * Controller
 		mMapView  = (MapView) findViewById(R.id.mapview);
 		mMapView.setBuiltInZoomControls(true);
@@ -69,35 +99,35 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 		
 		mMapController = mMapView.getController();
 		mMapController.setZoom(DEFAULT_ZOOM);
-		
-		Double mLatitude;
-		Double mLongitude;
-		String mFormattedAddress;
-		if(Constants.isRunningHomeIn){
-			mLatitude = Constants.USER_CURRENT_LAT;
-			mLongitude = Constants.USER_CURRENT_LNG;
-			mFormattedAddress = Constants.USER_CURRENT_ADDRESS;
+	}
+	
+	public void showCustomDialog(){
+		Intent intent = new Intent();
+		intent.setClass(this, CustomDialogActivity.class);
+		if(!Constants.isRunningHomeIn){			
+			intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.text_notrunning_custom_activiy));			
 		}else{
-			mLatitude = Constants.USER_DESTINATION_LAT;
-			mLongitude = Constants.USER_DESTINATION_LNG;
-			mFormattedAddress = Constants.USER_DESTINATION_ADDRESS;
+			intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.text_running_custom_activiy));
 		}
-		
-		if(mLatitude == null && mLongitude == null){
-			mLatitude = Constants.DEFAULT_LAT * 1E6;
-			mLongitude = Constants.DEFAULT_LNG * 1E6;
+		startActivity(intent);
+	}
+	public void mapAnimateDestination(GeoPoint geopoint){
+		mMapController.animateTo(geopoint);
+		List<Overlay>  mMapOverlays = mMapView.getOverlays();
+		Drawable mMarkerDrawable;
+		if(Constants.isRunningHomeIn){
+			mMarkerDrawable = getResources().getDrawable(R.drawable.marker_rounded_green);
+		}else{
+			mMarkerDrawable = getResources().getDrawable(R.drawable.marker);
 		}
-		if(Constants.D) Log.v(TAG, "Received Point(Double):" + mLatitude + mLongitude);
-		mLatitude *= 1E6;
-		mLongitude *= 1E6;
-		//Animate geopoint / marker with touchEvent
-		GeoPoint mGeopoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
-		mapAnimateTo(mGeopoint);
-		mGestureDetector =new GestureDetector(this);
-		
+        MapItemizedOverlay mMapItemizedOverlay = new MapItemizedOverlay(mMarkerDrawable);
+        
+        mMapItemizedOverlay.addOverlay(new OverlayItem(geopoint, null, null));
+        mMapOverlays.add(mMapItemizedOverlay);		
+	}
+	public void mapAnimateCurrent(GeoPoint geopoint){
 		
 	}
-
 	public void mapAnimateTo(GeoPoint geopoint){
 		mMapController.animateTo(geopoint);
 		List<Overlay>  mMapOverlays = mMapView.getOverlays();
@@ -237,6 +267,7 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 				Constants.USER_DESTINATION_ADDRESS = mChangedAddress;
 				Constants.USER_DESTINATION_LAT = mLastGeoPoint.getLatitudeE6() / 1E6;
 				Constants.USER_DESTINATION_LNG = mLastGeoPoint.getLongitudeE6() / 1E6;
+				setResult(RESULT_OK);
 			}
 		}else{
 			setResult(RESULT_CANCELED);
@@ -262,8 +293,10 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 	public void onLongPress(MotionEvent e) {
 		// TODO Auto-generated method stub
 		if(Constants.D) Log.v(TAG, "onLongPress()");
-		GeoPoint mGeoPoint = mMapView.getProjection().fromPixels((int) e.getX(), (int)e.getY());
-    	dispatchLongClickEvent(mGeoPoint);
+		if(!Constants.isRunningHomeIn){
+			GeoPoint mGeoPoint = mMapView.getProjection().fromPixels((int) e.getX(), (int)e.getY());
+	    	dispatchLongClickEvent(mGeoPoint);
+		}		
 	}
 
 	@Override

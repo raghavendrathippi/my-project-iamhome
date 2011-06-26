@@ -57,6 +57,12 @@
              	<action android:name="android.intent.action.ACTION_BATTERY_LOW"></action>
              	<action android:name="android.intent.action.ACTION_PACKAGE_REMOVED"></action>
              	<action android:name="android.intent.action.ACTION_PACKAGE_RESTARTED"></action>
+             	
+             	<!-- Custom Intent -->
+             	<action android:name="com.TigerLee.Homein.intent.action.DISABLE_GPS_INTENT"></action>
+             	<action android:name="com.TigerLee.Homein.intent.action.DISABLE_NETWORK_LOCATION_INTENT"></action>
+             	<action android:name="com.TigerLee.Homein.intent.action.FORCE_CLOSED_INTENT"></action>
+             	<action android:name="com.TigerLee.Homein.intent.action.SUCCESS_INTENT"></action>             	
     		</intent-filter>
     	</receiver>
     	

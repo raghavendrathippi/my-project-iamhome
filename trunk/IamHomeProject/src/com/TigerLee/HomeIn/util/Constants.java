@@ -5,7 +5,7 @@ import android.util.Log;
 
 public class Constants {
 	public static String EXTRA_PHONENUM = null;
-	public static String EXTRA_TEXTMSG = null;
+	public static String EXTRA_TEXT_MSG = null;
 	
 	public static Double USER_CURRENT_LAT = null;
 	public static Double USER_CURRENT_LNG = null;
@@ -42,6 +42,7 @@ public class Constants {
 	public static int FIVE_SECOND = 1000 * 5;
 
 	public static final int MAX_RESULT_GEOCODING = 1;
+
 	
 	public static boolean D = true;
 	
@@ -49,7 +50,7 @@ public class Constants {
 		Log.i("Constants", "init()");
 		
 		EXTRA_PHONENUM = null;
-		EXTRA_TEXTMSG = null;
+		EXTRA_TEXT_MSG = null;
 		
 		USER_CURRENT_LAT = null;
 		USER_CURRENT_LNG = null;
@@ -58,5 +59,10 @@ public class Constants {
 		USER_DESTINATION_LAT = null;
 		USER_DESTINATION_LNG = null;
 		USER_DESTINATION_ADDRESS = null;
+	}
+
+	public static void setDefaultVaues() {
+		Log.i("Constants", "setDefaultVaues()");
+		
 	}
 }

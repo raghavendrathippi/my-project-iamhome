@@ -59,17 +59,17 @@ public class IntroPage extends Activity {
 	}
 	public void setCurrentState(){
 		if(!GPSInformation.IsTurnOnGPS(this)){//Not turned on GPS
-			makeToast(getString(R.string.UnsupportGPS));
+			makeToast(getString(R.string.toast_unsupport_GPS));
 			mCurrentState = DISABLED_GPS;
 			return;
 		}
 		if(!ConnectivityInformation.IsWifiAvailable(this)){//Not support Wifi
-			if(Constants.D) Log.e(TAG, getString(R.string.UnsupportWifi));
+			if(Constants.D) Log.e(TAG, getString(R.string.toast_unsupport_Wifi));
 			mCurrentState = DISABLED_WIFI;
 		}
 		if(!ConnectivityInformation.IsDataNetworkAvailable(this) && 
 				!ConnectivityInformation.IsWifiAvailable(this)){//Not support data network
-			makeToast(getString(R.string.UnsupportConnectivity));
+			makeToast(getString(R.string.toast_unsupport_Connectivity));
 			mCurrentState = DISABLED_CONNECTIVITY;
 			return;
 		}
@@ -103,7 +103,7 @@ public class IntroPage extends Activity {
 		startActivity(intent);
 		// show a warning message that it could be charing lots costs.
 		if(mCurrentState == DISABLED_WIFI){
-			makeToast(getString(R.string.UnsupportWifi));
+			makeToast(getString(R.string.toast_unsupport_Wifi));
 		}		
 		
 		finish();

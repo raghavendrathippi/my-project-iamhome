@@ -75,8 +75,7 @@ public class MainMenu extends Activity {
 		});*/
 	}
 	public void NextPage(int which){
-		if(!GPSInformation.IsLocationAvailable(this)){
-			Toast.makeText(this, getString(R.string.VibratorNotificationMsg) , Toast.LENGTH_LONG).show();
+		if(!GPSInformation.IsLocationAvailable(this)){			
 			return;
 		}
 		Intent intent = new Intent();
@@ -88,7 +87,6 @@ public class MainMenu extends Activity {
 		case SCHOOL:
 			intent.setClass(this, TabMenuActivity.class);
 			startActivity(intent);
-			Toast.makeText(this, getString(R.string.UnsupportVersion), Toast.LENGTH_LONG).show();
 			return;
 		}
 	}

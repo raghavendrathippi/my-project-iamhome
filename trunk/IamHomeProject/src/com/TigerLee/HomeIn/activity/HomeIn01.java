@@ -1,5 +1,7 @@
 package com.TigerLee.HomeIn.activity;
 
+import java.util.List;
+
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,10 +25,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.Geocoder.GoogleGeocoder;
 import com.TigerLee.HomeIn.Geocoder.NativeGeocoder;
 import com.TigerLee.HomeIn.service.ProximityAlertService;
 import com.TigerLee.HomeIn.util.Constants;
 import com.TigerLee.HomeIn.util.GPSInformation;
+import com.google.android.maps.GeoPoint;
 
 
 public class HomeIn01 extends DashboardActivity implements OnClickListener{
@@ -190,7 +194,10 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
     @Override
     protected void onResume() {
     	// TODO Auto-generated method stub
-    	Log.v(TAG, "onResume");
+    	if(Constants.D) Log.v(TAG, "onResume");
+    	if(Constants.USER_DESTINATION_ADDRESS != null){
+        	mDestinationAddress.setText(Constants.USER_DESTINATION_ADDRESS); 
+        }
     	super.onResume();
     }
 	@Override
@@ -203,45 +210,46 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 		switch (v.getId()) {
 		case R.id.bt_GeocodingButton:
 			//Create Progress Dialog
-			showDialog(PROGRESS_DIALOG);
-			
+			showDialog(PROGRESS_DIALOG);			
 			//Transform Address to Coordinates	        
 	        mGeocodedLoacation = (TextView) findViewById(R.id.GeocodedLoacation);	        
-			mGeocodedAddress = NativeGeocoder.getGeocodedAddress(mDestinationAddress.getText().toString());			
-			
-			if(mGeocodedAddress != null){					
+			mGeocodedAddress = NativeGeocoder.getGeocodedAddress(mDestinationAddress.getText().toString());
+			if(mGeocodedAddress != null){
+				if(!Constants.isRunningHomeIn){//not allow to change address when is running.
+					Constants.USER_DESTINATION_LAT = mGeocodedAddress.getLatitude();
+					Constants.USER_DESTINATION_LNG = mGeocodedAddress.getLongitude();
+				}
+				try{//Get well Formatted Address from lat, lng
+					List<Address> mListaddress = GoogleGeocoder.getAddressFromCoordaniates(this, 
+							new GeoPoint(Constants.USER_CURRENT_LAT.intValue(), 
+									Constants.USER_CURRENT_LNG.intValue()));
+					if(mListaddress != null){
+						Constants.USER_DESTINATION_ADDRESS = mListaddress.get(0).getAddressLine(0);
+						mDestinationAddress.setText(Constants.USER_DESTINATION_ADDRESS);
+					}					
+				}catch(Exception e){
+					
+				}
 				if(Constants.D){
-					String address  = null;
-					for(int i = 0; i < mGeocodedAddress.getMaxAddressLineIndex(); i++){
-						address = address + mGeocodedAddress.getAddressLine(i);
-					}
-					if(!Constants.isRunningHomeIn){
-						Constants.USER_CURRENT_ADDRESS = address;
-						Constants.USER_DESTINATION_LAT = mGeocodedAddress.getLatitude();
-						Constants.USER_DESTINATION_LNG = mGeocodedAddress.getLongitude();
-					}
-					if(Constants.D) 
-						Log.i(TAG, "Lat: " + Constants.USER_DESTINATION_LAT +
-							"Lng :" + Constants.USER_DESTINATION_LNG + 
-							" Addr :"+ Constants.USER_CURRENT_ADDRESS);
+					Log.i(TAG, "Lat: " + Constants.USER_DESTINATION_LAT +
+						"Lng :" + Constants.USER_DESTINATION_LNG + 
+						" Addr :"+ Constants.USER_DESTINATION_ADDRESS);
 				}
 				mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
 				GoogleMapPage();
-				//createAlertDialog(mTitle, mMessage);
 			}else{
 				//Not available to geocode with the address.
 				mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
 				toast(getString(R.string.NotValidAddress));
 			}
 			break;
-
 		case R.id.bt_StartService:
 			String mPhoneNumber = mReceiverPhoneNumber.getText().toString();
-			String mTextMessage = mTextMessageEditText.getText().toString();
-			if(mGeocodedAddress!=null && mPhoneNumber!= null && mTextMessage != null){
+			String mTextMessage = mTextMessageEditText.getText().toString();			
+			Constants.EXTRA_PHONENUM = mPhoneNumber;
+			Constants.EXTRA_TEXT_MSG = mTextMessage;		
+			if(isAllsetRequiedInfomation()){
 				if(!Constants.isRunningHomeIn){
-					Constants.EXTRA_PHONENUM = mPhoneNumber;
-					Constants.EXTRA_TEXTMSG = mTextMessage;
 					startProximityService();
 				}
 			}
@@ -280,14 +288,13 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 	}
 	
 	private void startProximityService(){
-				
 		Intent intent = new Intent(this,ProximityAlertService.class);
 		startService(intent);
 		Constants.isRunningHomeIn = true;
-		toast(getString(R.string.ToastStart));        
+		toast(getString(R.string.toast_servicestart));
 		//Invisible start Service button
 		disableAllButton();
-		GoogleMapPage();
+		finish();
         if(Constants.D) Log.v(TAG,"Start Proximity Service");
 	}
 	@Override
@@ -304,5 +311,11 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 			}
 		}
 		return super.onTouchEvent(event);
+	}
+	public boolean isAllsetRequiedInfomation(){
+		return (Constants.EXTRA_PHONENUM != null 
+				&& Constants.EXTRA_TEXT_MSG != null
+				&& Constants.USER_DESTINATION_LAT != null
+				&& Constants.USER_DESTINATION_LNG != null);
 	}
 }

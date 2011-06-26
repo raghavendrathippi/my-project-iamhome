@@ -13,7 +13,7 @@ public class PreferencesActivity extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.settings);
 		if (Constants.isRunningHomeIn || Constants.isRunningHomeOut) {
-			Toast.makeText(this, "", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, getString(R.string.pref_isRunning), Toast.LENGTH_LONG).show();
 		}
 	}
 
