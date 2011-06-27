@@ -53,6 +53,8 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 		super.onCreate(icicle);		
 		setContentView(R.layout.mappicker);		
 		
+		setAboutMsg(getString(R.string.about_map));
+		
 		setupMapView();
 		
 		Double mLatitude;
@@ -89,7 +91,11 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 		mapAnimateTo(mGeopoint);
 		mGestureDetector =new GestureDetector(this);			
 	}
-	
+	// Not to extend Dashboard Activity
+	private void setAboutMsg(String string) {
+		Constants.ABOUT_ACTIVITY_STRING = string;
+	}
+
 	public void setupMapView(){
 		// Setup your Mapview * Controller
 		mMapView  = (MapView) findViewById(R.id.mapview);

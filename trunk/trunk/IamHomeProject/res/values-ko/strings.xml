@@ -74,10 +74,35 @@
     
     <string name="pref_isRunning">현재 적용되는 값들은 다음 실행 시 부터 적용됩니다.</string>
     
-    <string name="about_dashboard">Minimum distance to destination from user</string>
-    <string name="about_homein">Minimum distance to destination from user</string>
-    <string name="about_map">Minimum distance to destination from user</string>
-    <string name="about_homeout">Minimum distance to destination from user</string>
-    <string name="about_profile">Minimum distance to destination from user</string>
-    <string name="about_settings">Minimum distance to destination from user</string>
+    <string name="about_dashboard">
+    본 어플리케이션은 소중한 사람의 안전을 지키기 위한 목적으로 제작되었습니다.\n
+    1. 집에가면 연락해~\n    
+    밤 늦게 연인이 집에 무사히 도착했는지, 자녀분이 학교에서 무사히 도착했는지 등등을 확인시켜줄 수 있는 용도로 제작되었습니다.\n
+    목적지의 주소에서 지정한 최소거리에 도달했을때 자동으로 지정된 번호로 문자메세지가 전송이 됩니다.
+    2. 퇴근하면 연락해~\n
+    학교, 회사, 자택 등등의 위치에서 벗어나면 연락을 해주는 기능입니다.\n
+    집에가면 연락해~ 와는 반대로 최소거리에서 벗어나면 연락을 해주는 기능입니다.\n
+    3. 내 정보\n
+    본인의 사진, 주소, 이름의 기본 정보를 저장할 수 있습니다.\n
+    4. 설정\n
+    목적지로 부터 최소거리는 몇 미터로 할지, GPS 정보는 얼만큼 자주 업데이트 할지 등의 정보를 설정 할 수 있습니다.
+    </string>
+    <string name="about_homein">집에가면 연락해~\n
+   목적지를 지정하고 원하는 메세지, 번호를 설정한 뒤 본 기능을 실행 할 수 있습니다.\n</string>
+    <string name="about_map">지도상에서 목적지를 설정 하는 기능입니다.</string>
+    <string name="about_homeout">퇴근하면 연락해~\n
+   목적지를 지정하고 원하는 메세지, 번호를 설정한 뒤 본 기능을 실행 할 수 있습니다.</string>    
+    <string name="about_profile">나의 기본정보를 설정 할 수 있습니다.\n
+    내 기본 사진 선택, 기본 목적지가 되는 주소 설정, 사용자의 이름을 설정 할 수 있습니다.</string>
+    <string name="about_settings">어플리케이션의 기본 설정을 선택 하는 기능입니다.\n
+  GPS 업데이트 주기(몇 초마다 위치를 갱신 할 것인지)\n
+    목적지 까지의 최소 거리(목적지로 부터 몇m에 도달했을때 어플리케이션을 종료 할 것인지)\n
+    등등의 기능을 설정 하실 수 있습니다/</string>
+    
+    <string name="profile_name">이름: </string>
+    <string name="profile_phoneNum">핸드폰 번호: </string>
+    <string name="profile_address">집 주소: </string>
+    <string name="profile_default_name">이름을 설정 해주세요</string>
+    <string name="profile_default_address">주소를 설정 해 주세요</string>
+    
 </resources>

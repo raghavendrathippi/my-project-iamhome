@@ -79,6 +79,8 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
         super.onCreate(savedInstanceState);        
         setContentView(R.layout.homein01);
         
+        setAboutMsg(getString(R.string.about_homein));
+        
         // Get LocationMager & Current Location.
 		LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);		
 		String mProvider = GPSInformation.getProviderGPS(this);		

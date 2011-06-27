@@ -43,9 +43,10 @@ protected void onCreate(Bundle savedInstanceState)
 {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
+    
+    setAboutMsg(getString(R.string.about_dashboard));
     if(!Constants.isRunningHomeIn && !Constants.isRunningHomeOut){
 		Constants.init();
-	}else{
 		setupConstants();
 	}
 }
@@ -53,8 +54,8 @@ protected void onCreate(Bundle savedInstanceState)
 private void setupConstants() {
 	SharedPreference mSharedPreference = new SharedPreference(this);
 	String address = mSharedPreference.getAddress();
-	Double latitude = mSharedPreference.getLatitude();
-	Double longitude = 	mSharedPreference.getLongitude();
+	//Double latitude = mSharedPreference.getLatitude();
+	//Double longitude = 	mSharedPreference.getLongitude();
 	String userImage = mSharedPreference.getUserImage();
 	String userName = mSharedPreference.getUserName();
 	String result = mSharedPreference.getResult();
