@@ -19,6 +19,7 @@ package com.TigerLee.HomeIn.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.TigerLee.HomeIn.R;
 import com.TigerLee.HomeIn.util.Constants;
@@ -49,6 +50,7 @@ protected void onCreate(Bundle savedInstanceState)
 
     setContentView (R.layout.activity_about);
     setTitleFromActivityLabel (R.id.title_text);
-    
+    TextView mTextview = (TextView) findViewById(R.id.about_textview);
+    mTextview.setText(Constants.ABOUT_ACTIVITY_STRING);
 }   
 } // end class

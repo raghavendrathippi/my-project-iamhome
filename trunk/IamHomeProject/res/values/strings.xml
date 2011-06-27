@@ -80,6 +80,11 @@
     <string name="about_profile">Minimum distance to destination from user</string>
     <string name="about_settings">Minimum distance to destination from user</string>
     
+    <string name="profile_name">Your name: </string>
+    <string name="profile_phoneNum">Your phone number: </string>
+    <string name="profile_address">Your address: </string>
+    <string name="profile_default_name">Please set your name</string>
+    <string name="profile_default_address">Please set your address</string>
     
     
 </resources>
