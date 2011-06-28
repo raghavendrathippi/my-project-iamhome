@@ -7,20 +7,26 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.gesture.GestureOverlayView;
-import android.gesture.GestureOverlayView.OnGestureListener;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
 import com.TigerLee.HomeIn.R;
 import com.TigerLee.HomeIn.Geocoder.GoogleGeocoder;
 import com.TigerLee.HomeIn.util.Constants;
+import com.TigerLee.HomeIn.util.GPSInformation;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -31,66 +37,46 @@ import com.google.android.maps.OverlayItem;
 public class GoogleMapPicker extends MapActivity implements android.view.GestureDetector.OnGestureListener{
 	
 	public MapView mMapView;
-	public MapController mMapController;
+	public MapController mMapController;	
+
+	private GeoPoint mDestinationGeoPoint = null;
+	private GeoPoint mCurrentGeoPoint = null;
 	
-	private GeoPoint mLastGeoPoint;
-	
-	private long mEndTouchTime;
-	private long mStartTouchTime;
 	private GestureDetector mGestureDetector;
 	private String mChangedAddress = null;
 	
-	private static final int DEFAULT_ZOOM = 16;
-	private static final int DURATION_LONGCLICK = 1500;
+	private static final int DEFAULT_ZOOM = 15;
 	private static final int CONFIRM_DIALOG = 1;
 	
-	private static final String TAG = "MapActivity";
-	private boolean mIsPressed = false;
+	
+	private LocationListener mNetworkLocationListener;
+	private LocationListener mGPSLocationListener;
+	private LocationManager mLocationManager;
+	private Location currentBestLocation = null;
+	private static final long ONE_MINUTES = 1000;//milliseconds
+	
 	private boolean mIsChangedAddress = false;
+	private static final String TAG = "MapActivity";
 	
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);		
 		setContentView(R.layout.mappicker);		
 		
-		setAboutMsg(getString(R.string.about_map));
-		
+		setAboutMsg(getString(R.string.about_map));		
 		setupMapView();
+		createGeopoint();
 		
-		Double mLatitude;
-		Double mLongitude;
-		String mFormattedAddress;
-		
-		if(!Constants.isRunningHomeIn){
-			mLatitude = Constants.USER_DESTINATION_LAT;
-			mLongitude = Constants.USER_DESTINATION_LNG;
-			mFormattedAddress = Constants.USER_DESTINATION_ADDRESS;
-		}else{
-			mLatitude = Constants.USER_CURRENT_LAT;
-			mLongitude = Constants.USER_CURRENT_LNG;
-			mFormattedAddress = Constants.USER_CURRENT_ADDRESS;
-		}
-		if(Constants.D) Log.v(TAG, "Received Point(Double):" + mLatitude + mLongitude);
-		
-		if(mLatitude == null && mLongitude == null){
-			mLatitude = Constants.DEFAULT_LAT;
-			mLongitude = Constants.DEFAULT_LNG;
-			if(Constants.isRunningHomeIn){
-				Toast.makeText(this, getString(R.string.NoLocation), Toast.LENGTH_LONG).show();
-				finish();
-			}else{
-				showCustomDialog();
-			}
+		if(Constants.isRunningHomeIn && mCurrentGeoPoint == null){
+			Toast.makeText(this, getString(R.string.NoLocation), Toast.LENGTH_LONG).show();
+			finish();
 		}else{
 			showCustomDialog();
 		}
-		mLatitude *= 1E6;
-		mLongitude *= 1E6;
-		//Animate geopoint / marker with touchEvent
-		GeoPoint mGeopoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());		
-		mapAnimateTo(mGeopoint);
+		mapAnimateandOverlay(mDestinationGeoPoint, mCurrentGeoPoint);
 		mGestureDetector =new GestureDetector(this);			
 	}
+
 	// Not to extend Dashboard Activity
 	private void setAboutMsg(String string) {
 		Constants.ABOUT_ACTIVITY_STRING = string;
@@ -107,6 +93,32 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 		mMapController.setZoom(DEFAULT_ZOOM);
 	}
 	
+	public void createGeopoint(){
+		Double mLatitude;
+		Double mLongitude;
+		mLatitude = Constants.USER_DESTINATION_LAT;
+		mLongitude = Constants.USER_DESTINATION_LNG;
+		if(mLatitude == null && mLongitude == null){
+			mLatitude = Constants.DEFAULT_LAT;
+			mLongitude = Constants.DEFAULT_LNG;
+		}
+		if(Constants.D) Log.v(TAG, "Received DestnationGeoPoint(Double):" + mLatitude + mLongitude);
+		mLatitude *= 1E6;
+		mLongitude *= 1E6;
+		//Animate geopoint / marker with touchEvent
+		mDestinationGeoPoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
+		
+		if(Constants.isRunningHomeIn){
+			mLatitude = Constants.USER_CURRENT_LAT;
+			mLongitude = Constants.USER_CURRENT_LNG;
+			if(Constants.D) Log.v(TAG, "Received CurrentGeoPoint(Double):" + mLatitude + mLongitude);
+			if(mLatitude != null && mLongitude != null){
+				mLatitude *= 1E6;
+				mLongitude *= 1E6;				
+				mCurrentGeoPoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
+			}			
+		}
+	}
 	public void showCustomDialog(){
 		Intent intent = new Intent();
 		intent.setClass(this, CustomDialogActivity.class);
@@ -117,40 +129,28 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 		}
 		startActivity(intent);
 	}
-	public void mapAnimateDestination(GeoPoint geopoint){
-		mMapController.animateTo(geopoint);
-		List<Overlay>  mMapOverlays = mMapView.getOverlays();
-		Drawable mMarkerDrawable;
-		if(Constants.isRunningHomeIn){
-			mMarkerDrawable = getResources().getDrawable(R.drawable.marker_rounded_green);
+	public void mapAnimateandOverlay(GeoPoint destinationGeopoint, GeoPoint currentGeopoint){
+		if(Constants.isRunningHomeIn && currentGeopoint != null){
+			mMapController.animateTo(currentGeopoint);
 		}else{
-			mMarkerDrawable = getResources().getDrawable(R.drawable.marker);
+			mMapController.animateTo(destinationGeopoint);
 		}
-        MapItemizedOverlay mMapItemizedOverlay = new MapItemizedOverlay(mMarkerDrawable);
-        
-        mMapItemizedOverlay.addOverlay(new OverlayItem(geopoint, null, null));
-        mMapOverlays.add(mMapItemizedOverlay);		
-	}
-	public void mapAnimateCurrent(GeoPoint geopoint){
+		List<Overlay>  mMapOverlays = mMapView.getOverlays();		
+		mMapOverlays.clear();
 		
+		Drawable mDestinationDrawable = getResources().getDrawable(R.drawable.marker);		
+		MapItemizedOverlay mDestinationMapOverlay = new MapItemizedOverlay(mDestinationDrawable);
+		mDestinationMapOverlay.addOverlay(new OverlayItem(destinationGeopoint, null, null));        
+		mMapOverlays.add(mDestinationMapOverlay);
+		
+		if(currentGeopoint != null){
+			Drawable mCurrentDrawable = getResources().getDrawable(R.drawable.marker_rounded_green);
+			MapItemizedOverlay mCurrentnMapOverlay = new MapItemizedOverlay(mCurrentDrawable);
+			mCurrentnMapOverlay.addOverlay(new OverlayItem(currentGeopoint, null, null));
+			mMapOverlays.add(mCurrentnMapOverlay);			
+		}	
 	}
-	public void mapAnimateTo(GeoPoint geopoint){
-		mMapController.animateTo(geopoint);
-		List<Overlay>  mMapOverlays = mMapView.getOverlays();
-		Drawable mMarkerDrawable;
-		if(Constants.isRunningHomeIn){
-			mMarkerDrawable = getResources().getDrawable(R.drawable.marker_rounded_green);
-		}else{
-			mMarkerDrawable = getResources().getDrawable(R.drawable.marker);
-		}
-        MapItemizedOverlay mMapItemizedOverlay = new MapItemizedOverlay(mMarkerDrawable);
-        
-        mMapItemizedOverlay.addOverlay(new OverlayItem(geopoint, null, null));
-        mMapOverlays.clear();
-        mMapOverlays.add(mMapItemizedOverlay);
-        
-        mLastGeoPoint = geopoint;		
-	}
+	
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
@@ -158,35 +158,8 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 		if(Constants.D) Log.v(TAG, "dispatchTouchEvent()- " + action);
 		mGestureDetector.onTouchEvent(event);
 		return super.dispatchTouchEvent(event);
-		/*
-		switch (action) {
-			case (MotionEvent.ACTION_MOVE) : // Contact has moved across screen
-				break; 
-			case (MotionEvent.ACTION_CANCEL) : // Touch event canceled
-				break;
-			case (MotionEvent.ACTION_DOWN) : // Touch screen pressed
-				// Record the start time
-				if(!mIsPressed){
-					mIsPressed = true;
-					mStartTouchTime = event.getEventTime();
-					Log.v(TAG, "START: " + mStartTouchTime);
-				}else{					
-					mEndTouchTime = event.getEventTime();
-					Log.v(TAG, "END: " + mEndTouchTime);
-					if(mEndTouchTime - mStartTouchTime > DURATION_LONGCLICK){
-						// Propagate your own event
-						Log.v(TAG, "Long Click");
-				    	GeoPoint mGeoPoint = mMapView.getProjection().fromPixels((int) event.getX(), (int)event.getY());
-				    	dispatchLongClickEvent(mGeoPoint);
-				    	mIsPressed = false;
-					}
-				}
-				break; 
-		    case (MotionEvent.ACTION_UP) : // Touch screen touch ended 
-		    	break;
-		}
-		return super.dispatchTouchEvent(event);*/
 	}
+	
 	public void dispatchLongClickEvent(GeoPoint mGeoPoint){
 		if(Constants.D) Log.v(TAG, "dispatchLongClickEvent()");
 		Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -199,13 +172,13 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 			List<Address> mListAddress = GoogleGeocoder.getAddressFromCoordaniates(getBaseContext(), mGeoPoint); 
 			mClickedAddress = mListAddress.get(0);	
 			mChangedAddress = mClickedAddress.getAddressLine(0);
-			mapAnimateTo(mGeoPoint);
+			mapAnimateandOverlay(mDestinationGeoPoint, mCurrentGeoPoint);
 			showDialog(CONFIRM_DIALOG);			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}		
-		mLastGeoPoint = mGeoPoint;
+		}
+		mDestinationGeoPoint = mGeoPoint;
 	}
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -256,28 +229,25 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 		}).show();
 	}*/
 	@Override
-	public void onBackPressed() {
-		//TODO: USE LAST GEOPOINT
-		finish();
-		super.onBackPressed();
-	}
-	@Override
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 	@Override
 	protected void onDestroy() {
+		mLocationManager.removeUpdates(mNetworkLocationListener);
+		mLocationManager.removeUpdates(mGPSLocationListener);
+		
 		if(mIsChangedAddress){
 			if(!Constants.isRunningHomeIn){
 				Constants.USER_DESTINATION_ADDRESS = mChangedAddress;
-				Constants.USER_DESTINATION_LAT = mLastGeoPoint.getLatitudeE6() / 1E6;
-				Constants.USER_DESTINATION_LNG = mLastGeoPoint.getLongitudeE6() / 1E6;
+				Constants.USER_DESTINATION_LAT = mDestinationGeoPoint.getLatitudeE6() / 1E6;
+				Constants.USER_DESTINATION_LNG = mDestinationGeoPoint.getLongitudeE6() / 1E6;
 				setResult(RESULT_OK);
 			}
 		}else{
 			setResult(RESULT_CANCELED);
-		}
+		}		
 		super.onDestroy();
 	}
 
@@ -300,8 +270,8 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 		// TODO Auto-generated method stub
 		if(Constants.D) Log.v(TAG, "onLongPress()");
 		if(!Constants.isRunningHomeIn){
-			GeoPoint mGeoPoint = mMapView.getProjection().fromPixels((int) e.getX(), (int)e.getY());
-	    	dispatchLongClickEvent(mGeoPoint);
+			mDestinationGeoPoint = mMapView.getProjection().fromPixels((int) e.getX(), (int)e.getY());
+	    	dispatchLongClickEvent(mDestinationGeoPoint);
 		}		
 	}
 
@@ -322,6 +292,153 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 	public boolean onSingleTapUp(MotionEvent e) {
 		// TODO Auto-generated method stub
 		return false;
+	}	
+
+	@Override
+	protected void onStart() {
+		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		startLocationListener();
+		super.onStart();
 	}
+	private void startLocationListener(){		
+		mNetworkLocationListener = new LocationListener() {
+			@Override
+			public void onStatusChanged(String provider, int status, Bundle extras) {
+				if(status == LocationProvider.OUT_OF_SERVICE){
+				}
+				if(status == LocationProvider.TEMPORARILY_UNAVAILABLE){
+				}
+			}			
+			@Override
+			public void onProviderEnabled(String provider) {
+			}			
+			@Override
+			public void onProviderDisabled(String provider) {
+				
+			}			
+			@Override
+			public void onLocationChanged(Location location) {
+				if(isBetterLocation(location)){
+					currentBestLocation = location;
+					Double lat;
+					Double lng;
+					lat = location.getLatitude()*1E6;
+					lng = location.getLongitude()*1E6;
+					GeoPoint geopoint = new GeoPoint(lat.intValue(), lng.intValue());
+					mapAnimateandOverlay(mDestinationGeoPoint, geopoint);					
+				}				
+			}
+		};	
+		mGPSLocationListener = new LocationListener() {
+			@Override
+			public void onStatusChanged(String provider, int status, Bundle extras) {
+			}
+			@Override
+			public void onProviderEnabled(String provider) {
+			}
+			@Override
+			public void onProviderDisabled(String provider) {
+			}
+			@Override
+			public void onLocationChanged(Location location) {
+				if(isBetterLocation(location)){
+					currentBestLocation = location;
+					Double lat;
+					Double lng;
+					lat = location.getLatitude()*1E6;
+					lng = location.getLongitude()*1E6;
+					GeoPoint geopoint = new GeoPoint(lat.intValue(), lng.intValue());
+					mapAnimateandOverlay(mDestinationGeoPoint, geopoint);
+				}				
+			}
+		};
+		//Register a listener for location manager. 
+		mLocationManager.requestLocationUpdates(
+				LocationManager.NETWORK_PROVIDER, 0, 0, mNetworkLocationListener);		
+		mLocationManager.requestLocationUpdates(
+				LocationManager.GPS_PROVIDER, 0 , 0, mGPSLocationListener);
+	}
+	
+	public boolean isBetterLocation(Location location){
+		if (currentBestLocation == null) {
+	        // A new location is always better than no location
+	        return true;
+	    }
+	    // Check whether the new location fix is newer or older
+	    long timeDelta = location.getTime() - currentBestLocation.getTime();
+	    boolean isSignificantlyNewer = timeDelta > ONE_MINUTES;
+	    boolean isSignificantlyOlder = timeDelta < - ONE_MINUTES;
+	    boolean isNewer = timeDelta > 0;
+
+	    // If it's been more than two minutes since the current location, use the new location
+	    // because the user has likely moved
+	    if (isSignificantlyNewer) {
+	        return true;
+	    // If the new location is more than two minutes older, it must be worse
+	    } else if (isSignificantlyOlder) {
+	        return false;
+	    }
+
+	    // Check whether the new location fix is more or less accurate
+	    int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+	    boolean isLessAccurate = accuracyDelta > 0;
+	    boolean isMoreAccurate = accuracyDelta < 0;
+	    boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+	    // Check if the old and new location are from the same provider
+	    boolean isFromSameProvider = isSameProvider(location.getProvider(),
+	            currentBestLocation.getProvider());
+
+	    // Determine location quality using a combination of timeliness and accuracy
+	    if (isMoreAccurate) {
+	        return true;
+	    } else if (isNewer && !isLessAccurate) {
+	        return true;
+	    } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+	        return true;
+	    }
+	    return false;
+	}
+	
+	/** Checks whether two providers are the same */
+	private boolean isSameProvider(String provider1, String provider2) {
+	    if (provider1 == null) {
+	      return provider2 == null;
+	    }
+	    return provider1.equals(provider2);
+	}
+
+	public String calDistance(Location current){	
+		if(current != null){
+			Double mDistance = GPSInformation.distance(
+					current.getLatitude(), 
+					current.getLongitude(), 
+					Constants.USER_DESTINATION_LAT, 
+					Constants.USER_DESTINATION_LNG);
+			mDistance = Math.abs(mDistance);
+			return mDistance.toString();		
+		}else{
+			return "";
+		}
+		
+	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.distance:
+        	Toast.makeText(this, 
+        			getString(R.string.toast_distance) + calDistance(currentBestLocation), Toast.LENGTH_SHORT).show();
+            return true;
+    	}
+        return false;
+    }
 	
 }

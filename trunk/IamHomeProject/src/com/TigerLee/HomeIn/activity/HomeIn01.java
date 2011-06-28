@@ -34,8 +34,6 @@ import com.google.android.maps.GeoPoint;
 
 
 public class HomeIn01 extends DashboardActivity implements OnClickListener{
-    /** Called when the activity is first created. */
-	private Context mContext = this;
 	
 	private Location mLocation;
 	public Address mGeocodedAddress = null;
