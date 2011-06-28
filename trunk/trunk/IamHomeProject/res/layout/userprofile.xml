@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+  <LinearLayout style="@style/TitleBar">
+        <ImageButton style="@style/TitleBarAction"
+            android:src="@drawable/title_home"
+            android:onClick="onClickHome" />
+        <ImageView style="@style/TitleBarSeparator" />
+        <TextView style="@style/TitleBarText" />
+        <ImageButton style="@style/TitleBarAction"
+            android:src="@drawable/title_about"
+            android:onClick="onClickAbout" />
+    </LinearLayout>
+    <LinearLayout 
+    	android:layout_width="match_parent"
+  		android:layout_height="wrap_content"
+  		android:orientation="vertical"
+  		android:gravity="center">
+  		<ImageView 
+  			android:id="@+id/profile_image" 
+  			android:layout_width="wrap_content" 
+  			android:layout_height="wrap_content"
+  			android:paddingTop="25dip" 
+  			android:maxHeight="250dip" 
+  			android:maxWidth="250dip"></ImageView>
+  		<TextView android:id="@+id/profile_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="50dip"></TextView>
+  		<TextView android:id="@+id/profile_address" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="25dip"></TextView>
+    	<TextView android:id="@+id/profile_phonenum" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="25dip"></TextView>
+    </LinearLayout>
+</LinearLayout>
