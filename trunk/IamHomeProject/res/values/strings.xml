@@ -11,13 +11,15 @@
 	<string name="bt_NextPage">"Next page"</string>
 	<string name="bt_PreviousPage">Previous page</string>
 	
+	<string name="menu_distance">Remaining distance</string>
+	
 	<string name="toast_isRunning">Iamhome is already running.</string>
 	<string name="toast_isRunning_preference">Settings values will be applied at next launching.</string>
 	<string name="toast_startservice">You need to go home right now.</string>
-	
 	<string name="toast_unsupport_Wifi">"Can't connect Wifi currently.\n Using data network may be charged lots of coats."</string>
 	<string name="toast_unsupport_Connectivity">Please make enable Wifi or data network.</string>
 	<string name="toast_unsupport_GPS">Please make enable GPS.</string>
+	<string name="toast_distance">Distance to destination : </string>
 	
 	
 	<string name="InputDestinationAddress">Please input a destination address</string>
