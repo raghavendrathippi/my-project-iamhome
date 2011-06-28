@@ -14,7 +14,7 @@
 	
 	<string name="toast_isRunning">집에가면 연락해 실행되고 있는 중 입니다.</string>
 	<string name="toast_isRunning_preference">현재 적용한 값은 다음 실행 시 부터 적용됩니다.</string>
-	<string name="toast_servicestart">집에가면 연락해~ 시작합니다!</string>
+	<string name="toast_startservice">집에가면 연락해~ 시작합니다!</string>
 	<string name="toast_unsupport_Wifi">Wifi에 접속 할 수 없습니다.\n 데이터 통신은 과도한 요금이 발생될 수 도 있습니다.</string>
 	<string name="toast_unsupport_Connectivity">Wifi 또는 데이터 통신을 켜주세요!</string>
 	<string name="toast_unsupport_GPS">GPS를 켜주세요!</string>

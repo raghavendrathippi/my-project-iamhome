@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.TigerLee.HomeIn.receiver.IamHomeBroadcastReciver;
+import com.TigerLee.HomeIn.receiver.IamHomeBroadcastReceiver;
 import com.TigerLee.HomeIn.util.Constants;
 import com.TigerLee.HomeIn.util.GPSInformation;
 
@@ -106,7 +106,7 @@ public class ProximityAlertService extends Service {
 			@Override
 			public void onProviderDisabled(String provider) {
 				Intent intent = new Intent();
-				intent.setAction(IamHomeBroadcastReciver.DISABLE_GPS_INTENT);
+				intent.setAction(IamHomeBroadcastReceiver.DISABLE_GPS_INTENT);
 				sendBroadcast(intent);
 			}
 			@Override
@@ -169,7 +169,7 @@ public class ProximityAlertService extends Service {
 		//Force closed by the user
 		if(Constants.isRunningHomeIn){
 			Intent mBroadCastIntent = new Intent();
-			mBroadCastIntent.setAction(IamHomeBroadcastReciver.FORCE_CLOSED_INTENT);
+			mBroadCastIntent.setAction(IamHomeBroadcastReceiver.FORCE_CLOSED_INTENT);
 			sendBroadcast(mBroadCastIntent);			
 		}
 		//if(Constants.D) Log.v(TAG, "Unregister Receiver");
@@ -220,7 +220,7 @@ public class ProximityAlertService extends Service {
 		if(Constants.D) Log.v(TAG, "IamHome!");
 		// Stop ProximityAlertService
 		Intent mBroadCastIntent = new Intent();
-		mBroadCastIntent.setAction(IamHomeBroadcastReciver.SUCCESS_INTENT);
+		mBroadCastIntent.setAction(IamHomeBroadcastReceiver.SUCCESS_INTENT);
 		sendBroadcast(mBroadCastIntent);
 		stopSelf();		
 	}

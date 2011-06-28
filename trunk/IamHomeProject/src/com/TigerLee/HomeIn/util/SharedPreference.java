@@ -62,11 +62,21 @@ public class SharedPreference{
 	}
 	public Double getLatitude(){
 		SharedPreferences mPreferences =  getCustomSharedPreferences();
-		return Double.parseDouble(mPreferences.getString(NAME_PREFERENCE[1], null));
+		String temp = mPreferences.getString(NAME_PREFERENCE[1], null);
+		if(temp!=null){
+			return Double.parseDouble(temp);
+		}else{
+			return null;
+		}
 	}
 	public Double getLongitude(){
 		SharedPreferences mPreferences =  getCustomSharedPreferences();
-		return Double.parseDouble(mPreferences.getString(NAME_PREFERENCE[2], null));
+		String temp = mPreferences.getString(NAME_PREFERENCE[2], null);
+		if(temp!=null){
+			return Double.parseDouble(temp);
+		}else{
+			return null;
+		}
 	}
 	public String getUserName(){
 		SharedPreferences mPreferences =  getCustomSharedPreferences();

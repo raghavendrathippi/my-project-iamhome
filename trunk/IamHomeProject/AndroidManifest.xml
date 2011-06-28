@@ -51,7 +51,7 @@
        		android:enabled="true" 
        		android:name=".service.ProximityAlertService"/>
        		
-       	<receiver android:name="IamHomeBroadcastReceiver">
+       	<receiver android:name=".receiver.IamHomeBroadcastReceiver">
     		<intent-filter>
             	<action android:name="android.intent.action.ACTION_BOOT_COMPLETED"></action>
              	<action android:name="android.intent.action.ACTION_BATTERY_LOW"></action>

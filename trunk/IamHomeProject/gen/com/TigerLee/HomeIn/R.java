@@ -394,7 +394,6 @@ containing a value of this type.
         public static final int title_selectContacts=0x7f0a002f;
         public static final int toast_isRunning=0x7f0a0009;
         public static final int toast_isRunning_preference=0x7f0a000a;
-        public static final int toast_servicestart=0x7f0a0040;
         public static final int toast_startservice=0x7f0a000b;
         public static final int toast_unsupport_Connectivity=0x7f0a000d;
         public static final int toast_unsupport_GPS=0x7f0a000e;

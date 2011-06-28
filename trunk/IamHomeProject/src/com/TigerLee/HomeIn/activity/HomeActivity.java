@@ -17,6 +17,8 @@
 package com.TigerLee.HomeIn.activity;
 
 import android.os.Bundle;
+import android.util.Log;
+
 import com.TigerLee.HomeIn.R;
 import com.TigerLee.HomeIn.util.Constants;
 import com.TigerLee.HomeIn.util.SharedPreference;
@@ -43,23 +45,34 @@ protected void onCreate(Bundle savedInstanceState)
 {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
-    
-    setAboutMsg(getString(R.string.about_dashboard));
     if(!Constants.isRunningHomeIn && !Constants.isRunningHomeOut){
 		Constants.init();
 		setupConstants();
+	}else{
+		
 	}
 }
     
 private void setupConstants() {
 	SharedPreference mSharedPreference = new SharedPreference(this);
 	String address = mSharedPreference.getAddress();
-	//Double latitude = mSharedPreference.getLatitude();
-	//Double longitude = 	mSharedPreference.getLongitude();
+	Log.v("HomeActivity", "Address: "+ address);
+	Double latitude = mSharedPreference.getLatitude();
+	Log.v("HomeActivity", "Lat: "+ latitude);
+	Double longitude = 	mSharedPreference.getLongitude();
+	Log.v("HomeActivity", "Lng: "+ longitude);
 	String userImage = mSharedPreference.getUserImage();
+	Log.v("HomeActivity", "UserImage: "+ userImage);
 	String userName = mSharedPreference.getUserName();
+	Log.v("HomeActivity", "UserName: "+ userName);
+	String minFreq = mSharedPreference.getMinimumFrequency();
+	Log.v("HomeActivity", "minFreq: "+ minFreq);
+	String minDis = mSharedPreference.getMinimumDistance();
+	Log.v("HomeActivity", "minDis: "+ minDis);
 	String result = mSharedPreference.getResult();
+	Log.v("HomeActivity", "Result: "+ result);
 	String running = mSharedPreference.getRunning();
+	Log.v("HomeActivity", "Running: "+ running);
 }
 
 /**

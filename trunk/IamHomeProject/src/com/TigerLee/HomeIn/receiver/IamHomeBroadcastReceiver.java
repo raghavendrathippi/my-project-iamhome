@@ -14,7 +14,7 @@ import android.graphics.Color;
 import android.os.Vibrator;
 import android.util.Log;
 
-public class IamHomeBroadcastReciver extends BroadcastReceiver{
+public class IamHomeBroadcastReceiver extends BroadcastReceiver{
 
 	private static final int TIME_FOR_VIBRATOR = 500;
 	private static final int NOTIFICATION_ID = 1000;
@@ -69,7 +69,7 @@ public class IamHomeBroadcastReciver extends BroadcastReceiver{
 					context.getString(R.string.noti_forceclose_msg));
 			Intent mSendTextMessage = new Intent(context, SendTextMessage.class);
 			mSendTextMessage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(intent);
+			context.startActivity(mSendTextMessage);
 		}
 	}
 	private void createVibration(Context context){
