@@ -45,35 +45,9 @@ protected void onCreate(Bundle savedInstanceState)
 {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
-    if(!Constants.isRunningHomeIn && !Constants.isRunningHomeOut){
-		Constants.init();
-		setupConstants();
-	}else{
-		
-	}
 }
-    
-private void setupConstants() {
-	SharedPreference mSharedPreference = new SharedPreference(this);
-	String address = mSharedPreference.getAddress();
-	Log.v("HomeActivity", "Address: "+ address);
-	Double latitude = mSharedPreference.getLatitude();
-	Log.v("HomeActivity", "Lat: "+ latitude);
-	Double longitude = 	mSharedPreference.getLongitude();
-	Log.v("HomeActivity", "Lng: "+ longitude);
-	String userImage = mSharedPreference.getUserImage();
-	Log.v("HomeActivity", "UserImage: "+ userImage);
-	String userName = mSharedPreference.getUserName();
-	Log.v("HomeActivity", "UserName: "+ userName);
-	String minFreq = mSharedPreference.getMinimumFrequency();
-	Log.v("HomeActivity", "minFreq: "+ minFreq);
-	String minDis = mSharedPreference.getMinimumDistance();
-	Log.v("HomeActivity", "minDis: "+ minDis);
-	String result = mSharedPreference.getResult();
-	Log.v("HomeActivity", "Result: "+ result);
-	String running = mSharedPreference.getRunning();
-	Log.v("HomeActivity", "Running: "+ running);
-}
+
+
 
 /**
  * onDestroy
@@ -140,7 +114,11 @@ protected void onResume ()
 
 protected void onStart ()
 {
-   super.onStart ();
+	super.onStart ();
+   if(!Constants.isRunningHomeIn && !Constants.isRunningHomeOut){
+		Constants.init();
+		setupConstants();
+	}
 }
 
 /**
@@ -168,4 +146,35 @@ protected void onStop ()
  */
 // More Methods
 
+private void setupConstants() {
+	SharedPreference mSharedPreference = new SharedPreference(this);
+	String address = mSharedPreference.getAddress();
+	Log.v("HomeActivity", "Address: "+ address);
+	
+	Double latitude = mSharedPreference.getLatitude();
+	Log.v("HomeActivity", "Lat: "+ latitude);
+	
+	Double longitude = 	mSharedPreference.getLongitude();
+	Log.v("HomeActivity", "Lng: "+ longitude);
+	
+	String userImage = mSharedPreference.getUserImage();
+	Log.v("HomeActivity", "UserImage: "+ userImage);
+	
+	String userName = mSharedPreference.getUserName();
+	Log.v("HomeActivity", "UserName: "+ userName);
+	
+	String minFreq = mSharedPreference.getMinimumFrequency();
+	Log.v("HomeActivity", "minFreq: "+ minFreq);	
+	Constants.MIN_FREQUENCY = Integer.parseInt(minFreq);
+	
+	String minDis = mSharedPreference.getMinimumDistance();	
+	Log.v("HomeActivity", "minDis: "+ minDis);
+	Constants.MIN_DISTANCE = Double.parseDouble(minDis);
+	
+	String result = mSharedPreference.getResult();
+	Log.v("HomeActivity", "Result: "+ result);
+	
+	String running = mSharedPreference.getRunning();
+	Log.v("HomeActivity", "Running: "+ running);
+}
 } // end class
