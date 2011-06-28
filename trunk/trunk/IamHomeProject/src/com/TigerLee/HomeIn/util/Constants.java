@@ -36,7 +36,9 @@ public class Constants {
 	
 	public static String ABOUT_ACTIVITY_STRING = null;
 	
-	public static final double DISTANCE = 10; // in Meters
+	public static double MIN_DISTANCE = 10; // in Meters
+	public static double GPS_ERROR_DISTANCE = 15; // in Meters
+	public static int MIN_FREQUENCY = 10000; // in milliseconds 
 	
 	public static final int DESTROY_ACTIVITY = 0;
 	public static int FIVE_SECOND = 1000 * 5;

@@ -1,9 +1,5 @@
 package com.TigerLee.HomeIn.receiver;
 
-import com.TigerLee.HomeIn.R;
-import com.TigerLee.HomeIn.activity.SendTextMessage;
-import com.TigerLee.HomeIn.util.Constants;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,7 +8,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Vibrator;
+import android.telephony.SmsManager;
 import android.util.Log;
+
+import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.util.Constants;
 
 public class IamHomeBroadcastReceiver extends BroadcastReceiver{
 
@@ -25,14 +25,14 @@ public class IamHomeBroadcastReceiver extends BroadcastReceiver{
     public static final String FORCE_CLOSED_INTENT = "com.TigerLee.Homein.intent.action.FORCE_CLOSED_INTENT";
     public static final String SUCCESS_INTENT = "com.TigerLee.Homein.intent.action.SUCCESS_INTENT";
 
-	
+	public boolean mIsSend = false;
 	public static String TAG = "IamHomeBroadcastReciver";
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String action = intent.getAction();
 		if(action.equals(Intent.ACTION_BOOT_COMPLETED)){
-			if(Constants.D) Log.v(TAG, "ACTION_BOOT_COMPLETED");
+			if(Constants.D) Log.v(TAG, "ACTION_BOOT_COMPLETED");			
 		}else if(action.equals(Intent.ACTION_BATTERY_LOW)){
 			if(Constants.D) Log.v(TAG, "ACTION_BATTERY_LOW");
 		}else if(action.equals(Intent.ACTION_PACKAGE_REMOVED)){
@@ -42,34 +42,28 @@ public class IamHomeBroadcastReceiver extends BroadcastReceiver{
 		}else if(action.equals(DISABLE_GPS_INTENT)){
 			if(Constants.D) Log.v(TAG, "DISABLE_GPS_INTENT");
 			createVibration(context);
-			setNotification(
-					context,
+			
+			setNotification(context,
 					context.getString(R.string.noti_disablegps_name),
 					context.getString(R.string.noti_disablegps_msg));
 		}else if(action.equals(DISABLE_NETWORK_LOCATION_INTENT)){
 			if(Constants.D) Log.v(TAG, "DISABLE_NETWORK_LOCATION_INTENT");
 		}else if(action.equals(SUCCESS_INTENT)){
 			if(Constants.D) Log.v(TAG, "SUCCESS_INTENT");
-			setNotification(
-					context, 
+			
+			setNotification(context, 
 					context.getString(R.string.noti_success_name), 
-					context.getString(R.string.noti_success_msg));			
-			Constants.isRunningHomeIn = false;
-			// Start an Activity for sending a message.
-			Intent mSendTextMessage = new Intent(context, SendTextMessage.class);
-			mSendTextMessage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(mSendTextMessage);			
+					context.getString(R.string.noti_success_msg));
+			sendSMS();
 		}else if(action.equals(FORCE_CLOSED_INTENT)){
 			if(Constants.D) Log.v(TAG, "FORCE_CLOSED_INTENT");
 			Constants.isRunningHomeIn = false;
-			Constants.EXTRA_TEXT_MSG = context.getString(R.string.noti_forceclose_msg);			
-			setNotification(
-					context, 
+			
+			setNotification(context, 
 					context.getString(R.string.noti_forceclose_name), 
 					context.getString(R.string.noti_forceclose_msg));
-			Intent mSendTextMessage = new Intent(context, SendTextMessage.class);
-			mSendTextMessage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(mSendTextMessage);
+			Constants.EXTRA_TEXT_MSG = context.getString(R.string.noti_forceclose_msg);
+			sendSMS();
 		}
 	}
 	private void createVibration(Context context){
@@ -111,12 +105,20 @@ public class IamHomeBroadcastReceiver extends BroadcastReceiver{
 		mNotification.setLatestEventInfo(
 				context,
 				name,
-				//getString(R.string.NotificationName),
-				message,
-				//getString(R.string.NotificationMsg), 
+				message, 
 				pendingIntent);
 
 		mNotificationManager.notify(NOTIFICATION_ID, mNotification);
 		if(Constants.D) Log.v(TAG, "Notify - Name: "+ name + " Message" +message);
 	}
+	public void sendSMS(){
+		if(!mIsSend){
+			SmsManager mSmsManager = SmsManager.getDefault();
+			mSmsManager.sendTextMessage(Constants.EXTRA_PHONENUM, null, 
+						Constants.EXTRA_TEXT_MSG, null,	null);
+			mIsSend = true;
+		}
+					
+	}
+
 }

@@ -43,7 +43,7 @@ public class SharedPreference{
 		return mPreferences;
 	}
 	public SharedPreferences getDefaultSharedPreferences(){
-		//get SharedData to save in xml 
+		//get SharedData to save in xml with preference activity
 		SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 		return mPreferences;
 	}
@@ -87,11 +87,11 @@ public class SharedPreference{
 		return mPreferences.getString(NAME_PREFERENCE[4], null);
 	}
 	public String getMinimumFrequency(){
-		SharedPreferences mPreferences =  getCustomSharedPreferences();
+		SharedPreferences mPreferences =  getDefaultSharedPreferences();
 		return mPreferences.getString(NAME_PREFERENCE[5], null);
 	}
 	public String getMinimumDistance(){
-		SharedPreferences mPreferences =  getCustomSharedPreferences();
+		SharedPreferences mPreferences =  getDefaultSharedPreferences();
 		return mPreferences.getString(NAME_PREFERENCE[6], null);
 	}
 	public String getRunning(){
