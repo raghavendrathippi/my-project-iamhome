@@ -1,8 +1,6 @@
 package com.TigerLee.HomeIn.activity;
 
 import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -33,14 +31,13 @@ public class SendTextMessage extends Activity {
 		}
 	}
 	private void sendSMS(){
-		PendingIntent mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(), 0);
 		SmsManager mSmsManager = SmsManager.getDefault();
 		if(mPhoneNumber != null){			
 			mSmsManager.sendTextMessage(
 					Constants.EXTRA_PHONENUM, 
 					null, 
 					Constants.EXTRA_TEXT_MSG, 
-					mPendingIntent, 
+					null, 
 					null);
 		}
 		IsSended = true;		
