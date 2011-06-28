@@ -202,8 +202,12 @@ public void onClickFeature (View v)
     int id = v.getId ();
     switch (id) {
       case R.id.home_btn_feature1 :
-           startActivity (new Intent(getApplicationContext(), TabMenuActivity.class));
-           break;
+    	  if(!Constants.isRunningHomeIn){
+    		  startActivity (new Intent(getApplicationContext(), HomeIn01.class));
+    	  }else{
+    		  startActivity (new Intent(getApplicationContext(), GoogleMapPicker.class));
+    	  }
+    	  break;
       case R.id.home_btn_feature2 :
            //startActivity (new Intent(getApplicationContext(), HomeIn02.class));
            break;
