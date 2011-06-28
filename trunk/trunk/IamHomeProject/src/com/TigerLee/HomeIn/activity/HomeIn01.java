@@ -293,7 +293,7 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 		Intent intent = new Intent(this,ProximityAlertService.class);
 		startService(intent);
 		Constants.isRunningHomeIn = true;
-		toast(getString(R.string.toast_servicestart));
+		toast(getString(R.string.toast_startservice));
 		//Invisible start Service button
 		disableAllButton();
 		finish();
