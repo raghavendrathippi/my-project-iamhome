@@ -26,8 +26,8 @@
   			android:paddingTop="25dip" 
   			android:maxHeight="250dip" 
   			android:maxWidth="250dip"></ImageView>
-  		<TextView android:id="@+id/profile_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="50dip"></TextView>
-  		<TextView android:id="@+id/profile_address" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="25dip"></TextView>
-    	<TextView android:id="@+id/profile_phonenum" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="25dip"></TextView>
+  		<TextView android:id="@+id/profile_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="50dip" android:clickable="true"></TextView>
+  		<TextView android:id="@+id/profile_address" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="25dip" android:clickable="true"></TextView>
+    	<TextView android:id="@+id/profile_phonenum" android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingTop="25dip" android:clickable="true"></TextView>
     </LinearLayout>
 </LinearLayout>
