@@ -196,6 +196,7 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 				}).setNegativeButton(getString(R.string.No), new DialogInterface.OnClickListener() {					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						Toast.makeText(getApplicationContext(), "위치를 다시 설정해 주세요.", Toast.LENGTH_SHORT).show();
 						return;
 					}
 				}).show();				
@@ -235,8 +236,12 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 	}
 	@Override
 	protected void onDestroy() {
-		mLocationManager.removeUpdates(mNetworkLocationListener);
-		mLocationManager.removeUpdates(mGPSLocationListener);
+		if(mNetworkLocationListener!=null){
+			mLocationManager.removeUpdates(mNetworkLocationListener);
+		}
+		if(mGPSLocationListener!=null){
+			mLocationManager.removeUpdates(mGPSLocationListener);
+		}
 		
 		if(mIsChangedAddress){
 			if(!Constants.isRunningHomeIn){
@@ -416,9 +421,9 @@ public class GoogleMapPicker extends MapActivity implements android.view.Gesture
 					Constants.USER_DESTINATION_LAT, 
 					Constants.USER_DESTINATION_LNG);
 			mDistance = Math.abs(mDistance);
-			return mDistance.toString();		
+			return mDistance.intValue() + "m";		
 		}else{
-			return "";
+			return "" + "m";
 		}
 		
 	}

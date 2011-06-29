@@ -165,11 +165,15 @@ private void setupConstants() {
 	
 	String minFreq = mSharedPreference.getMinimumFrequency();
 	Log.v("HomeActivity", "minFreq: "+ minFreq);	
-	Constants.MIN_FREQUENCY = Integer.parseInt(minFreq);
+	if(minFreq!=null){
+		Constants.MIN_FREQUENCY = Integer.parseInt(minFreq);
+	}
 	
 	String minDis = mSharedPreference.getMinimumDistance();	
 	Log.v("HomeActivity", "minDis: "+ minDis);
-	Constants.MIN_DISTANCE = Double.parseDouble(minDis);
+	if(minDis!=null) {
+		Constants.MIN_DISTANCE = Double.parseDouble(minDis);
+	}
 	
 	String result = mSharedPreference.getResult();
 	Log.v("HomeActivity", "Result: "+ result);

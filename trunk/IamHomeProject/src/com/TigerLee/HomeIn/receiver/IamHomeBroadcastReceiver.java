@@ -50,7 +50,7 @@ public class IamHomeBroadcastReceiver extends BroadcastReceiver{
 			if(Constants.D) Log.v(TAG, "DISABLE_NETWORK_LOCATION_INTENT");
 		}else if(action.equals(SUCCESS_INTENT)){
 			if(Constants.D) Log.v(TAG, "SUCCESS_INTENT");
-			
+			Constants.isEnd = true;
 			setNotification(context, 
 					context.getString(R.string.noti_success_name), 
 					context.getString(R.string.noti_success_msg));

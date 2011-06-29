@@ -6,15 +6,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.UriMatcher;
+import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.TigerLee.HomeIn.R;
+import com.TigerLee.HomeIn.Geocoder.NativeGeocoder;
 import com.TigerLee.HomeIn.util.SharedPreference;
 
 public class UserProfileActivity extends DashboardActivity implements OnClickListener{
@@ -51,6 +57,18 @@ public class UserProfileActivity extends DashboardActivity implements OnClickLis
 			mUserImage.setImageResource(R.drawable.default_userimage);
 		}
 	}
+
+	public Uri getImageUri(){
+		SharedPreference mSharedPreference = new SharedPreference(this);
+		String uri = mSharedPreference.getUserImage();
+		if(uri!=null){
+			return Uri.parse(uri);
+		}else{
+			return null;
+		}
+		
+	}
+
 	public void setupText(){		
 		TelephonyManager telephony = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 		if(telephony != null){
@@ -72,8 +90,7 @@ public class UserProfileActivity extends DashboardActivity implements OnClickLis
 			mTextAddress.setText(getString(R.string.profile_address)
 					+ getString(R.string.profile_default_address));
 		}
-	}	
-
+	}
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.profile_image){
@@ -100,20 +117,31 @@ public class UserProfileActivity extends DashboardActivity implements OnClickLis
 		}		
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+
 	public void setImageUri(Uri uri){		
-		
-	}
-	public Uri getImageUri(){
-		return null;
+		SharedPreference mSharedPreference = new SharedPreference(this);
+		if(uri!=null){
+			mSharedPreference.setUserImage(uri.toString());
+		}
 	}
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		if(id == DIALOG_ADDRESS){
-			AlertDialog mAlertDialog = new AlertDialog.Builder(this)
-			.setMessage(getString(R.string.profile_default_address))
-			.setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {					
+			AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+			View dialogView = getLayoutInflater().inflate(R.layout.dialog_edittext, 
+					(ViewGroup) findViewById(R.id.dialog_layout));
+			mBuilder.setView(dialogView);
+			final TextView mTextView = (TextView) dialogView.findViewById(R.id.dialog_title);
+			mTextView.setText(getString(R.string.profile_default_address));
+			final EditText mEditText = (EditText) dialogView.findViewById(R.id.dialog_edittext);
+			//mBuilder.setMessage(getString(R.string.profile_default_address));
+			mBuilder.setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {					
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					String text = mEditText.getText().toString();
+					if(text!=null){
+						setName(text);
+					}
 					return;
 				}
 			}).setNegativeButton(getString(R.string.No), new DialogInterface.OnClickListener() {					
@@ -123,11 +151,20 @@ public class UserProfileActivity extends DashboardActivity implements OnClickLis
 				}
 			}).show();
 		}else if(id == DIALOG_NAME){
-			AlertDialog mAlertDialog = new AlertDialog.Builder(this)
-			.setMessage(getString(R.string.profile_default_name))
-			.setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {					
+			AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+			View dialogView = getLayoutInflater().inflate(R.layout.dialog_edittext, 
+					(ViewGroup) findViewById(R.id.dialog_layout));
+			mBuilder.setView(dialogView);
+			final TextView mTextView = (TextView) dialogView.findViewById(R.id.dialog_title);
+			mTextView.setText(getString(R.string.profile_default_name));
+			final EditText mEditText = (EditText) dialogView.findViewById(R.id.dialog_edittext);
+			mBuilder.setPositiveButton(getString(R.string.Yes), new DialogInterface.OnClickListener() {					
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					String text = mEditText.getText().toString();
+					if(text!=null){
+						setAddress(text);
+					}
 					return;
 				}
 			}).setNegativeButton(getString(R.string.No), new DialogInterface.OnClickListener() {					
@@ -138,6 +175,23 @@ public class UserProfileActivity extends DashboardActivity implements OnClickLis
 			}).show();
 		}
 		return super.onCreateDialog(id);
+	}
+	public void setName(String name){		
+		SharedPreference mSharedPreference = new SharedPreference(this);
+		if(name!=null){
+			mSharedPreference.setUserName(name);
+		}
+	}
+	public void setAddress(String address){		
+		SharedPreference mSharedPreference = new SharedPreference(this);
+		if(address!=null){
+			mSharedPreference.setAddress(address);
+			Address mAddress = NativeGeocoder.getGeocodedAddress(address);
+			if(mAddress!=null){
+				mSharedPreference.setLatitude(mAddress.getLatitude());
+				mSharedPreference.setLatitude(mAddress.getLongitude());
+			}
+		}
 	}
 
 }
