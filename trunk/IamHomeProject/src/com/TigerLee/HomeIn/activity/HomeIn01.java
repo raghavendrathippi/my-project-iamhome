@@ -74,7 +74,7 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 	};
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);        
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.homein01);
         
         setAboutMsg(getString(R.string.about_homein));
@@ -89,6 +89,7 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 		
         mDestinationAddress = (EditText) findViewById(R.id.DestinationAddress);
         if(Constants.USER_DESTINATION_ADDRESS != null){
+        	if(Constants.D) Log.v(TAG, Constants.USER_DESTINATION_ADDRESS);
         	mDestinationAddress.setText(Constants.USER_DESTINATION_ADDRESS); 
         }
         mReceiverPhoneNumber = (EditText) findViewById(R.id.ReceiverPhoneNumber);
@@ -196,6 +197,7 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
     	// TODO Auto-generated method stub
     	if(Constants.D) Log.v(TAG, "onResume");
     	if(Constants.USER_DESTINATION_ADDRESS != null){
+    		if(Constants.D) Log.v(TAG, Constants.USER_DESTINATION_ADDRESS);
         	mDestinationAddress.setText(Constants.USER_DESTINATION_ADDRESS); 
         }
     	super.onResume();
@@ -218,15 +220,22 @@ public class HomeIn01 extends DashboardActivity implements OnClickListener{
 				if(!Constants.isRunningHomeIn){//not allow to change address when is running.
 					Constants.USER_DESTINATION_LAT = mGeocodedAddress.getLatitude();
 					Constants.USER_DESTINATION_LNG = mGeocodedAddress.getLongitude();
+					Constants.USER_DESTINATION_ADDRESS = mGeocodedAddress.getAddressLine(0);
 				}
 				try{//Get well Formatted Address from lat, lng
-					List<Address> mListaddress = GoogleGeocoder.getAddressFromCoordaniates(this, 
-							new GeoPoint(Constants.USER_CURRENT_LAT.intValue(), 
-									Constants.USER_CURRENT_LNG.intValue()));
-					if(mListaddress != null){
-						Constants.USER_DESTINATION_ADDRESS = mListaddress.get(0).getAddressLine(0);
-						mDestinationAddress.setText(Constants.USER_DESTINATION_ADDRESS);
-					}					
+					if (Constants.USER_DESTINATION_ADDRESS == null) {
+						List<Address> mListaddress = NativeGeocoder
+								.getFromLocation(
+										Constants.USER_DESTINATION_LAT,
+										Constants.USER_DESTINATION_LNG,
+										Constants.MAX_RESULT_GEOCODING);
+						if (mListaddress != null) {
+							Constants.USER_DESTINATION_ADDRESS = mListaddress
+									.get(0).getAddressLine(0);
+							mDestinationAddress
+									.setText(Constants.USER_DESTINATION_ADDRESS);
+						}
+					}				
 				}catch(Exception e){
 					
 				}
