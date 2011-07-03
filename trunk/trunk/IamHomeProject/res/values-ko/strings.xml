@@ -21,6 +21,7 @@
 	<string name="toast_unsupport_Connectivity">Wifi 또는 데이터 통신을 켜주세요!</string>
 	<string name="toast_unsupport_GPS">GPS를 켜주세요!</string>
 	<string name="toast_distance">목적지 까지 거리 : </string>
+	<string name="toast_reset_destination">목적지를 다시 설정해주세요</string>
 	
 	<string name="InputDestinationAddress">목적지의 주소를 입력해주세요.</string>
 	<string name="InputPhoneNumber">수신 받을 전화번호를 입력해주세요.</string>

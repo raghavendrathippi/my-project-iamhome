@@ -1,7 +1,10 @@
 package com.TigerLee.HomeIn.Geocoder;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -11,16 +14,17 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import com.TigerLee.HomeIn.util.Constants;
-
 import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.util.Log;
+
+import com.TigerLee.HomeIn.util.Constants;
 
 public class NativeGeocoder {
 	
@@ -57,7 +61,7 @@ public class NativeGeocoder {
 		HttpGet mHttpGet = null;
 		HttpEntity mHttpEntity;
 		InputStream mInputStream;
-		try{
+		try{/*
 			mURI = DaumMapAPI + "&q="+address+ "&output=xml";
 			mHttpGet = new HttpGet(mURI);
 			mHttpResponse = mHttpClient.execute(mHttpGet);
@@ -67,7 +71,7 @@ public class NativeGeocoder {
 			if(isResultOK){
 				if(Constants.D) Log.v(TAG, "DAUM OK");
 				return mAddress;
-			}
+			}*/
 			mURI = NaverMapAPI + "&query="+address;
 			mHttpGet = new HttpGet(mURI);
 			mHttpResponse = mHttpClient.execute(mHttpGet);
@@ -76,6 +80,9 @@ public class NativeGeocoder {
 			isResultOK = Geocoding(mInputStream, Constants.NAVER_LNG_TAG, Constants.NAVER_LAT_TAG, Constants.NAVER_ADDRESS_TAG);
 			if(isResultOK){
 				if(Constants.D) Log.v(TAG, "NAVER OK");
+				if(Constants.D) Log.v(TAG, mAddress.getAddressLine(0));
+				if(Constants.D) Log.v(TAG, ""+mAddress.getLatitude());
+				if(Constants.D) Log.v(TAG, ""+mAddress.getLongitude());
 				return mAddress;
 			}
 			mURI =GoogleMapAPI + address + "&ka&sensor=false";
@@ -86,6 +93,9 @@ public class NativeGeocoder {
 			isResultOK = Geocoding(mInputStream, Constants.GOOGLE_LNG_TAG, Constants.GOOGLE_LAT_TAG, Constants.GOOGLE_ADDRESS_TAG);
 			if(isResultOK){
 				if(Constants.D) Log.v(TAG, "GOOGLE OK");
+				if(Constants.D) Log.v(TAG, mAddress.getAddressLine(0));
+				if(Constants.D) Log.v(TAG, ""+mAddress.getLatitude());
+				if(Constants.D) Log.v(TAG, ""+mAddress.getLongitude());
 				return mAddress;
 			}
 		} catch (ClientProtocolException e) {
@@ -156,7 +166,7 @@ public class NativeGeocoder {
 							if(mIndexTotal == 3){
 								mAddress.setLongitude(mLongitude);
 								mAddress.setLatitude(mLatitude);
-								mAddress.setAddressLine(1, mFormattedAddress);
+								mAddress.setAddressLine(0, mFormattedAddress);
 								return true;
 							}
 						}
@@ -230,5 +240,76 @@ public class NativeGeocoder {
 		return mAddress;	
 	}
 	*/
+	
+	public static List<Address> getFromLocation(double lat, double lon, int maxResults) {
+        String urlStr = "http://maps.google.com/maps/geo?q=" + lat + "," + lon + "&output=json&sensor=false";
+                String response = "";
+                List<Address> results = new ArrayList<Address>();
+                HttpClient client = new DefaultHttpClient();
+                
+                Log.d("ReverseGeocode", urlStr);
+                try {
+                        HttpResponse hr = client.execute(new HttpGet(urlStr));
+                        HttpEntity entity = hr.getEntity();
+
+                        BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
+
+                        String buff = null;
+                        while ((buff = br.readLine()) != null)
+                                response += buff;
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+
+                JSONArray responseArray = null;
+                try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        responseArray = jsonObject.getJSONArray("Placemark");
+                } catch (JSONException e) {
+                        return results;
+                }
+
+                Log.d("ReverseGeocode", "" + responseArray.length() + " result(s)");
+                
+                for(int i = 0; i < responseArray.length() && i < maxResults-1; i++) {
+                        Address addy = new Address(Locale.getDefault());
+
+                        try {
+                                JSONObject jsl = responseArray.getJSONObject(i);
+
+                                String addressLine = jsl.getString("address");
+
+                                if(addressLine.contains(","))
+                                        addressLine = addressLine.split(",")[0];
+
+                                addy.setAddressLine(0, addressLine);
+
+                                jsl = jsl.getJSONObject("AddressDetails").getJSONObject("Country");
+                                addy.setCountryName(jsl.getString("CountryName"));
+                                addy.setCountryCode(jsl.getString("CountryNameCode"));
+                                /*
+                                jsl = jsl.getJSONObject("AdministrativeArea");
+                                addy.setAdminArea(jsl.getString("AdministrativeAreaName"));
+
+                                jsl = jsl.getJSONObject("SubAdministrativeArea");
+                                addy.setSubAdminArea(jsl.getString("SubAdministrativeAreaName"));
+                                
+                                jsl = jsl.getJSONObject("Locality");
+                                addy.setLocality(jsl.getString("LocalityName"));
+
+                                addy.setPostalCode(jsl.getJSONObject("PostalCode").getString("PostalCodeNumber"));
+                                addy.setThoroughfare(jsl.getJSONObject("Thoroughfare").getString("ThoroughfareName"));
+                                */
+
+                        } catch (JSONException e) {
+                                e.printStackTrace();
+                                continue;
+                        }
+
+                        results.add(addy);
+                }
+
+                return results;
+        }
 	
 }

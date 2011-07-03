@@ -29,7 +29,7 @@ public class GoogleGeocoder {
 			return mGeocoder.getFromLocationName(address, Constants.MAX_RESULT_GEOCODING);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			if(Constants.D) Log.v(TAG, "Exception from getting coordinates from an address: " + e.getLocalizedMessage());
+			if(Constants.D) Log.v(TAG, "Exception to get coordinates from an address: " + e.getLocalizedMessage());
 			e.printStackTrace();
 		}
 		return null;
@@ -40,6 +40,9 @@ public class GoogleGeocoder {
 		double mLongitude = mGeoPoint.getLongitudeE6() / 1E6;
     	Geocoder mGeocoder = new Geocoder(context, Locale.getDefault());
     	try{
+    		if(Constants.D) Log.v(TAG, "Locale : " + Locale.getDefault());
+    		if(Constants.D) Log.v(TAG, "Lat : " + mLatitude);
+    		if(Constants.D) Log.v(TAG, "Lng : " + mLongitude);
     		return mGeocoder.getFromLocation(
     				mLatitude, 
     				mLongitude, 

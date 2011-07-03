@@ -44,7 +44,7 @@ public class Constants {
 	public static final int DESTROY_ACTIVITY = 0;
 	public static int FIVE_SECOND = 1000 * 5;
 
-	public static final int MAX_RESULT_GEOCODING = 1;
+	public static final int MAX_RESULT_GEOCODING = 5;
 
 	
 	public static boolean D = true;
