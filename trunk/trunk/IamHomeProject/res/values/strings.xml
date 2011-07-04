@@ -89,5 +89,8 @@
     <string name="profile_default_name">Please set your name</string>
     <string name="profile_default_address">Please set your address</string>
     
+    <string name="overlay_destination_title">Destination</string>
+    <string name="overlay_current_title">Current position</string>
     
+        
 </resources>

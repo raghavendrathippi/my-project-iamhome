@@ -109,4 +109,8 @@
     <string name="profile_default_name">이름을 설정 해주세요</string>
     <string name="profile_default_address">주소를 설정 해 주세요</string>
     
+    <string name="overlay_destination_title">목적지</string>
+    <string name="overlay_current_title">현재 위치</string>
+    
+    
 </resources>

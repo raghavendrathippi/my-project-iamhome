@@ -30,6 +30,7 @@
             android:onClick="onClickAbout" />
     </LinearLayout>
 <TextView  
+	style="@style/Percentage"
 	android:id="@+id/about_textview" 
     android:layout_width="wrap_content" 
     android:layout_height="wrap_content"/>
