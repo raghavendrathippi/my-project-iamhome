@@ -389,6 +389,8 @@ containing a value of this type.
         public static final int noti_forceclose_name=0x7f0a0019;
         public static final int noti_success_msg=0x7f0a0016;
         public static final int noti_success_name=0x7f0a0015;
+        public static final int overlay_current_title=0x7f0a0044;
+        public static final int overlay_destination_title=0x7f0a0043;
         public static final int pref_Sum_minDistance=0x7f0a0036;
         public static final int pref_Sum_minFrequency=0x7f0a0035;
         public static final int pref_TItle_minDistance=0x7f0a0034;
