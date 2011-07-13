@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="hello">Hello World, IamHomeTest02!</string>
-	<string name="app_name">Call me when you reach home.</string>
+	<string name="app_name">IamHome.</string>
 
 	<string name="bt_pickAddress">Pick Address</string>
 	<string name="bt_Start">Start</string>

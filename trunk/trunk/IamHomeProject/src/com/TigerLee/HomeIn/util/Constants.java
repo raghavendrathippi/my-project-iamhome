@@ -45,6 +45,8 @@ public class Constants {
 	public static int FIVE_SECOND = 1000 * 5;
 
 	public static final int MAX_RESULT_GEOCODING = 5;
+	
+	public static final String INTENT_MOVE_SECOND_TAP = "con.TigerLee.movetap";
 
 	
 	public static boolean D = true;

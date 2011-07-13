@@ -85,8 +85,6 @@ public class MainMenu extends Activity {
 			startActivity(intent);
 			return;
 		case SCHOOL:
-			intent.setClass(this, TabMenuActivity.class);
-			startActivity(intent);
 			return;
 		}
 	}

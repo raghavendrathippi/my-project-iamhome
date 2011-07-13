@@ -4,15 +4,19 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -20,6 +24,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.TigerLee.HomeIn.R;
@@ -33,9 +42,13 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-public class GoogleMapPicker extends MapActivity implements
+public class GoogleMapPicker extends MapActivity implements OnClickListener,
 		android.view.GestureDetector.OnGestureListener {
 
+
+	public EditText mEditTextDestination;
+	public ImageButton mImageButtonSearch;
+	
 	public MapView mMapView;
 	public MapController mMapController;
 
@@ -46,6 +59,8 @@ public class GoogleMapPicker extends MapActivity implements
 	private String mChangedAddress = null;
 
 	private static final int DEFAULT_ZOOM = 15;
+	
+	private static final int PROGRESS_DIALOG = 0;
 	private static final int CONFIRM_DIALOG = 1;
 
 	private LocationListener mNetworkLocationListener;
@@ -56,6 +71,7 @@ public class GoogleMapPicker extends MapActivity implements
 
 	private boolean mIsChangedAddress = false;
 	private static final String TAG = "MapActivity";
+	
 
 	@Override
 	protected void onCreate(Bundle icicle) {
@@ -75,8 +91,7 @@ public class GoogleMapPicker extends MapActivity implements
 		createGeopoint();
 
 		if (Constants.isRunningHomeIn && mCurrentGeoPoint == null) {
-			Toast.makeText(this, getString(R.string.NoLocation),
-					Toast.LENGTH_LONG).show();
+			toast(getString(R.string.NoLocation));
 			finish();
 		} else {
 			showCustomDialog();
@@ -89,14 +104,60 @@ public class GoogleMapPicker extends MapActivity implements
 	}
 
 	public void setupMapView() {
+		//Setup views to get searching data.
+		mEditTextDestination = (EditText) findViewById(R.id.et_destination);
+		mImageButtonSearch = (ImageButton) findViewById(R.id.bt_search);
+		if(Constants.isRunningHomeIn){
+			mEditTextDestination.setVisibility(View.INVISIBLE);
+			mImageButtonSearch.setVisibility(View.INVISIBLE);
+		}else{
+			mEditTextDestination.setOnClickListener(this);
+			mImageButtonSearch.setOnClickListener(this);
+		}
 		// Setup your Mapview * Controller
 		mMapView = (MapView) findViewById(R.id.mapview);
 		mMapView.setBuiltInZoomControls(true);
 		mMapView.setClickable(true);
 		mMapView.setLongClickable(true);
+		
+		//Set Zoom.
+		mMapController = mMapView.getController();
+		mMapController.setZoom(DEFAULT_ZOOM);
 	}
 
 	public void createGeopoint() {
+		Double mLatitude;
+		Double mLongitude;
+		//Set Destination if not null
+		if(Constants.USER_DESTINATION_LAT!=null && Constants.USER_DESTINATION_LNG!=null){
+			mLatitude = Constants.USER_DESTINATION_LAT;
+			mLongitude = Constants.USER_DESTINATION_LNG;
+			if (Constants.D){
+				Log.v(TAG, "Received CurrentGeoPoint(Double):" + mLatitude + mLongitude);
+			}	
+			mLatitude *= 1E6;
+			mLongitude *= 1E6;
+			mDestinationGeoPoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
+		}
+		//Set CurrentPosition if not null
+		if(Constants.USER_CURRENT_LAT!=null && Constants.USER_CURRENT_LNG!=null){
+			mLatitude = Constants.USER_CURRENT_LAT;
+			mLongitude = Constants.USER_CURRENT_LNG;
+			mLatitude *= 1E6;
+			mLongitude *= 1E6;
+			mCurrentGeoPoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
+		}else{//if null
+			if(Constants.isRunningHomeIn){
+				finish();
+			}else{
+				mLatitude = Constants.DEFAULT_LAT;
+				mLongitude = Constants.DEFAULT_LNG;
+				mLatitude *= 1E6;
+				mLongitude *= 1E6;
+				mCurrentGeoPoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
+			}
+		}
+		/*
 		Double mLatitude;
 		Double mLongitude;
 		mLatitude = Constants.USER_DESTINATION_LAT;
@@ -127,6 +188,7 @@ public class GoogleMapPicker extends MapActivity implements
 						mLongitude.intValue());
 			}
 		}
+		*/
 	}
 
 	public void showCustomDialog() {
@@ -148,49 +210,46 @@ public class GoogleMapPicker extends MapActivity implements
 		double mLongitude;
 		String address = null;
 		
-		//Set Zoom.
-		mMapController = mMapView.getController();
-		mMapController.setZoom(DEFAULT_ZOOM);
-
-		//Move to Current & Destination postion.
-		if (Constants.isRunningHomeIn && currentGeopoint != null) {
-			mMapController.animateTo(currentGeopoint);
-		} else {
-			mMapController.animateTo(destinationGeopoint);
-		}
-		
 		//Get Map overlays
 		List<Overlay> mMapOverlays = mMapView.getOverlays();
 		//Clear Map ovelays
 		mMapOverlays.clear();
 
-		//set Destination position on map
-		Drawable mDestinationDrawable = getResources().getDrawable(
-				R.drawable.marker);
-		MapItemizedOverlay mDestinationMapOverlay = new MapItemizedOverlay(
-				mDestinationDrawable, mMapView);
-		mLatitude = destinationGeopoint.getLatitudeE6() / 1E6;
-		mLongitude = destinationGeopoint.getLongitudeE6() / 1E6;
+		//Move to Current & Destination postion.
+		Drawable mCurrentDrawable = getResources().getDrawable(
+				R.drawable.ic_maps_indicator_current_position_anim);
+		MapItemizedOverlay mCurrentnMapOverlay = new MapItemizedOverlay(
+				mCurrentDrawable, mMapView);
+
+		mLatitude = currentGeopoint.getLatitudeE6() / 1E6;
+		mLongitude = currentGeopoint.getLongitudeE6() / 1E6;
 		address = NativeGeocoder.getAddress(mLatitude, mLongitude);
-		mDestinationMapOverlay.addOverlay(new OverlayItem(destinationGeopoint,
-				getString(R.string.overlay_destination_title), address));
-		mMapOverlays.add(mDestinationMapOverlay);
 
-		//set current position on map
-		if (currentGeopoint != null) {
-			Drawable mCurrentDrawable = getResources().getDrawable(
-					R.drawable.marker_rounded_green);
-			MapItemizedOverlay mCurrentnMapOverlay = new MapItemizedOverlay(
-					mCurrentDrawable, mMapView);
+		mCurrentnMapOverlay.addOverlay(new OverlayItem(currentGeopoint,
+				getString(R.string.overlay_current_title), address));
+		mMapOverlays.add(mCurrentnMapOverlay);
 
-			mLatitude = currentGeopoint.getLatitudeE6() / 1E6;
-			mLongitude = currentGeopoint.getLongitudeE6() / 1E6;
+		if(destinationGeopoint!=null){
+			mMapController.animateTo(destinationGeopoint);
+			
+			//set Destination position on map
+			Drawable mDestinationDrawable = getResources().getDrawable(
+					R.drawable.marker);
+			MapItemizedOverlay mDestinationMapOverlay = new MapItemizedOverlay(
+					mDestinationDrawable, mMapView);
+			mLatitude = destinationGeopoint.getLatitudeE6() / 1E6;
+			mLongitude = destinationGeopoint.getLongitudeE6() / 1E6;
 			address = NativeGeocoder.getAddress(mLatitude, mLongitude);
-
-			mCurrentnMapOverlay.addOverlay(new OverlayItem(currentGeopoint,
-					getString(R.string.overlay_current_title), address));
-			mMapOverlays.add(mCurrentnMapOverlay);
+			mDestinationMapOverlay.addOverlay(new OverlayItem(destinationGeopoint,
+					getString(R.string.overlay_destination_title), address));
+			mMapOverlays.add(mDestinationMapOverlay);
+		}else{
+			//set current position on map
+			if (currentGeopoint != null) {
+				mMapController.animateTo(currentGeopoint);
+			}
 		}
+		
 	}
 
 	@Override
@@ -233,14 +292,19 @@ public class GoogleMapPicker extends MapActivity implements
 									mIsChangedAddress = true;
 									if (!Constants.isRunningHomeIn) {
 										Log.v(TAG, "mIsChangedAddress");
+										/*
 										Constants.USER_DESTINATION_ADDRESS = mChangedAddress;
 										Constants.USER_DESTINATION_LAT = mDestinationGeoPoint
 												.getLatitudeE6() / 1E6;
 										Constants.USER_DESTINATION_LNG = mDestinationGeoPoint
 												.getLongitudeE6() / 1E6;
+												*/
 										setResult(RESULT_OK);
+										Intent intent = new Intent();
+										intent.setAction(Constants.INTENT_MOVE_SECOND_TAP);
+										sendBroadcast(intent);
 									}
-									finish();
+									//finish();
 									return;
 								}
 							})
@@ -249,14 +313,17 @@ public class GoogleMapPicker extends MapActivity implements
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									Toast.makeText(
-											getApplicationContext(),
-											getString(R.string.toast_reset_destination),
-											Toast.LENGTH_SHORT).show();
+									toast(getString(R.string.toast_reset_destination));
 									return;
 								}
 							}).show();
 			break;
+		case PROGRESS_DIALOG:
+			ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setMessage(getString(R.string.LoadingMsg));
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            return dialog;
 		default:
 			break;
 		}
@@ -296,7 +363,7 @@ public class GoogleMapPicker extends MapActivity implements
 		if (!mIsChangedAddress) {
 			setResult(RESULT_CANCELED);
 		} else {
-
+			setResult(RESULT_OK);
 		}
 		super.onDestroy();
 	}
@@ -490,14 +557,79 @@ public class GoogleMapPicker extends MapActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.distance:
-			Toast.makeText(
-					this,
-					getString(R.string.toast_distance)
-							+ calDistance(currentBestLocation),
-					Toast.LENGTH_SHORT).show();
+			toast(getString(R.string.toast_distance));
 			return true;
 		}
 		return false;
 	}
+
+	@Override
+	public void onClick(View v) {
+		Address mGeocodedAddress;
+		switch (v.getId()) {
+			case R.id.bt_search:
+				//Create Progress Dialog
+				showDialog(PROGRESS_DIALOG);			
+				//Transform Address to Coordinates	        	        
+				mGeocodedAddress = NativeGeocoder.getGeocodedAddress(mEditTextDestination.getText().toString());
+				if(mGeocodedAddress != null){
+					if(!Constants.isRunningHomeIn){//not allow to change address when is running.
+						
+						Constants.USER_DESTINATION_LAT = mGeocodedAddress.getLatitude();
+						Constants.USER_DESTINATION_LNG = mGeocodedAddress.getLongitude();
+						Constants.USER_DESTINATION_ADDRESS = mGeocodedAddress.getAddressLine(0);
+						mChangedAddress = Constants.USER_DESTINATION_ADDRESS;
+					}
+					try{//Get well Formatted Address from lat, lng
+						if (Constants.USER_DESTINATION_ADDRESS == null) {
+							List<Address> mListaddress = NativeGeocoder
+									.getFromLocation(
+											Constants.USER_DESTINATION_LAT,
+											Constants.USER_DESTINATION_LNG,
+											Constants.MAX_RESULT_GEOCODING);
+							if (mListaddress != null) {
+								Constants.USER_DESTINATION_ADDRESS = mListaddress
+										.get(0).getAddressLine(0);
+								mEditTextDestination
+										.setText(Constants.USER_DESTINATION_ADDRESS);
+							}
+						}				
+					}catch(Exception e){
+						
+					}
+					if(Constants.D){
+						Log.i(TAG, "Lat: " + Constants.USER_DESTINATION_LAT +
+							"Lng :" + Constants.USER_DESTINATION_LNG + 
+							" Addr :"+ Constants.USER_DESTINATION_ADDRESS);
+					}
+					mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
+					showDialog(CONFIRM_DIALOG);
+				}else{
+					//Not available to geocode with the address.
+					mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
+					toast(getString(R.string.NotValidAddress));
+				}
+				break;
+		}
+		
+	}
+	private Handler mHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			switch(msg.what){	
+				case Constants.DESTROY_ACTIVITY:
+					//Remove Progress dialog which is created for loading page.
+					removeDialog(PROGRESS_DIALOG);
+					break;
+				default:
+					break;
+			}
+			super.handleMessage(msg);
+		}
+	};
+	
+	public void toast (String msg){
+	    Toast.makeText (getApplicationContext(), msg, Toast.LENGTH_SHORT).show ();
+	} // end toast
 
 }

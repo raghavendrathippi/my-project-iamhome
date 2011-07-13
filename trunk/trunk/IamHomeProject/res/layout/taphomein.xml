@@ -24,7 +24,6 @@
             android:src="@drawable/title_about"
             android:onClick="onClickAbout" />
     </LinearLayout>
-
         <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@android:id/tabhost" android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
@@ -37,10 +36,8 @@
                         <FrameLayout android:id="@android:id/tabcontent"
                                 android:layout_width="fill_parent" android:layout_height="fill_parent"
                                 android:layout_above="@android:id/tabs" />
-                        <View android:id="@+id/view1" 
-                        	android:layout_width="fill_parent" 
-                        	android:layout_height="1dip"
-                        	android:layout_above="@android:id/tabcontent" android:background="@drawable/tab_divider"/>
+                        <View android:id="@+id/view1" android:layout_width="fill_parent" android:layout_height="1dip" 
+                        android:layout_above="@android:id/tabcontent" android:background="@drawable/tab_divider"/>
                         
                 </RelativeLayout>
         </TabHost>
