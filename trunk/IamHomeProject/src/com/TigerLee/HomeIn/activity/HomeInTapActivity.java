@@ -5,13 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
-import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
 
 import com.TigerLee.HomeIn.R;
 import com.TigerLee.HomeIn.util.Constants;
@@ -36,6 +35,7 @@ public class HomeInTapActivity extends DashboardTapActivity {
 			setContentView(R.layout.tabmenu);
 	        mTabHost = getTabHost();
 	        mTabHost.getTabWidget().setDividerDrawable(R.drawable.popup_line_olivegreen);
+
 	        if(Constants.isRunningHomeIn){
 	        	setupTab(new TextView(this), "", R.drawable.ic_map, new Intent(this, GoogleMapPicker.class));
 	        }else{

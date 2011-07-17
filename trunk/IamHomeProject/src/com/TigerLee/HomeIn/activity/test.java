@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.Contacts.Phones;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,6 +50,14 @@ public class test extends ListActivity implements OnClickListener{
 	public ImageButton mImageButtonStart;
 	public ListAdapter mListAdapter;
 	
+	private static final String[] PHONE_PROJECTION = new String[] {
+		Phone.DISPLAY_NAME,
+        Phone._ID,
+        Phone.TYPE,
+        Phone.LABEL,
+        Phone.NUMBER
+    };
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,16 +66,18 @@ public class test extends ListActivity implements OnClickListener{
         
         mEditTextMessage = (EditText) findViewById(R.id.et_message);
         mImageButtonStart = (ImageButton) findViewById(R.id.bt_start);
+        mImageButtonStart.setOnClickListener(this);
         
         // Get a cursor with all phones
-        Cursor c = getContentResolver().query(Phones.CONTENT_URI, null, null, null, null);
+        Cursor c = getContentResolver().query(Phone.CONTENT_URI,
+                PHONE_PROJECTION, null, null, null);
         startManagingCursor(c);
         
         // Map Cursor columns to views defined in simple_list_item_2.xml
         mListAdapter = new SimpleCursorAdapter(this,
                 android.R.layout.simple_list_item_multiple_choice, c, 
-                        new String[] { Phones.NAME, Phones.NUMBER }, 
-                        new int[] { android.R.id.text1, android.R.id.text2 });
+                new String[] {Phone.DISPLAY_NAME, Phone.NUMBER},
+                new int[] { android.R.id.text1, android.R.id.text2 });
         setListAdapter(mListAdapter);
         final ListView listView = getListView();
         listView.setItemsCanFocus(false);
@@ -76,7 +87,7 @@ public class test extends ListActivity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.et_message:
+			case R.id.bt_start:
 				//String mPhoneNumber = mReceiverPhoneNumber.getText().toString();
 				String mTextMessage = mEditTextMessage.getText().toString();			
 				//Constants.EXTRA_PHONENUM = mPhoneNumber;
@@ -107,8 +118,8 @@ public class test extends ListActivity implements OnClickListener{
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
-		
-		Toast.makeText(this, getString(android.R.id.text2), Toast.LENGTH_SHORT).show();
+		Constants.EXTRA_PHONENUM="01034561626";
+		Toast.makeText(this, "01034561626", Toast.LENGTH_SHORT).show();
 	}
 	public void toast (String msg){
 	    Toast.makeText (getApplicationContext(), msg, Toast.LENGTH_SHORT).show ();
