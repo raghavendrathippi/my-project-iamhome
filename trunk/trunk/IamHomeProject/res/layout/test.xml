@@ -16,8 +16,9 @@
 		<!-- android:text="@string/bt_FindDestination" -->
 	<ImageButton 
 		android:id="@+id/bt_start" 
-		android:layout_height="wrap_content" 
+		android:layout_height="fill_parent" 
 		android:layout_width="wrap_content"
+		android:minWidth="77dip"
 		android:src="@drawable/ic_running"
 		android:layout_weight="1"></ImageButton>
   </LinearLayout>
