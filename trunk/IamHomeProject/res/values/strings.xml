@@ -13,6 +13,8 @@
 	
 	<string name="menu_distance">Remaining distance</string>
 	
+	<string name="toast_address">Address: </string>
+	<string name="toast_setDestination">Destination has been set.</string>
 	<string name="toast_isRunning">Iamhome is already running.</string>
 	<string name="toast_isRunning_preference">Settings values will be applied at next launching.</string>
 	<string name="toast_startservice">You need to go home right now.</string>
@@ -40,6 +42,7 @@
 	<string name="NoLocation">No location found.</string>
 	<string name="CurrentLocation">Where are you now?</string>
 	<string name="MessageSMS">Successfully sent</string>
+	
 	
 	<string name="DialogTitle">Destination address?</string>
 	

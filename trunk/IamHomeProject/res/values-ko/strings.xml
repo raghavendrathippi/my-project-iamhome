@@ -14,6 +14,8 @@
 	
 	<string name="menu_distance">남은 거리</string>
 	
+	<string name="toast_address">주소: </string>
+	<string name="toast_setDestination">목적지가 설정 되었습니다.</string>
 	<string name="toast_isRunning">집에가면 연락해 실행되고 있는 중 입니다.</string>
 	<string name="toast_isRunning_preference">현재 적용한 값은 다음 실행 시 부터 적용됩니다.</string>
 	<string name="toast_startservice">집에가면 연락해~ 시작합니다!</string>

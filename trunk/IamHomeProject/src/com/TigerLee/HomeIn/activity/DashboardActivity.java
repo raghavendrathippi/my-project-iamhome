@@ -210,7 +210,7 @@ public void onClickFeature (View v)
     	  }*/
     	  break;
       case R.id.home_btn_feature2 :
-           //startActivity (new Intent(getApplicationContext(), HomeIn02.class));
+           startActivity (new Intent(getApplicationContext(), GoogleMapPicker.class));
            break;
       case R.id.home_btn_feature3 :
            startActivity (new Intent(getApplicationContext(), UserProfileActivity.class));

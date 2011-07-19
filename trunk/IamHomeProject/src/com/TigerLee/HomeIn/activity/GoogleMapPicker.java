@@ -55,12 +55,12 @@ public class GoogleMapPicker extends MapActivity implements OnClickListener,
 	private GeoPoint mCurrentGeoPoint = null;
 
 	private GestureDetector mGestureDetector;
-	private String mChangedAddress = null;
+	//private String mChangedAddress = null;
 
 	private static final int DEFAULT_ZOOM = 15;
 	
 	private static final int PROGRESS_DIALOG = 0;
-	private static final int CONFIRM_DIALOG = 1;
+	//private static final int CONFIRM_DIALOG = 1;
 
 	private LocationListener mNetworkLocationListener;
 	private LocationListener mGPSLocationListener;
@@ -68,7 +68,6 @@ public class GoogleMapPicker extends MapActivity implements OnClickListener,
 	private Location currentBestLocation = null;
 	private static final long ONE_MINUTES = 1000;// milliseconds
 
-	private boolean mIsChangedAddress = false;
 	private static final String TAG = "MapActivity";
 	
 
@@ -138,6 +137,9 @@ public class GoogleMapPicker extends MapActivity implements OnClickListener,
 			mLatitude *= 1E6;
 			mLongitude *= 1E6;
 			mDestinationGeoPoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
+			if(Constants.isRunningHomeIn){
+				mMapController.animateTo(mDestinationGeoPoint);
+			}
 		}
 		//Set CurrentPosition if not null
 		if(Constants.USER_CURRENT_LAT!=null && Constants.USER_CURRENT_LNG!=null){
@@ -211,7 +213,7 @@ public class GoogleMapPicker extends MapActivity implements OnClickListener,
 			mDestinationMapOverlay.addOverlay(new OverlayItem(destinationGeopoint,
 					getString(R.string.overlay_destination_title), address));
 			mMapOverlays.add(mDestinationMapOverlay);
-		}		
+		}
 	}
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {
@@ -231,9 +233,23 @@ public class GoogleMapPicker extends MapActivity implements OnClickListener,
 		if (Constants.D)
 			Log.v(TAG, "Location - " + mLatitude + mLongitude);
 		try {
+			String mChangedAddress = null;
 			mChangedAddress = NativeGeocoder.getAddress(mLatitude, mLongitude);
-			drawMapOverlay(mDestinationGeoPoint, mCurrentGeoPoint);
-			showDialog(CONFIRM_DIALOG);
+			if(mChangedAddress != null){
+				Constants.USER_DESTINATION_LAT = mLatitude;
+				Constants.USER_DESTINATION_LNG = mLongitude;			
+				Constants.USER_DESTINATION_ADDRESS = mChangedAddress;
+				
+				drawMapOverlay(mDestinationGeoPoint, mCurrentGeoPoint);
+				mMapController.animateTo(mGeoPoint);
+				toast(getString(R.string.toast_address)
+						+ Constants.USER_DESTINATION_ADDRESS + "\n" 
+						+ getString(R.string.toast_setDestination));
+				Log.v(TAG, "mIsChangedAddress");
+			}else{
+				toast(getString(R.string.toast_reset_destination));
+			}
+						
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -241,7 +257,7 @@ public class GoogleMapPicker extends MapActivity implements OnClickListener,
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		switch (id) {
+		switch (id) {/*
 		case CONFIRM_DIALOG:
 			AlertDialog mAlertDialog = new AlertDialog.Builder(this)
 					.setMessage(mChangedAddress + "\n" + getString(R.string.ConfirmMsg))
@@ -276,7 +292,7 @@ public class GoogleMapPicker extends MapActivity implements OnClickListener,
 									return;
 								}
 							}).show();
-			break;
+			break;*/
 		case PROGRESS_DIALOG:
 			ProgressDialog dialog = new ProgressDialog(this);
             dialog.setMessage(getString(R.string.LoadingMsg));
@@ -317,12 +333,6 @@ public class GoogleMapPicker extends MapActivity implements OnClickListener,
 		}
 		if (mGPSLocationListener != null) {
 			mLocationManager.removeUpdates(mGPSLocationListener);
-		}
-
-		if (!mIsChangedAddress) {
-			setResult(RESULT_CANCELED);
-		} else {
-			setResult(RESULT_OK);
 		}
 		super.onDestroy();
 	}
@@ -533,26 +543,22 @@ public class GoogleMapPicker extends MapActivity implements OnClickListener,
 				mGeocodedAddress = NativeGeocoder.getGeocodedAddress(mEditTextDestination.getText().toString());
 				if(mGeocodedAddress != null){
 					if(!Constants.isRunningHomeIn){//not allow to change address when is running.
-						
 						Constants.USER_DESTINATION_LAT = mGeocodedAddress.getLatitude();
 						Constants.USER_DESTINATION_LNG = mGeocodedAddress.getLongitude();
 						Constants.USER_DESTINATION_ADDRESS = mGeocodedAddress.getAddressLine(0);
-						mChangedAddress = Constants.USER_DESTINATION_ADDRESS;
 					}
 					try{//Get well Formatted Address from lat, lng
 						if (Constants.USER_DESTINATION_ADDRESS == null) {
-							List<Address> mListaddress = NativeGeocoder
-									.getFromLocation(
-											Constants.USER_DESTINATION_LAT,
-											Constants.USER_DESTINATION_LNG,
-											Constants.MAX_RESULT_GEOCODING);
-							if (mListaddress != null) {
-								Constants.USER_DESTINATION_ADDRESS = mListaddress
-										.get(0).getAddressLine(0);
-								mEditTextDestination
-										.setText(Constants.USER_DESTINATION_ADDRESS);
+							String mChangedAddress = null;
+							mChangedAddress = NativeGeocoder.getAddress(Constants.USER_DESTINATION_LAT, 
+									Constants.USER_DESTINATION_LNG);
+							if(mChangedAddress != null){
+								Constants.USER_DESTINATION_ADDRESS = mChangedAddress;
 							}
-						}				
+							else{
+								toast(getString(R.string.toast_reset_destination));
+							}
+						}
 					}catch(Exception e){
 						
 					}
@@ -561,15 +567,27 @@ public class GoogleMapPicker extends MapActivity implements OnClickListener,
 							"Lng :" + Constants.USER_DESTINATION_LNG + 
 							" Addr :"+ Constants.USER_DESTINATION_ADDRESS);
 					}
+					mEditTextDestination.setText(Constants.USER_DESTINATION_ADDRESS);
 					mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
-					showDialog(CONFIRM_DIALOG);
+					
+					//Create Destination GeoPoint.
+					Double mLatitude = Constants.USER_DESTINATION_LAT;
+					Double mLongitude = Constants.USER_DESTINATION_LNG;
+					mLatitude *= 1E6;
+					mLongitude *= 1E6;
+					mDestinationGeoPoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
+					mMapController.animateTo(mDestinationGeoPoint);
+					toast(getString(R.string.toast_address)
+							+ Constants.USER_DESTINATION_ADDRESS + "\n" 
+							+ getString(R.string.toast_setDestination));
 				}else{
 					//Not available to geocode with the address.
 					mHandler.sendMessage(mHandler.obtainMessage(Constants.DESTROY_ACTIVITY));
 					toast(getString(R.string.NotValidAddress));
 				}
+				
 				break;
-		}
+		}//End Case R.id.bt_search:
 		
 	}
 	private Handler mHandler = new Handler(){
