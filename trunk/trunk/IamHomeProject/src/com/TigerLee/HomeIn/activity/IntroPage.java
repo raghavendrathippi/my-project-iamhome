@@ -85,9 +85,9 @@ public class IntroPage extends Activity {
 			break;
 		case DISABLED_CONNECTIVITY:
 			Intent mWirelessnIntent = new Intent(Settings.ACTION_WIRELESS_SETTINGS ); 
-			startActivity(mWirelessnIntent);
-			finish();
-			break;
+			//startActivity(mWirelessnIntent);
+			//finish();
+			//break;
 		default:
 			mTimeHandler.sendMessageDelayed(mTimeHandler.obtainMessage(TIMEOUT), HOLDING_TIME);
 		}
