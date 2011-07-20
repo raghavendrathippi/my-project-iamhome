@@ -202,10 +202,10 @@ public void onClickFeature (View v)
     switch (id) {
       case R.id.home_btn_feature1 :
            startActivity (new Intent(getApplicationContext(), HomeInTapActivity.class));
-           break;
+           break;/*
       case R.id.home_btn_feature2 :
            //startActivity (new Intent(getApplicationContext(), HomeIn02.class));
-           break;
+           break;*/
       case R.id.home_btn_feature3 :
            //startActivity (new Intent(getApplicationContext(), HomeIn03.class));
            break;

@@ -24,7 +24,9 @@ import com.TigerLee.HomeIn.util.Constants;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.Contacts.Phones;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.util.Log;
@@ -45,7 +47,6 @@ import android.widget.Toast;
  */
 public class test extends ListActivity implements OnClickListener{
 	
-	private static final String TAG = "test";
 	public EditText mEditTextMessage;
 	public ImageButton mImageButtonStart;
 	public ListAdapter mListAdapter;
@@ -56,7 +57,14 @@ public class test extends ListActivity implements OnClickListener{
         Phone.TYPE,
         Phone.LABEL,
         Phone.NUMBER
-    };
+    };	
+	public static int COLUMNS_DISPLAY_NAME = 0;
+	public static int COLUMNS_ID = 1;
+	public static int COLUMNS_TYPE = 2;
+	public static int COLUMNS_LABEL = 3;
+	public static int COLUMNS_NUMBER = 4;
+	
+	private static final String TAG = "test";
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +83,10 @@ public class test extends ListActivity implements OnClickListener{
         
         // Map Cursor columns to views defined in simple_list_item_2.xml
         mListAdapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_multiple_choice, c, 
-                new String[] {Phone.DISPLAY_NAME, Phone.NUMBER},
-                new int[] { android.R.id.text1, android.R.id.text2 });
+        		R.layout.customlist, c, 
+        		new String[] { Phone.DISPLAY_NAME, Phone.NUMBER},
+        		new int[] { android.R.id.text1, android.R.id.text2 });
+        
         setListAdapter(mListAdapter);
         final ListView listView = getListView();
         listView.setItemsCanFocus(false);
@@ -89,9 +98,8 @@ public class test extends ListActivity implements OnClickListener{
 		switch (v.getId()) {
 			case R.id.bt_start:
 				//String mPhoneNumber = mReceiverPhoneNumber.getText().toString();
-				String mTextMessage = mEditTextMessage.getText().toString();			
-				//Constants.EXTRA_PHONENUM = mPhoneNumber;
-				Constants.EXTRA_TEXT_MSG = mTextMessage;		
+				String mTextMessage = mEditTextMessage.getText().toString();
+				Constants.EXTRA_TEXT_MSG = mTextMessage;
 				if(isAllsetRequiedInfomation()){
 					if(!Constants.isRunningHomeIn){
 						startProximityService();
@@ -101,6 +109,12 @@ public class test extends ListActivity implements OnClickListener{
 		}
 	}
 	public boolean isAllsetRequiedInfomation(){
+		if(Constants.D){
+			Log.e(TAG,"LAT:" + Constants.USER_DESTINATION_LAT);
+			Log.e(TAG,"LNG:" + Constants.USER_DESTINATION_LNG);
+			Log.e(TAG,"MSG:" + Constants.EXTRA_TEXT_MSG);
+			Log.e(TAG,"NUM:" + Constants.EXTRA_PHONENUM);
+		}
 		return (Constants.EXTRA_PHONENUM != null 
 				&& Constants.EXTRA_TEXT_MSG != null
 				&& Constants.USER_DESTINATION_LAT != null
@@ -118,8 +132,10 @@ public class test extends ListActivity implements OnClickListener{
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
-		Constants.EXTRA_PHONENUM="01034561626";
-		Toast.makeText(this, "01034561626", Toast.LENGTH_SHORT).show();
+		Cursor c = (Cursor)mListAdapter.getItem(position);
+		String phoneNum = c.getString(COLUMNS_NUMBER);		
+		Toast.makeText(this, phoneNum, Toast.LENGTH_SHORT).show();
+		Constants.EXTRA_PHONENUM = phoneNum;
 	}
 	public void toast (String msg){
 	    Toast.makeText (getApplicationContext(), msg, Toast.LENGTH_SHORT).show ();
