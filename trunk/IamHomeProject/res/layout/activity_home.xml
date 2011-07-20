@@ -48,10 +48,11 @@
 	            style="@style/HomeButton"
 	            android:onClick="onClickFeature"
 	            android:drawableTop="@drawable/feature_1"/>
+	            <!-- 
 	        <Button android:id="@+id/home_btn_feature2"
 	            style="@style/HomeButton"
 	            android:onClick="onClickFeature"
-	            android:drawableTop="@drawable/feature_2"/>
+	            android:drawableTop="@drawable/feature_2"/> -->
 		</LinearLayout>
 
 	    <LinearLayout

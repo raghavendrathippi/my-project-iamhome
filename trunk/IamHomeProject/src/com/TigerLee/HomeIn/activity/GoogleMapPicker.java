@@ -239,7 +239,7 @@ public class GoogleMapPicker extends MapActivity implements OnClickListener,
 				Constants.USER_DESTINATION_LAT = mLatitude;
 				Constants.USER_DESTINATION_LNG = mLongitude;			
 				Constants.USER_DESTINATION_ADDRESS = mChangedAddress;
-				
+				mEditTextDestination.setText(Constants.USER_DESTINATION_ADDRESS);
 				drawMapOverlay(mDestinationGeoPoint, mCurrentGeoPoint);
 				mMapController.animateTo(mGeoPoint);
 				toast(getString(R.string.toast_address)
@@ -576,6 +576,7 @@ public class GoogleMapPicker extends MapActivity implements OnClickListener,
 					mLatitude *= 1E6;
 					mLongitude *= 1E6;
 					mDestinationGeoPoint = new GeoPoint(mLatitude.intValue(), mLongitude.intValue());
+					drawMapOverlay(mDestinationGeoPoint, mCurrentGeoPoint);
 					mMapController.animateTo(mDestinationGeoPoint);
 					toast(getString(R.string.toast_address)
 							+ Constants.USER_DESTINATION_ADDRESS + "\n" 
