@@ -45,7 +45,7 @@ import android.widget.Toast;
  * SimpleCursorListAdapter is used to map each item to a two-line
  * display.
  */
-public class test extends ListActivity implements OnClickListener{
+public class SendMessageActivity extends ListActivity implements OnClickListener{
 	
 	public EditText mEditTextMessage;
 	public ImageButton mImageButtonStart;
@@ -70,7 +70,7 @@ public class test extends ListActivity implements OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.test);
+        setContentView(R.layout.send_message);
         
         mEditTextMessage = (EditText) findViewById(R.id.et_message);
         mImageButtonStart = (ImageButton) findViewById(R.id.bt_start);

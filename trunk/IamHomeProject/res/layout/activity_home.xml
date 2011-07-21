@@ -47,7 +47,7 @@
 	        <Button android:id="@+id/home_btn_feature1"
 	            style="@style/HomeButton"
 	            android:onClick="onClickFeature"
-	            android:drawableTop="@drawable/feature_1"/>
+	            android:drawableTop="@drawable/feature_1_selector"/>
 	            <!-- 
 	        <Button android:id="@+id/home_btn_feature2"
 	            style="@style/HomeButton"
@@ -63,11 +63,11 @@
 	        <Button android:id="@+id/home_btn_feature3"
 	            style="@style/HomeButton"
 	            android:onClick="onClickFeature"
-	            android:drawableTop="@drawable/feature_3"/>
+	            android:drawableTop="@drawable/feature_3_selector"/>
 	        <Button android:id="@+id/home_btn_feature4"
 	            style="@style/HomeButton"
 	            android:onClick="onClickFeature"
-	            android:drawableTop="@drawable/feature_4"/>
+	            android:drawableTop="@drawable/feature_4_selector"/>
 	    </LinearLayout>
 	<!-- 
 	    <LinearLayout
