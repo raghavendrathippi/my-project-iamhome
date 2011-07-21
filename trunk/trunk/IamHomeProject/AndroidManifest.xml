@@ -42,7 +42,7 @@
         <activity android:name=".activity.SendTextMessage" android:screenOrientation="portrait"/>
         <activity android:name=".activity.TabMenuActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.HomeInTapActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.test" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SendMessageActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.PreferencesActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.UserProfileActivity" android:screenOrientation="portrait"/>
         

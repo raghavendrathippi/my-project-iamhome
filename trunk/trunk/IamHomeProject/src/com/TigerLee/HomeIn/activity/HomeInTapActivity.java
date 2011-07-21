@@ -40,7 +40,7 @@ public class HomeInTapActivity extends DashboardTapActivity {
 	        	setupTab(new TextView(this), "", R.drawable.ic_map, new Intent(this, GoogleMapPicker.class));
 	        }else{
 	        	setupTab(new TextView(this), "", R.drawable.ic_map, new Intent(this, GoogleMapPicker.class));
-	        	setupTab(new TextView(this), "", R.drawable.ic_contact, new Intent(this, test.class));
+	        	setupTab(new TextView(this), "", R.drawable.ic_contact, new Intent(this, SendMessageActivity.class));
 	        	IntentFilter mIntentFilter = new IntentFilter(Constants.INTENT_MOVE_SECOND_TAP);
 	        	registerReceiver(mBroadcastReceiver, mIntentFilter);
 	        }
