@@ -37,6 +37,10 @@ public class IamHomeBroadcastReceiver extends BroadcastReceiver{
 			if(Constants.D) Log.v(TAG, "ACTION_BATTERY_LOW");
 		}else if(action.equals(Intent.ACTION_PACKAGE_REMOVED)){
 			if(Constants.D) Log.v(TAG, "ACTION_PACKAGE_REMOVED");
+			setNotification(context, 
+					context.getString(R.string.noti_forceclose_name), 
+					context.getString(R.string.noti_forceclose_msg));
+			Constants.EXTRA_TEXT_MSG = context.getString(R.string.noti_forceclose_msg);
 		}else if(action.equals(Intent.ACTION_PACKAGE_RESTARTED)){
 			if(Constants.D) Log.v(TAG, "ACTION_PACKAGE_RESTARTED");
 		}else if(action.equals(DISABLE_GPS_INTENT)){

@@ -17,10 +17,7 @@ import com.TigerLee.HomeIn.util.GPSInformation;
 public class ProximityAlertService extends Service {
 	
 	private LocationManager mLocationManager;
-	
 	private LocationListener mGPSLocationListener;
-	
-	private Location mGPSCurrentLocation;
 	
 	private static final String TAG = "ProximityAlertService";
 
@@ -63,18 +60,17 @@ public class ProximityAlertService extends Service {
 			}
 			@Override
 			public void onLocationChanged(Location location) {
-				mGPSCurrentLocation = location;
 				if(Constants.isRunningHomeIn){
-					Constants.USER_CURRENT_LAT = mGPSCurrentLocation.getLatitude();
-					Constants.USER_CURRENT_LNG = mGPSCurrentLocation.getLongitude();
+					Constants.USER_CURRENT_LAT = location.getLatitude();
+					Constants.USER_CURRENT_LNG = location.getLongitude();
 				}
 				Double mDistance = GPSInformation.distance(
-						mGPSCurrentLocation.getLatitude(), 
-						mGPSCurrentLocation.getLongitude(), 
+						location.getLatitude(), 
+						location.getLongitude(), 
 						Constants.USER_DESTINATION_LAT, 
 						Constants.USER_DESTINATION_LNG);
 				mDistance = Math.abs(mDistance);
-				if(Constants.D) Log.v(TAG, "Distance to destination: " + mDistance);
+				if(Constants.D) Log.i(TAG, "Distance to destination: " + mDistance);
 				if(mDistance < Constants.MIN_DISTANCE + Constants.GPS_ERROR_DISTANCE){
 					closeService();
 				}
@@ -86,13 +82,8 @@ public class ProximityAlertService extends Service {
 	}
 	@Override
 	public void onDestroy() {
-		//mLocationManager.removeProximityAlert(PendingIntent.getBroadcast(
-		//		this, 0, new Intent(Constants.TREASURE_PROXIMITY_ALERT), 0));
-		//unregisterReceiver(mProximityAlertReceiver);
-		mLocationManager.removeUpdates(mGPSLocationListener);
 		Log.v(TAG, "onDestory");
-		//Force closed by the user
-		if(Constants.isRunningHomeIn){
+		if(Constants.isRunningHomeIn){//Force closed by the user
 			Intent mBroadCastIntent = new Intent();
 			mBroadCastIntent.setAction(IamHomeBroadcastReceiver.FORCE_CLOSED_INTENT);
 			sendBroadcast(mBroadCastIntent);			
@@ -107,6 +98,7 @@ public class ProximityAlertService extends Service {
 		Intent mBroadCastIntent = new Intent();
 		mBroadCastIntent.setAction(IamHomeBroadcastReceiver.SUCCESS_INTENT);
 		sendBroadcast(mBroadCastIntent);
+		mLocationManager.removeUpdates(mGPSLocationListener);
 		stopSelf();	
 	}
 }
