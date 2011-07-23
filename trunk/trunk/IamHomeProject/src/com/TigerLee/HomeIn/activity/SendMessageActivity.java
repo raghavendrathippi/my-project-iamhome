@@ -90,7 +90,7 @@ public class SendMessageActivity extends ListActivity implements OnClickListener
         setListAdapter(mListAdapter);
         final ListView listView = getListView();
         listView.setItemsCanFocus(false);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 
 	@Override
@@ -139,6 +139,5 @@ public class SendMessageActivity extends ListActivity implements OnClickListener
 	}
 	public void toast (String msg){
 	    Toast.makeText (getApplicationContext(), msg, Toast.LENGTH_SHORT).show ();
-	} // end toast
-  
+	} // end toast  
 }
