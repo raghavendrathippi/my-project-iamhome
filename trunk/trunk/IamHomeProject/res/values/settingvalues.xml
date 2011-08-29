@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string-array name="minTimeIncs">
-    	<item name="0">0</item>
+    	<item name="0">Every seconds</item>
       <item name="10000">Every 10 seconds</item>
       <item name="30000">Every 30 seconds</item>
       <item name="60000">Every 1 minute</item>      
@@ -58,15 +58,5 @@
       <item name="250">250</item>
       <item name="500">500</item>
       <item name="1000">1000</item>
-    </string-array>
-    <string-array name="defaultapi">
-      <item name="google">google</item>
-      <item name="naver">naver</item>
-      <item name="daum">daum</item>
-    </string-array>
-    <string-array name="apiVals">
-      <item name="google">google</item>
-      <item name="naver">naver</item>
-      <item name="daum">daum</item>
     </string-array>
   </resources>

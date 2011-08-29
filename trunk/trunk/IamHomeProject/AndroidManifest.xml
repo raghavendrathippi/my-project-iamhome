@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.TigerLee.HomeIn"
+      package="com.tigerlee.homein"
       android:versionCode="1"
       android:versionName="1.0">
       
@@ -14,12 +14,15 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
-      
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.READ_LOGS"/>
+    
     <application 
     	android:icon="@drawable/ic_in" 
     	android:label="@string/app_name"
     	android:theme="@style/Theme.D1"
-    	android:configChanges="keyboardHidden|orientation">
+    	android:configChanges="keyboardHidden|orientation"
+    	android:name="HomeIn">
     	
       <uses-library android:name="com.google.android.maps"/>
       
@@ -52,16 +55,16 @@
        		
        	<receiver android:name=".receiver.IamHomeBroadcastReceiver">
     		<intent-filter>
-            	<action android:name="android.intent.action.ACTION_BOOT_COMPLETED"></action>
+            	<action android:name="android.intent.action.BOOT_COMPLETED"></action>
              	<action android:name="android.intent.action.ACTION_BATTERY_LOW"></action>
-             	<action android:name="android.intent.action.ACTION_PACKAGE_REMOVED"></action>
-             	<action android:name="android.intent.action.ACTION_PACKAGE_RESTARTED"></action>
+             	<action android:name="android.intent.action.PACKAGE_REMOVED"></action>
+             	<action android:name="android.intent.action.PACKAGE_RESTARTED"></action>
              	
              	<!-- Custom Intent -->
-             	<action android:name="com.TigerLee.Homein.intent.action.DISABLE_GPS_INTENT"></action>
-             	<action android:name="com.TigerLee.Homein.intent.action.DISABLE_NETWORK_LOCATION_INTENT"></action>
-             	<action android:name="com.TigerLee.Homein.intent.action.FORCE_CLOSED_INTENT"></action>
-             	<action android:name="com.TigerLee.Homein.intent.action.SUCCESS_INTENT"></action>             	
+             	<action android:name="com.tigerlee.homein.intent.action.DISABLE_GPS_INTENT"></action>
+             	<action android:name="com.tigerlee.homein.intent.action.DISABLE_NETWORK_LOCATION_INTENT"></action>
+             	<action android:name="com.tigerlee.homein.intent.action.FORCE_CLOSED_INTENT"></action>
+             	<action android:name="com.tigerlee.homein.intent.action.SUCCESS_INTENT"></action>             	
     		</intent-filter>
     	</receiver>
     	
