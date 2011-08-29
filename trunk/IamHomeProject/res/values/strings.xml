@@ -23,11 +23,18 @@
 	<string name="toast_unsupport_GPS">Please make enable GPS.</string>
 	<string name="toast_distance">Distance to destination : </string>
 	<string name="toast_reset_destination">Please set your destination again.</string>
+	<string name="toast_notfound_destination_position">Cannot find destination position.\nPlease try again.</string>
+	<string name="toast_notfound_current_position">Cannot find current position.</string>
+	<string name="toast_poor_network">Poor network condition.\nPlease try again later.</string>
+	<string name="toast_restart">IamHome is closed abnormally. Restart application now.</string>
+	<string name="toast_crash">IamHome is closed abnormally. Report errors now.</string>
+	<string name="toast_pref_isRunning">It will be set from next launching if you change values</string>
 	
+	<string name="msg_default">From Iamhome\n</string>
 	
-	<string name="InputDestinationAddress">Please input a destination address</string>
+	<string name="InputDestinationAddress">Find a destination with address</string>
 	<string name="InputPhoneNumber">Please input phone number to call back</string>
-	<string name="InputSMS">Please input a message what you want to call back.</string>
+	<string name="InputSMS">Please set a message</string>
 
 	<string name="noti_success_name">Successful!</string>
 	<string name="noti_success_msg">Completed sending a message.</string>
@@ -38,11 +45,8 @@
 	<string name="noti_forceclose_name">Force closed by user</string>
 	<string name="noti_forceclose_msg">IamHome is force closed by the user</string>	
 	
-	<string name="NotValidAddress">Not valid address</string>
-	<string name="NoLocation">No location found.</string>
 	<string name="CurrentLocation">Where are you now?</string>
-	<string name="MessageSMS">Successfully sent</string>
-	
+	<string name="MessageSMS">Successfully sent</string>	
 	
 	<string name="DialogTitle">Destination address?</string>
 	
@@ -56,8 +60,11 @@
 	<string name="text_notrunning_custom_activiy">Please make sure your destination.
 	Marker will be placed at searched address.
 	Please make long tap at your correct destination.</string>
-	<string name="text_running_custom_activiy">Check your current location on map</string>
-	<string name="LoadingMsg">"Please wait while loading..."</string>
+	<string name="text_running_custom_activiy">Check your current location on map\n
+	The current position on map may not accurate.\n
+	Tip: Press a menu key to check a distance to destination"</string>
+	
+	<string name="dialog_loading">"Please wait while finding location"</string>
 	<string name="ConfirmMsg">"Are you sure to set here as destination address?"</string>
 	
 	<string name="title_about">About</string>
@@ -72,20 +79,28 @@
     <string name="title_selectContacts">Select Contact</string>
     
     <string name="pref_Title_minFrequency">Set Minimum Frequency</string>
-    <string name="pref_TItle_minDistance">Set Minimum Distance</string>
-    
     <string name="pref_Sum_minFrequency">How often to update location</string>
+    <string name="pref_TItle_minDistance">Set Minimum Distance</string>
     <string name="pref_Sum_minDistance">Minimum distance to destination from user</string>
+    <string name="pref_Title_enableDialog">Show a dialog on a map</string>
+    <string name="pref_Sum_enableDialog">Do you want to see a dialog on a map every time?</string>
     
-    <string name="pref_isRunning">It will be set from next launching if you change values</string>
-    
-    <string name="about_dashboard">Minimum distance to destination from user</string>
-    <string name="about_homein">Minimum distance to destination from user</string>
+    <string name="about_dashboard">The aim of this application is to protect your lovely people.\n
+    1. I am Home.\n
+    You can check your couple going home safely. You can also check son and daughter to go school safely.\n
+    Send a text message to designated phone number automatically when reaching the destination with selected minimum distance.
+    2. Settings.\n
+    You can set the minimum distance from the destination and the minimum frequency to update GPS.\n\n\n
+    Please tap below advertisement for better application.
+    </string>
+    <string name="about_homein">I am Home.\nSet your destination, a message what you want to send and a person who will get your message.</string>
     <string name="about_map">Minimum distance to destination from user</string>
     <string name="about_homeout">Minimum distance to destination from user</string>
     <string name="about_profile">Minimum distance to destination from user</string>
-    <string name="about_settings">Minimum distance to destination from user</string>
-    
+    <string name="about_settings">You can set default setting values.\n
+  Minimum frequency GPS - How often do you want to update GPS?\n
+  Minimum distance from destination - This application will be closed finally according to this minimum value.</string>
+     
     <string name="profile_name">Your name: </string>
     <string name="profile_phoneNum">Your phone number: </string>
     <string name="profile_address">Your address: </string>
@@ -93,7 +108,5 @@
     <string name="profile_default_address">Please set your address</string>
     
     <string name="overlay_destination_title">Destination</string>
-    <string name="overlay_current_title">Current position</string>
-    
-        
+    <string name="overlay_current_title">Current position</string>        
 </resources>

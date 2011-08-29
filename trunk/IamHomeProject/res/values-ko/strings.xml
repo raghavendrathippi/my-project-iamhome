@@ -3,7 +3,6 @@
 	<string name="hello">Hello World, IamHomeTest02!</string>
 	<string name="app_name">집에가면 연락해~</string>
 
-
 	<string name="bt_pickAddress">주소록에서 찾기</string>
 	<string name="bt_Start">시작</string>
 	<string name="bt_End">종료</string>
@@ -24,10 +23,18 @@
 	<string name="toast_unsupport_GPS">GPS를 켜주세요!</string>
 	<string name="toast_distance">목적지 까지 거리 : </string>
 	<string name="toast_reset_destination">목적지를 다시 설정해주세요</string>
+	<string name="toast_notfound_destination_position">위치를 찾을 수 없습니다.\n잠시 후 다시 시도하세요.</string>
+	<string name="toast_notfound_current_position">현재 위치를 찾을 수 없습니다.</string>
+	<string name="toast_poor_network">네트워크 연결 상태가 좋지 않습니다.\n잠시 후 다시 시도하세요.</string>
+	<string name="toast_restart">집에가면 연락해가 비정상적으로 종료 되었습니다. 다시 시작합니다.</string>
+	<string name="toast_crash">집에가면 연락해가 비정상적으로 종료 되었습니다. 리포트 하겠습니다.</string>
+	<string name="toast_pref_isRunning">현재 적용되는 값들은 다음 실행 시 부터 적용됩니다.</string>
 	
+	<string name="msg_default">집에 가면 연락해~!\n</string>
+		
 	<string name="InputDestinationAddress">목적지의 주소를 입력해주세요.</string>
 	<string name="InputPhoneNumber">수신 받을 전화번호를 입력해주세요.</string>
-	<string name="InputSMS">수신 받을 메세지를 입력해 주세요.</string>
+	<string name="InputSMS">메세지를 입력해 주세요.</string>
 	
 	<string name="noti_success_name">집에 가면 연락해</string>
 	<string name="noti_success_msg">미션 성공! 메세지를 성공적으로 보냈습니다.</string>
@@ -37,9 +44,7 @@
 	
 	<string name="noti_forceclose_name">강제 종료!</string>
 	<string name="noti_forceclose_msg">집에가면 연락해가 강제 종료 되었습니다.</string>	
-		
-	<string name="NotValidAddress">유효하지 않은 주소입니다.</string>
-	<string name="NoLocation">현재 위치를 찾을 수 없습니다.</string>
+	
 	<string name="CurrentLocation">지금 현재 위치는?</string>
 	<string name="MessageSMS">메세지를 성공적으로 전송하였습니다.</string>
 	
@@ -50,15 +55,15 @@
 
 	<string name="Latitude">위도</string>
 	<string name="Longitude">경도</string>
-	<string name="FoundAddress">검색된 위치</string>
-	
-	
+	<string name="FoundAddress">검색된 위치</string>	
 	
 	<string name="text_notrunning_custom_activiy">검색된 결과에 따라 목적지가 표시됩니다. 현재 목적지가
 	다르다면 	원하는 목적지에서 길게 눌러주시면 목적지가 변하게 됩니다.</string>
-	<string name="text_running_custom_activiy">현재 위치를 지도에서 확인 해보세요! 지도상 위치는 GPS이외의 정보를 사용하기 때문에 부정확할 수 있습니다.(하지만 GPS정보만으로 목적지 도달을 판단합니다.)\n Tip! 메뉴를 이용해 거리를 확인할 수 있습니다.</string>
-	
-	<string name="LoadingMsg">"주소를 찾고 있습니다..."</string>
+	<string name="text_running_custom_activiy">현재 위치를 지도에서 확인 해보세요! \n
+	지도상 위치는 Network 정보를 사용하기 때문에 부정확할 수 있습니다.\n 
+	Tip! 메뉴를 이용해 거리를 확인할 수 있습니다.</string>
+		
+	<string name="dialog_loading">"주소를 찾고 있습니다..."</string>
 	<string name="ConfirmMsg">"이곳을 목적지로 설정하시겠습니까?"</string>
 	
 	<string name="title_about">정보</string>
@@ -73,24 +78,18 @@
     <string name="title_selectContacts">상대방의 전화번호를 선택하세요</string>
     
     <string name="pref_Title_minFrequency">업데이트 최소 주기</string>
-    <string name="pref_TItle_minDistance">집까지 최소 거리</string>
-    
     <string name="pref_Sum_minFrequency">GPS를 얼마나 자주 업데이트 할까요?</string>
-    <string name="pref_Sum_minDistance">집까지 최소 거리는?</string>
-    
-    <string name="pref_isRunning">현재 적용되는 값들은 다음 실행 시 부터 적용됩니다.</string>
+    <string name="pref_TItle_minDistance">집까지 최소 거리</string>
+    <string name="pref_Sum_minDistance">최소 몇m 거리를 집으로 인식할까요?</string>
+    <string name="pref_Title_enableDialog">안내 메세지 항상 보기</string>
+    <string name="pref_Sum_enableDialog">맵 위에 메세지를 항상 보시고 싶은가요?</string>
     
     <string name="about_dashboard">
     본 어플리케이션은 소중한 사람의 안전을 지키기 위한 목적으로 제작되었습니다.\n
     1. 집에가면 연락해~\n    
     밤 늦게 연인이 집에 무사히 도착했는지, 자녀분이 학교에서 무사히 도착했는지 등등을 확인시켜줄 수 있는 용도로 제작되었습니다.\n
-    목적지의 주소에서 지정한 최소거리에 도달했을때 자동으로 지정된 번호로 문자메세지가 전송이 됩니다.
-    2. 퇴근하면 연락해~\n
-    학교, 회사, 자택 등등의 위치에서 벗어나면 연락을 해주는 기능입니다.\n
-    집에가면 연락해~ 와는 반대로 최소거리에서 벗어나면 연락을 해주는 기능입니다.\n
-    3. 내 정보\n
-    본인의 사진, 주소, 이름의 기본 정보를 저장할 수 있습니다.\n
-    4. 설정\n
+    목적지의 주소에서 지정한 최소거리에 도달했을때 자동으로 지정된 번호로 문자메세지가 전송이 됩니다.\n
+    2. 설정\n
     목적지로 부터 최소거리는 몇 미터로 할지, GPS 정보는 얼만큼 자주 업데이트 할지 등의 정보를 설정 할 수 있습니다.
     </string>
     <string name="about_homein">집에가면 연락해~\n
@@ -112,7 +111,5 @@
     <string name="profile_default_address">주소를 설정 해 주세요</string>
     
     <string name="overlay_destination_title">목적지</string>
-    <string name="overlay_current_title">현재 위치</string>
-    
-    
+    <string name="overlay_current_title">현재 위치</string>   
 </resources>
