@@ -1,6 +1,5 @@
-package com.TigerLee.HomeIn.util;
+package com.tigerlee.homein.util;
 
-import android.graphics.Typeface;
 import android.util.Log;
 
 public class Constants {
@@ -18,10 +17,15 @@ public class Constants {
 	public static boolean isRunningHomeIn = false;
 	public static boolean isRunningHomeOut = false;
 	public static boolean isEnd = false;
+	public static boolean isShowDialog = true;
 	
-	//Default GeoPoint => Seoul  
-	public static final Double DEFAULT_LAT = 37.566535;
-	public static final Double DEFAULT_LNG = 126.9779692;
+	//Default GeoPoint of US => Center of US, LAT. 39¡Æ50' LONG. 98¡Æ35'
+	public static final Double DEFAULT_LAT_US = 39.50;
+	public static final Double DEFAULT_LNG_US = -98.35;
+	
+	//Default GeoPoint of Korea => Seoul  
+	public static final Double DEFAULT_LAT_KR = 37.566535;
+	public static final Double DEFAULT_LNG_KR = 126.9779692;
 	
 	public static final String DAUM_LNG_TAG = "lng";
 	public static final String DAUM_LAT_TAG = "lat";
@@ -38,16 +42,16 @@ public class Constants {
 	public static String ABOUT_ACTIVITY_STRING = null;
 	
 	public static double MIN_DISTANCE = 25; // in Meters
-	public static double GPS_ERROR_DISTANCE = 30; // in Meters
+	public static double GPS_ERROR_DISTANCE = 20; // in Meters
 	public static int MIN_FREQUENCY = 10000; // in milliseconds 
 	
 	public static final int DESTROY_ACTIVITY = 0;
 	public static int FIVE_SECOND = 1000 * 5;
 
 	public static final int MAX_RESULT_GEOCODING = 5;
-	
-	public static final String INTENT_MOVE_SECOND_TAP = "con.TigerLee.movetap";
 
+	public static final String IS_RUNNING = "RUNNING";
+	public static final String NOT_RUNNING = "END";
 	
 	public static boolean D = true;
 	

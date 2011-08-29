@@ -1,9 +1,10 @@
-package com.TigerLee.HomeIn.Geocoder;
+package com.tigerlee.homein.geocoder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -24,7 +25,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import android.location.Address;
 import android.util.Log;
 
-import com.TigerLee.HomeIn.util.Constants;
+import com.tigerlee.homein.util.Constants;
 
 public class NativeGeocoder {
 
@@ -282,11 +283,12 @@ public class NativeGeocoder {
 
 				addy.setAddressLine(0, addressLine);
 
+				/*
 				jsl = jsl.getJSONObject("AddressDetails").getJSONObject(
 						"Country");
 				addy.setCountryName(jsl.getString("CountryName"));
 				addy.setCountryCode(jsl.getString("CountryNameCode"));
-				/*
+				
 				 * jsl = jsl.getJSONObject("AdministrativeArea");
 				 * addy.setAdminArea(jsl.getString("AdministrativeAreaName"));
 				 * 
@@ -315,11 +317,11 @@ public class NativeGeocoder {
 	}
 
 	public static String getAddress(double lat, double lon) {
-		List<Address> mListAddress = getFromLocation(lat, lon,
-				Constants.MAX_RESULT_GEOCODING);
-		if (mListAddress != null) {
+		List<Address> mListAddress;
+		try{
+			mListAddress = getFromLocation(lat, lon, Constants.MAX_RESULT_GEOCODING);
 			return mListAddress.get(0).getAddressLine(0);
-		} else {
+		}catch (Exception e) {
 			return null;
 		}
 	}

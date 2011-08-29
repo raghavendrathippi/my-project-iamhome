@@ -1,4 +1,4 @@
-package com.TigerLee.HomeIn.service;
+package com.tigerlee.homein.service;
 
 import android.app.Service;
 import android.content.Context;
@@ -10,9 +10,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.TigerLee.HomeIn.receiver.IamHomeBroadcastReceiver;
-import com.TigerLee.HomeIn.util.Constants;
-import com.TigerLee.HomeIn.util.GPSInformation;
+import com.tigerlee.homein.receiver.IamHomeBroadcastReceiver;
+import com.tigerlee.homein.util.Constants;
+import com.tigerlee.homein.util.GPSInformation;
+import com.tigerlee.homein.util.SharedPreference;
 
 public class ProximityAlertService extends Service {
 	
@@ -42,7 +43,7 @@ public class ProximityAlertService extends Service {
 		if(intent == null){
 			startLocationListener();//restart
 		}
-		return Service.START_STICKY;
+		return Service.START_NOT_STICKY;
 	}
 	private void startLocationListener(){
 		mGPSLocationListener = new LocationListener() {
@@ -93,12 +94,18 @@ public class ProximityAlertService extends Service {
 	
 	public void closeService(){
 		if(Constants.D) Log.v(TAG, "IamHome!");
+		
+		//Application is not running anymore 
 		Constants.isRunningHomeIn = false;
-		// Stop ProximityAlertService
+		SharedPreference mSharedPreference = new SharedPreference(this);
+        mSharedPreference.setIsRunning(false);
+		
+        // Stop ProximityAlertService
 		Intent mBroadCastIntent = new Intent();
 		mBroadCastIntent.setAction(IamHomeBroadcastReceiver.SUCCESS_INTENT);
 		sendBroadcast(mBroadCastIntent);
 		mLocationManager.removeUpdates(mGPSLocationListener);
 		stopSelf();	
+		
 	}
 }

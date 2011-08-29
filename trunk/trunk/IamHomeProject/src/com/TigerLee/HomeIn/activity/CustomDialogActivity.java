@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.TigerLee.HomeIn.activity;
+package com.tigerlee.homein.activity;
 
 // Need the following import to get access to the app resources, since this
 // class is in a sub-package.
@@ -26,8 +26,8 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
-import com.TigerLee.HomeIn.R;
-import com.TigerLee.HomeIn.util.Constants;
+import com.tigerlee.homein.R;
+import com.tigerlee.homein.util.Constants;
 
 /**
  * <h3>Dialog Activity</h3>
@@ -42,8 +42,19 @@ public class CustomDialogActivity extends Activity {
      * call {@link android.app.Activity#setContentView setContentView()} to
      * describe what is to be displayed in the screen.
      */
-	
-	
+	private Handler mHandler = new Handler(){
+    	public void handleMessage(android.os.Message msg) {
+    		switch (msg.what) {
+			case Constants.DESTROY_ACTIVITY:
+		    	setResult(RESULT_OK);
+				finish();
+				break;
+			default:
+				break;
+			}
+    	};
+    };
+    
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
         // Be sure to call the super class.
@@ -75,17 +86,8 @@ public class CustomDialogActivity extends Activity {
 			return false;
 		return super.onKeyDown(keyCode, event);
     }
-    private Handler mHandler = new Handler(){
-    	public void handleMessage(android.os.Message msg) {
-    		switch (msg.what) {
-			case Constants.DESTROY_ACTIVITY:
-				finish();
-				break;
-			default:
-				break;
-			}
-    		
-    	};
-    
+    @Override
+    protected void onDestroy() {
+    	super.onDestroy();
     };
 }

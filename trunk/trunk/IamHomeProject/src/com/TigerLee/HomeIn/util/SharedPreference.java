@@ -1,4 +1,4 @@
-package com.TigerLee.HomeIn.util;
+package com.tigerlee.homein.util;
 
 import java.util.Locale;
 
@@ -17,12 +17,12 @@ public class SharedPreference{
 		"ADDRESS", 
 		"LATITUDE",
 		"LONGITUDE",
-		"USER_NAME",
-		"USER_IMAGE_URI",
+		"TEXT_MSG",
+		"PHONE_NUM",
 		"MINIMUN_FREQUENCY",
 		"MINIMUN_DISTANCE",
 		"RUNNING",
-		"RESULT"
+		"SHOW_DIALOG"
 	};
 	
 	private Context mContext;
@@ -78,11 +78,11 @@ public class SharedPreference{
 			return null;
 		}
 	}
-	public String getUserName(){
+	public String getTextMsg(){
 		SharedPreferences mPreferences =  getCustomSharedPreferences();
 		return mPreferences.getString(NAME_PREFERENCE[3], null);
 	}
-	public String getUserImage(){
+	public String getPhoneNum(){
 		SharedPreferences mPreferences =  getCustomSharedPreferences();
 		return mPreferences.getString(NAME_PREFERENCE[4], null);
 	}
@@ -94,13 +94,13 @@ public class SharedPreference{
 		SharedPreferences mPreferences =  getDefaultSharedPreferences();
 		return mPreferences.getString(NAME_PREFERENCE[6], null);
 	}
-	public String getRunning(){
+	public boolean getRunning(){
 		SharedPreferences mPreferences =  getCustomSharedPreferences();
-		return mPreferences.getString(NAME_PREFERENCE[7], null);
+		return mPreferences.getBoolean(NAME_PREFERENCE[7], false);
 	}
-	public String getResult(){
-		SharedPreferences mPreferences =  getCustomSharedPreferences();
-		return mPreferences.getString(NAME_PREFERENCE[8], null);
+	public boolean getShowDialog(){
+		SharedPreferences mPreferences =  getDefaultSharedPreferences();
+		return mPreferences.getBoolean(NAME_PREFERENCE[8], true);
 	}
 	
 	//SETTER
@@ -120,26 +120,26 @@ public class SharedPreference{
 		mEditor.putString(NAME_PREFERENCE[2], longitude.toString());
         mEditor.commit();
 	}
-	public void setUserName(String name){
+	public void setTextMsg(String name){
 		SharedPreferences.Editor mEditor =  getCustomSharedPreferencesEditor();
-		mEditor.putString(NAME_PREFERENCE[0], name);
+		mEditor.putString(NAME_PREFERENCE[3], name);
         mEditor.commit();
 	}
-	public void setUserImage(String uri){
+	public void setPhoneNum(String result){
 		SharedPreferences.Editor mEditor =  getCustomSharedPreferencesEditor();
-		mEditor.putString(NAME_PREFERENCE[0], uri);
-        mEditor.commit();
-	}
-
-	public void setIsRunning(String isRunning){
-		SharedPreferences.Editor mEditor =  getCustomSharedPreferencesEditor();
-		mEditor.putString(NAME_PREFERENCE[7], isRunning+"");
+		mEditor.putString(NAME_PREFERENCE[4], result);
         mEditor.commit();
 	}
 
-	public void setResult(String result){
+	public void setIsRunning(boolean isRunning){
 		SharedPreferences.Editor mEditor =  getCustomSharedPreferencesEditor();
-		mEditor.putString(NAME_PREFERENCE[8], result+"");
+		mEditor.putBoolean(NAME_PREFERENCE[7], isRunning);
         mEditor.commit();
 	}
+	public void setShowDialog(boolean isSetDialog){
+		SharedPreferences.Editor mEditor =  getCustomSharedPreferencesEditor();
+		mEditor.putBoolean(NAME_PREFERENCE[8], isSetDialog);
+        mEditor.commit();
+	}
+
 }

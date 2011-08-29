@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package com.TigerLee.HomeIn.activity;
+package com.tigerlee.homein.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.TigerLee.HomeIn.R;
-import com.TigerLee.HomeIn.util.Constants;
-import com.TigerLee.HomeIn.util.SharedPreference;
+import com.tigerlee.homein.R;
+import com.tigerlee.homein.service.ProximityAlertService;
+import com.tigerlee.homein.util.Constants;
+import com.tigerlee.homein.util.SharedPreference;
 
 /**
  * This is a simple activity that demonstrates the dashboard user interface pattern.
@@ -150,18 +152,27 @@ private void setupConstants() {
 	SharedPreference mSharedPreference = new SharedPreference(this);
 	String address = mSharedPreference.getAddress();
 	Log.v("HomeActivity", "Address: "+ address);
+	Constants.USER_DESTINATION_ADDRESS = address;
+	
 	
 	Double latitude = mSharedPreference.getLatitude();
 	Log.v("HomeActivity", "Lat: "+ latitude);
+	Constants.USER_DESTINATION_LAT = latitude;
 	
 	Double longitude = 	mSharedPreference.getLongitude();
 	Log.v("HomeActivity", "Lng: "+ longitude);
-	
+	Constants.USER_DESTINATION_LNG = longitude;
+	/*
 	String userImage = mSharedPreference.getUserImage();
 	Log.v("HomeActivity", "UserImage: "+ userImage);
+	*/
+	String msg = mSharedPreference.getTextMsg();
+	Log.v("HomeActivity", "msg: "+ msg);
+	Constants.EXTRA_TEXT_MSG = msg;
 	
-	String userName = mSharedPreference.getUserName();
-	Log.v("HomeActivity", "UserName: "+ userName);
+	String phoneNum = mSharedPreference.getPhoneNum();
+	Log.v("HomeActivity", "phoneNum: "+ phoneNum);
+	Constants.EXTRA_PHONENUM = phoneNum;
 	
 	String minFreq = mSharedPreference.getMinimumFrequency();
 	Log.v("HomeActivity", "minFreq: "+ minFreq);	
@@ -174,11 +185,26 @@ private void setupConstants() {
 	if(minDis!=null) {
 		Constants.MIN_DISTANCE = Double.parseDouble(minDis);
 	}
-	
+	/*
 	String result = mSharedPreference.getResult();
 	Log.v("HomeActivity", "Result: "+ result);
+	*/
+	Boolean IsRunning = mSharedPreference.getRunning();
+	Log.v("HomeActivity", "Running: "+ IsRunning);
+	if(IsRunning == true){
+		//User has not been reached home properly.
+		Constants.isRunningHomeIn = true;
+		startProximityService();
+	}else{
+		Constants.isRunningHomeIn = false;
+	}	
+	Constants.isShowDialog = mSharedPreference.getShowDialog();
+	Log.v("HomeActivity", "isShowDialog: "+ Constants.isShowDialog);	
 	
-	String running = mSharedPreference.getRunning();
-	Log.v("HomeActivity", "Running: "+ running);
+}
+private void startProximityService(){
+	Intent intent = new Intent(this,ProximityAlertService.class);
+	startService(intent);
+	toast(getString(R.string.toast_restart));
 }
 } // end class
