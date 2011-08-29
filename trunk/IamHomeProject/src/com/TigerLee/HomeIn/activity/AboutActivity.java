@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.TigerLee.HomeIn.activity;
+package com.tigerlee.homein.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.TigerLee.HomeIn.R;
-import com.TigerLee.HomeIn.util.Constants;
+import com.tigerlee.homein.R;
+import com.tigerlee.homein.util.Constants;
 /**
  * This is the About activity in the dashboard application.
  * It displays some text and provides a way to get back to the home activity.

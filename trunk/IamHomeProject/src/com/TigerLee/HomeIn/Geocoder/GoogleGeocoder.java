@@ -1,4 +1,4 @@
-package com.TigerLee.HomeIn.Geocoder;
+package com.tigerlee.homein.geocoder;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,7 +10,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.util.Log;
 
-import com.TigerLee.HomeIn.util.Constants;
+import com.tigerlee.homein.util.Constants;
 import com.google.android.maps.GeoPoint;
 
 /*

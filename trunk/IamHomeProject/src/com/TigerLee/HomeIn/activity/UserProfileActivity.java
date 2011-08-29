@@ -1,4 +1,4 @@
-package com.TigerLee.HomeIn.activity;
+package com.tigerlee.homein.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,9 +19,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.TigerLee.HomeIn.R;
-import com.TigerLee.HomeIn.Geocoder.NativeGeocoder;
-import com.TigerLee.HomeIn.util.SharedPreference;
+import com.tigerlee.homein.R;
+import com.tigerlee.homein.util.SharedPreference;
+import com.tigerlee.homein.geocoder.NativeGeocoder;
 
 public class UserProfileActivity extends DashboardActivity implements OnClickListener{
 	
@@ -45,10 +45,10 @@ public class UserProfileActivity extends DashboardActivity implements OnClickLis
 		mTextAddress = (TextView) findViewById(R.id.profile_address);
 		mTextPhoneNum = (TextView) findViewById(R.id.profile_phonenum);	
 		
-		setupImage();
-		setupText();
+		//setupImage();
+		//setupText();
 		mUserImage.setOnClickListener(this);
-	}
+	}/*
 	public void setupImage(){
 		Uri mUri = getImageUri();
 		if(mUri != null){
@@ -192,6 +192,11 @@ public class UserProfileActivity extends DashboardActivity implements OnClickLis
 				mSharedPreference.setLatitude(mAddress.getLongitude());
 			}
 		}
+	}*/
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

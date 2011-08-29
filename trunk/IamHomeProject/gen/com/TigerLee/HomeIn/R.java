@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.TigerLee.HomeIn;
+package com.tigerlee.homein;
 
 public final class R {
     public static final class anim {
@@ -49,8 +49,6 @@ public final class R {
         public static final int JeonNamKor=0x7f06000c;
         public static final int SeoulKor=0x7f060001;
         public static final int UlsanKor=0x7f06000a;
-        public static final int apiVals=0x7f060018;
-        public static final int defaultapi=0x7f060017;
         public static final int minDistance=0x7f060013;
         public static final int minDistanceVals=0x7f060014;
         public static final int minTimeIncs=0x7f060011;
@@ -312,38 +310,36 @@ containing a value of this type.
         public static final int homein01=0x7f030006;
         public static final int intro=0x7f030007;
         public static final int mappicker=0x7f030008;
-        public static final int send_message=0x7f030009;
-        public static final int simple_list_item_multiple_choice=0x7f03000a;
-        public static final int tabmenu=0x7f03000b;
-        public static final int tabs_bg=0x7f03000c;
-        public static final int taphomein=0x7f03000d;
-        public static final int userprofile=0x7f03000e;
+        public static final int running_mappicker=0x7f030009;
+        public static final int send_message=0x7f03000a;
+        public static final int simple_list_item_multiple_choice=0x7f03000b;
+        public static final int tabmenu=0x7f03000c;
+        public static final int tabs_bg=0x7f03000d;
+        public static final int taphomein=0x7f03000e;
+        public static final int userprofile=0x7f03000f;
     }
     public static final class menu {
         public static final int option_menu=0x7f0c0000;
     }
     public static final class string {
-        public static final int ConfirmMsg=0x7f0a002a;
-        public static final int CurrentLocation=0x7f0a001f;
-        public static final int DialogTitle=0x7f0a0021;
-        public static final int FoundAddress=0x7f0a0026;
-        public static final int InputDestinationAddress=0x7f0a0014;
-        public static final int InputPhoneNumber=0x7f0a0015;
-        public static final int InputSMS=0x7f0a0016;
-        public static final int Latitude=0x7f0a0024;
-        public static final int LoadingMsg=0x7f0a0029;
-        public static final int Longitude=0x7f0a0025;
-        public static final int MessageSMS=0x7f0a0020;
-        public static final int No=0x7f0a0023;
-        public static final int NoLocation=0x7f0a001e;
-        public static final int NotValidAddress=0x7f0a001d;
-        public static final int Yes=0x7f0a0022;
-        public static final int about_dashboard=0x7f0a003a;
-        public static final int about_homein=0x7f0a003b;
-        public static final int about_homeout=0x7f0a003d;
-        public static final int about_map=0x7f0a003c;
-        public static final int about_profile=0x7f0a003e;
-        public static final int about_settings=0x7f0a003f;
+        public static final int ConfirmMsg=0x7f0a002f;
+        public static final int CurrentLocation=0x7f0a0024;
+        public static final int DialogTitle=0x7f0a0026;
+        public static final int FoundAddress=0x7f0a002b;
+        public static final int InputDestinationAddress=0x7f0a001b;
+        public static final int InputPhoneNumber=0x7f0a001c;
+        public static final int InputSMS=0x7f0a001d;
+        public static final int Latitude=0x7f0a0029;
+        public static final int Longitude=0x7f0a002a;
+        public static final int MessageSMS=0x7f0a0025;
+        public static final int No=0x7f0a0028;
+        public static final int Yes=0x7f0a0027;
+        public static final int about_dashboard=0x7f0a0040;
+        public static final int about_homein=0x7f0a0041;
+        public static final int about_homeout=0x7f0a0043;
+        public static final int about_map=0x7f0a0042;
+        public static final int about_profile=0x7f0a0044;
+        public static final int about_settings=0x7f0a0045;
         public static final int app_name=0x7f0a0001;
         public static final int bt_End=0x7f0a0004;
         public static final int bt_FindDestination=0x7f0a0005;
@@ -352,43 +348,52 @@ containing a value of this type.
         public static final int bt_PreviousPage=0x7f0a0008;
         public static final int bt_Start=0x7f0a0003;
         public static final int bt_pickAddress=0x7f0a0002;
+        public static final int dialog_loading=0x7f0a002e;
         public static final int hello=0x7f0a0000;
         public static final int menu_distance=0x7f0a0009;
-        public static final int noti_disablegps_msg=0x7f0a001a;
-        public static final int noti_disablegps_name=0x7f0a0019;
-        public static final int noti_forceclose_msg=0x7f0a001c;
-        public static final int noti_forceclose_name=0x7f0a001b;
-        public static final int noti_success_msg=0x7f0a0018;
-        public static final int noti_success_name=0x7f0a0017;
-        public static final int overlay_current_title=0x7f0a0046;
-        public static final int overlay_destination_title=0x7f0a0045;
-        public static final int pref_Sum_minDistance=0x7f0a0038;
-        public static final int pref_Sum_minFrequency=0x7f0a0037;
-        public static final int pref_TItle_minDistance=0x7f0a0036;
-        public static final int pref_Title_minFrequency=0x7f0a0035;
-        public static final int pref_isRunning=0x7f0a0039;
-        public static final int profile_address=0x7f0a0042;
-        public static final int profile_default_address=0x7f0a0044;
-        public static final int profile_default_name=0x7f0a0043;
-        public static final int profile_name=0x7f0a0040;
-        public static final int profile_phoneNum=0x7f0a0041;
-        public static final int text_notrunning_custom_activiy=0x7f0a0027;
-        public static final int text_running_custom_activiy=0x7f0a0028;
-        public static final int title_about=0x7f0a002b;
-        public static final int title_feature1=0x7f0a002e;
-        public static final int title_feature2=0x7f0a002f;
-        public static final int title_feature3=0x7f0a0030;
-        public static final int title_feature4=0x7f0a0031;
-        public static final int title_feature5=0x7f0a0032;
-        public static final int title_feature6=0x7f0a0033;
-        public static final int title_home=0x7f0a002c;
-        public static final int title_search=0x7f0a002d;
-        public static final int title_selectContacts=0x7f0a0034;
+        public static final int msg_default=0x7f0a001a;
+        public static final int noti_disablegps_msg=0x7f0a0021;
+        public static final int noti_disablegps_name=0x7f0a0020;
+        public static final int noti_forceclose_msg=0x7f0a0023;
+        public static final int noti_forceclose_name=0x7f0a0022;
+        public static final int noti_success_msg=0x7f0a001f;
+        public static final int noti_success_name=0x7f0a001e;
+        public static final int overlay_current_title=0x7f0a004c;
+        public static final int overlay_destination_title=0x7f0a004b;
+        public static final int pref_Sum_enableDialog=0x7f0a003f;
+        public static final int pref_Sum_minDistance=0x7f0a003d;
+        public static final int pref_Sum_minFrequency=0x7f0a003b;
+        public static final int pref_TItle_minDistance=0x7f0a003c;
+        public static final int pref_Title_enableDialog=0x7f0a003e;
+        public static final int pref_Title_minFrequency=0x7f0a003a;
+        public static final int profile_address=0x7f0a0048;
+        public static final int profile_default_address=0x7f0a004a;
+        public static final int profile_default_name=0x7f0a0049;
+        public static final int profile_name=0x7f0a0046;
+        public static final int profile_phoneNum=0x7f0a0047;
+        public static final int text_notrunning_custom_activiy=0x7f0a002c;
+        public static final int text_running_custom_activiy=0x7f0a002d;
+        public static final int title_about=0x7f0a0030;
+        public static final int title_feature1=0x7f0a0033;
+        public static final int title_feature2=0x7f0a0034;
+        public static final int title_feature3=0x7f0a0035;
+        public static final int title_feature4=0x7f0a0036;
+        public static final int title_feature5=0x7f0a0037;
+        public static final int title_feature6=0x7f0a0038;
+        public static final int title_home=0x7f0a0031;
+        public static final int title_search=0x7f0a0032;
+        public static final int title_selectContacts=0x7f0a0039;
         public static final int toast_address=0x7f0a000a;
+        public static final int toast_crash=0x7f0a0018;
         public static final int toast_distance=0x7f0a0012;
         public static final int toast_isRunning=0x7f0a000c;
         public static final int toast_isRunning_preference=0x7f0a000d;
+        public static final int toast_notfound_current_position=0x7f0a0015;
+        public static final int toast_notfound_destination_position=0x7f0a0014;
+        public static final int toast_poor_network=0x7f0a0016;
+        public static final int toast_pref_isRunning=0x7f0a0019;
         public static final int toast_reset_destination=0x7f0a0013;
+        public static final int toast_restart=0x7f0a0017;
         public static final int toast_setDestination=0x7f0a000b;
         public static final int toast_startservice=0x7f0a000e;
         public static final int toast_unsupport_Connectivity=0x7f0a0010;
@@ -434,7 +439,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #BlocksLayout_columns com.TigerLee.HomeIn:columns}</code></td><td></td></tr>
+           <tr><td><code>{@link #BlocksLayout_columns com.tigerlee.homein:columns}</code></td><td></td></tr>
            </table>
            @see #BlocksLayout_columns
          */
@@ -442,7 +447,7 @@ containing a value of this type.
             0x7f010000
         };
         /**
-          <p>This symbol is the offset where the {@link com.TigerLee.HomeIn.R.attr#columns}
+          <p>This symbol is the offset where the {@link com.tigerlee.homein.R.attr#columns}
           attribute's value can be found in the {@link #BlocksLayout} array.
 
 
@@ -461,15 +466,15 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #TimeRulerView_dividerColor com.TigerLee.HomeIn:dividerColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #TimeRulerView_endHour com.TigerLee.HomeIn:endHour}</code></td><td></td></tr>
-           <tr><td><code>{@link #TimeRulerView_headerWidth com.TigerLee.HomeIn:headerWidth}</code></td><td></td></tr>
-           <tr><td><code>{@link #TimeRulerView_horizontalDivider com.TigerLee.HomeIn:horizontalDivider}</code></td><td></td></tr>
-           <tr><td><code>{@link #TimeRulerView_hourHeight com.TigerLee.HomeIn:hourHeight}</code></td><td></td></tr>
-           <tr><td><code>{@link #TimeRulerView_labelColor com.TigerLee.HomeIn:labelColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #TimeRulerView_labelPaddingLeft com.TigerLee.HomeIn:labelPaddingLeft}</code></td><td></td></tr>
-           <tr><td><code>{@link #TimeRulerView_labelTextSize com.TigerLee.HomeIn:labelTextSize}</code></td><td></td></tr>
-           <tr><td><code>{@link #TimeRulerView_startHour com.TigerLee.HomeIn:startHour}</code></td><td></td></tr>
+           <tr><td><code>{@link #TimeRulerView_dividerColor com.tigerlee.homein:dividerColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #TimeRulerView_endHour com.tigerlee.homein:endHour}</code></td><td></td></tr>
+           <tr><td><code>{@link #TimeRulerView_headerWidth com.tigerlee.homein:headerWidth}</code></td><td></td></tr>
+           <tr><td><code>{@link #TimeRulerView_horizontalDivider com.tigerlee.homein:horizontalDivider}</code></td><td></td></tr>
+           <tr><td><code>{@link #TimeRulerView_hourHeight com.tigerlee.homein:hourHeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #TimeRulerView_labelColor com.tigerlee.homein:labelColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #TimeRulerView_labelPaddingLeft com.tigerlee.homein:labelPaddingLeft}</code></td><td></td></tr>
+           <tr><td><code>{@link #TimeRulerView_labelTextSize com.tigerlee.homein:labelTextSize}</code></td><td></td></tr>
+           <tr><td><code>{@link #TimeRulerView_startHour com.tigerlee.homein:startHour}</code></td><td></td></tr>
            </table>
            @see #TimeRulerView_dividerColor
            @see #TimeRulerView_endHour
@@ -487,7 +492,7 @@ containing a value of this type.
             0x7f010009
         };
         /**
-          <p>This symbol is the offset where the {@link com.TigerLee.HomeIn.R.attr#dividerColor}
+          <p>This symbol is the offset where the {@link com.tigerlee.homein.R.attr#dividerColor}
           attribute's value can be found in the {@link #TimeRulerView} array.
 
 
@@ -502,7 +507,7 @@ containing a value of this type.
         */
         public static final int TimeRulerView_dividerColor = 6;
         /**
-          <p>This symbol is the offset where the {@link com.TigerLee.HomeIn.R.attr#endHour}
+          <p>This symbol is the offset where the {@link com.tigerlee.homein.R.attr#endHour}
           attribute's value can be found in the {@link #TimeRulerView} array.
 
 
@@ -516,7 +521,7 @@ containing a value of this type.
         */
         public static final int TimeRulerView_endHour = 8;
         /**
-          <p>This symbol is the offset where the {@link com.TigerLee.HomeIn.R.attr#headerWidth}
+          <p>This symbol is the offset where the {@link com.tigerlee.homein.R.attr#headerWidth}
           attribute's value can be found in the {@link #TimeRulerView} array.
 
 
@@ -532,7 +537,7 @@ containing a value of this type.
         */
         public static final int TimeRulerView_headerWidth = 0;
         /**
-          <p>This symbol is the offset where the {@link com.TigerLee.HomeIn.R.attr#horizontalDivider}
+          <p>This symbol is the offset where the {@link com.tigerlee.homein.R.attr#horizontalDivider}
           attribute's value can be found in the {@link #TimeRulerView} array.
 
 
@@ -546,7 +551,7 @@ containing a value of this type.
         */
         public static final int TimeRulerView_horizontalDivider = 2;
         /**
-          <p>This symbol is the offset where the {@link com.TigerLee.HomeIn.R.attr#hourHeight}
+          <p>This symbol is the offset where the {@link com.tigerlee.homein.R.attr#hourHeight}
           attribute's value can be found in the {@link #TimeRulerView} array.
 
 
@@ -562,7 +567,7 @@ containing a value of this type.
         */
         public static final int TimeRulerView_hourHeight = 1;
         /**
-          <p>This symbol is the offset where the {@link com.TigerLee.HomeIn.R.attr#labelColor}
+          <p>This symbol is the offset where the {@link com.tigerlee.homein.R.attr#labelColor}
           attribute's value can be found in the {@link #TimeRulerView} array.
 
 
@@ -577,7 +582,7 @@ containing a value of this type.
         */
         public static final int TimeRulerView_labelColor = 5;
         /**
-          <p>This symbol is the offset where the {@link com.TigerLee.HomeIn.R.attr#labelPaddingLeft}
+          <p>This symbol is the offset where the {@link com.tigerlee.homein.R.attr#labelPaddingLeft}
           attribute's value can be found in the {@link #TimeRulerView} array.
 
 
@@ -593,7 +598,7 @@ containing a value of this type.
         */
         public static final int TimeRulerView_labelPaddingLeft = 4;
         /**
-          <p>This symbol is the offset where the {@link com.TigerLee.HomeIn.R.attr#labelTextSize}
+          <p>This symbol is the offset where the {@link com.tigerlee.homein.R.attr#labelTextSize}
           attribute's value can be found in the {@link #TimeRulerView} array.
 
 
@@ -609,7 +614,7 @@ containing a value of this type.
         */
         public static final int TimeRulerView_labelTextSize = 3;
         /**
-          <p>This symbol is the offset where the {@link com.TigerLee.HomeIn.R.attr#startHour}
+          <p>This symbol is the offset where the {@link com.tigerlee.homein.R.attr#startHour}
           attribute's value can be found in the {@link #TimeRulerView} array.
 
 

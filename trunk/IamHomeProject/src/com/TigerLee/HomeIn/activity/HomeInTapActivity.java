@@ -1,4 +1,4 @@
-package com.TigerLee.HomeIn.activity;
+package com.tigerlee.homein.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,23 +12,12 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
-import com.TigerLee.HomeIn.R;
-import com.TigerLee.HomeIn.util.Constants;
+import com.tigerlee.homein.R;
+import com.tigerlee.homein.util.Constants;
 
 public class HomeInTapActivity extends DashboardTapActivity {
 	 private TabHost mTabHost;
 
-	 public BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
-			String action = intent.getAction();
-			if(action.equals(Constants.INTENT_MOVE_SECOND_TAP)){
-				mTabHost.setCurrentTab(1);
-			}
-			
-		}
-	};
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -41,8 +30,6 @@ public class HomeInTapActivity extends DashboardTapActivity {
 	        }else{
 	        	setupTab(new TextView(this), "", R.drawable.ic_map, new Intent(this, GoogleMapPicker.class));
 	        	setupTab(new TextView(this), "", R.drawable.ic_contact, new Intent(this, SendMessageActivity.class));
-	        	IntentFilter mIntentFilter = new IntentFilter(Constants.INTENT_MOVE_SECOND_TAP);
-	        	registerReceiver(mBroadcastReceiver, mIntentFilter);
 	        }
 		}
 		private void setupTab(final View view, final String tag, int resID, Intent intent) {
@@ -60,8 +47,5 @@ public class HomeInTapActivity extends DashboardTapActivity {
 		protected void onDestroy() {
 			// TODO Auto-generated method stub
 			super.onDestroy();
-			if(!Constants.isRunningHomeIn){
-				unregisterReceiver(mBroadcastReceiver);
-			}
 		}
 	}

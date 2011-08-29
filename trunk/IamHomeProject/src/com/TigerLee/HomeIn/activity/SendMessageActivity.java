@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package com.TigerLee.HomeIn.activity;
+package com.tigerlee.homein.activity;
 
 
-import com.TigerLee.HomeIn.R;
-import com.TigerLee.HomeIn.service.ProximityAlertService;
-import com.TigerLee.HomeIn.util.Constants;
+import com.tigerlee.homein.R;
+import com.tigerlee.homein.service.ProximityAlertService;
+import com.tigerlee.homein.util.Constants;
+import com.tigerlee.homein.util.SharedPreference;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -99,7 +100,7 @@ public class SendMessageActivity extends ListActivity implements OnClickListener
 			case R.id.bt_start:
 				//String mPhoneNumber = mReceiverPhoneNumber.getText().toString();
 				String mTextMessage = mEditTextMessage.getText().toString();
-				Constants.EXTRA_TEXT_MSG = mTextMessage;
+				Constants.EXTRA_TEXT_MSG = getString(R.string.msg_default) + mTextMessage;
 				if(isAllsetRequiedInfomation()){
 					if(!Constants.isRunningHomeIn){
 						startProximityService();
@@ -123,10 +124,20 @@ public class SendMessageActivity extends ListActivity implements OnClickListener
 	private void startProximityService(){
 		Intent intent = new Intent(this,ProximityAlertService.class);
 		startService(intent);
-		Constants.isRunningHomeIn = true;		
+		
+		Constants.isRunningHomeIn = true;
 		toast(getString(R.string.toast_startservice));
 		finish();
+		
         if(Constants.D) Log.v(TAG,"Start Proximity Service");
+        
+        SharedPreference mSharedPreference = new SharedPreference(this);
+        mSharedPreference.setAddress(Constants.USER_DESTINATION_ADDRESS);
+        mSharedPreference.setLatitude(Constants.USER_DESTINATION_LAT);
+        mSharedPreference.setLongitude(Constants.USER_DESTINATION_LNG);
+        mSharedPreference.setTextMsg(Constants.EXTRA_TEXT_MSG);
+        mSharedPreference.setPhoneNum(Constants.EXTRA_PHONENUM);
+        mSharedPreference.setIsRunning(true);
 	}
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -134,7 +145,7 @@ public class SendMessageActivity extends ListActivity implements OnClickListener
 		super.onListItemClick(l, v, position, id);
 		Cursor c = (Cursor)mListAdapter.getItem(position);
 		String phoneNum = c.getString(COLUMNS_NUMBER);		
-		Toast.makeText(this, phoneNum, Toast.LENGTH_SHORT).show();
+		toast(phoneNum);
 		Constants.EXTRA_PHONENUM = phoneNum;
 	}
 	public void toast (String msg){

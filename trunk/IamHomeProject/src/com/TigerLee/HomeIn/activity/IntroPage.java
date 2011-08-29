@@ -1,9 +1,9 @@
-package com.TigerLee.HomeIn.activity;
+package com.tigerlee.homein.activity;
 
-import com.TigerLee.HomeIn.R;
-import com.TigerLee.HomeIn.util.ConnectivityInformation;
-import com.TigerLee.HomeIn.util.Constants;
-import com.TigerLee.HomeIn.util.GPSInformation;
+import com.tigerlee.homein.R;
+import com.tigerlee.homein.util.ConnectivityInformation;
+import com.tigerlee.homein.util.Constants;
+import com.tigerlee.homein.util.GPSInformation;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,8 +21,8 @@ public class IntroPage extends Activity {
 	
 	public int mCurrentState;
 	
-	// Holding time for this intro page. (3000ms)
-	private static int HOLDING_TIME = 3000;
+	// Holding time for this intro page. (1500ms)
+	private static int HOLDING_TIME = 1500;
 	
 	private static final int DISABLED_GPS = 0;
 	private static final int DISABLED_CONNECTIVITY = 1;
@@ -49,7 +49,6 @@ public class IntroPage extends Activity {
 		super.onCreate(savedInstanceState);
 		if(Constants.isRunningHomeIn || Constants.isRunningHomeOut){
 			makeToast(getString(R.string.toast_isRunning));
-			NextPage();
 		}
 		// Verify a current state of this device.
 		setContentView(R.layout.intro);
@@ -104,10 +103,8 @@ public class IntroPage extends Activity {
 		// show a warning message that it could be charing lots costs.
 		if(mCurrentState == DISABLED_WIFI){
 			makeToast(getString(R.string.toast_unsupport_Wifi));
-		}		
-		
+		}
 		finish();
-		
 	}
 	
 	@Override

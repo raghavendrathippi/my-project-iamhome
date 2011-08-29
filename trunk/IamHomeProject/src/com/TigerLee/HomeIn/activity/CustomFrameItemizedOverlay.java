@@ -1,4 +1,4 @@
-package com.TigerLee.HomeIn.activity;
+package com.tigerlee.homein.activity;
 
 import java.lang.reflect.Method; 
 import java.util.List;
@@ -17,7 +17,7 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-import com.TigerLee.HomeIn.R;
+import com.tigerlee.homein.R;
 
 
 public abstract class CustomFrameItemizedOverlay<item> extends ItemizedOverlay<OverlayItem> {

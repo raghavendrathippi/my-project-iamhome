@@ -1,4 +1,4 @@
-package com.TigerLee.HomeIn.activity;
+package com.tigerlee.homein.activity;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.maps.OverlayItem;
-import com.TigerLee.HomeIn.R;
+import com.tigerlee.homein.R;
 
 public class CustomFrameOverlayView extends FrameLayout {
 

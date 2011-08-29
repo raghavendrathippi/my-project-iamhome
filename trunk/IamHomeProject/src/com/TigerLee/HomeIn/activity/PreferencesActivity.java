@@ -1,7 +1,7 @@
-package com.TigerLee.HomeIn.activity;
+package com.tigerlee.homein.activity;
 
-import com.TigerLee.HomeIn.R;
-import com.TigerLee.HomeIn.util.Constants;
+import com.tigerlee.homein.R;
+import com.tigerlee.homein.util.Constants;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -16,7 +16,7 @@ public class PreferencesActivity extends PreferenceActivity {
 		
 		addPreferencesFromResource(R.xml.settings);
 		if (Constants.isRunningHomeIn || Constants.isRunningHomeOut) {
-			Toast.makeText(this, getString(R.string.pref_isRunning), Toast.LENGTH_LONG).show();
+			Toast.makeText(this, getString(R.string.toast_pref_isRunning), Toast.LENGTH_LONG).show();
 		}
 	}
 	private void setAboutMsg(String string) {

@@ -1,4 +1,4 @@
-package com.TigerLee.HomeIn.activity;
+package com.tigerlee.homein.activity;
 
 import java.util.ArrayList;
 

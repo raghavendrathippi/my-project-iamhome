@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.TigerLee.HomeIn.activity;
+package com.tigerlee.homein.activity;
 
 import android.app.TabActivity;
 import android.content.Context;
@@ -25,8 +25,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.TigerLee.HomeIn.R;
-import com.TigerLee.HomeIn.util.Constants;
+import com.tigerlee.homein.R;
+import com.tigerlee.homein.util.Constants;
 
 /**
  * This is the base class for activities in the dashboard application.
